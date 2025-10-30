@@ -5,18 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Luna Wedding — June 5, 2026</title>
 
-  <!-- Social Sharing -->
+  <!-- Canonical -->
+  <link rel="canonical" href="https://luna.wedding/">
+
+  <!-- Basic meta -->
+  <meta name="title" content="Luna Wedding — June 5, 2026" />
+  <meta name="description" content="Luna Wedding — RSVP • June 5, 2026" />
+
+  <!-- Open Graph (iMessage uses these; must be absolute URLs) -->
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Luna Wedding" />
   <meta property="og:title" content="Luna Wedding — June 5, 2026" />
   <meta property="og:description" content="Luna Wedding — RSVP • June 5, 2026" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://luna.wedding" />
-  <meta property="og:image" content="/assets/og.jpg?v=23" />
+  <meta property="og:url" content="https://luna.wedding/" />
+  <meta property="og:image" content="https://luna.wedding/assets/og.jpg?v=24" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter (also helps some link preview parsers) -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 5, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 5, 2026" />
-  <meta name="twitter:image" content="/assets/og.jpg?v=23" />
+  <meta name="twitter:image" content="https://luna.wedding/assets/og.jpg?v=24" />
 
-  <!-- Inline temp monogram favicon (script-style) -->
+  <!-- Monogram favicon -->
   <link rel="icon" type="image/svg+xml"
     href='data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -32,9 +46,10 @@
     </svg>' />
 
   <!-- Performance -->
-  <link rel="preload" as="image" href="assets/bg.jpg?v=23" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/image.jpg?v=23">
-
+  <link rel="preload" as="image" href="assets/bg.jpg?v=24" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/image.jpg?v=24">
+</head>
+  
   <style>
     :root { --fallback:#000; --hint-bg: rgba(255,255,255,.92); --hint-fg:#111; }
     html,body{
