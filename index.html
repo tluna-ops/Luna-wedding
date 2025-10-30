@@ -6,8 +6,8 @@
   <title>Luna Wedding — June 5, 2026</title>
 
   <!-- Social / Link Preview -->
-  <meta property="og:title" content="Luna Wedding — June 5 2026" />
-  <meta property="og:description" content="Luna Wedding — June 5 2026" />
+  <meta property="og:title" content="Luna Wedding — June 5, 2026" />
+  <meta property="og:description" content="Luna Wedding — RSVP • June 5 2026" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://luna.wedding" />
   <meta property="og:image" content="/assets/og.jpg?v=2" />
@@ -19,21 +19,49 @@
   <style>
     :root { --fallback:#000; }
     html,body { height:100%; margin:0; background:var(--fallback); overflow:hidden; }
-    @keyframes fadeIn { from {opacity:0} to {opacity:1} }
+
+    /* Fade-ins */
+    @keyframes fadeBg { from{opacity:0} to{opacity:1} }
+    @keyframes fadeCard { from{opacity:0; transform:translate(-50%,-48%) scale(.98)} to{opacity:1; transform:translate(-50%,-50%) scale(1)} }
+
+    /* Fullscreen background */
     .bg {
       position:fixed; inset:0; opacity:0;
-      animation:fadeIn 1.0s ease-out .05s forwards;
+      animation:fadeBg 1s ease-out .05s forwards;
     }
     .bg img {
       position:absolute; inset:0;
       width:100vw; height:100vh;
       object-fit:cover; object-position:center;
+      user-select:none; -webkit-user-drag:none;
+    }
+
+    /* Centered invitation image */
+    .invite {
+      position:fixed; left:50%; top:50%;
+      transform:translate(-50%,-50%);
+      width:min(92vw, 900px);           /* responsive max width */
+      max-height:88vh;                  /* keep within viewport */
+      height:auto;
+      border-radius:12px;               /* slight rounding looks nice on iOS */
+      box-shadow:0 20px 48px rgba(0,0,0,.25);
+      opacity:0; animation:fadeCard .8s ease-out .25s forwards;
+      background:#fff;                  /* prevents edge transparency artifacts */
+    }
+
+    /* Respect iPhone safe areas a bit */
+    @supports(padding:max(0px)) {
+      .invite { margin: max(0px, env(safe-area-inset-top)) auto; }
     }
   </style>
 </head>
 <body>
+  <!-- Background -->
   <div class="bg" aria-hidden="true">
     <img src="/assets/bg.jpg?v=2" alt="">
   </div>
+
+  <!-- Centered invitation -->
+  <img class="invite" src="/assets/image.jpg?v=2" alt="Wedding invitation">
 </body>
 </html>
