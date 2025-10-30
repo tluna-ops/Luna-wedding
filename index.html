@@ -35,17 +35,17 @@
       100% { opacity: 1; }
     }
 
-    /* Background layer with fade-in */
+    /* Background layer (no negative z-index on iOS!) */
     .bg {
       position: fixed;
       inset: 0;
-      z-index: -2;
+      z-index: 0;              /* was -2 -> causes iOS to hide it */
+      pointer-events: none;    /* don’t intercept taps/scrolls */
       overflow: hidden;
-      background: url('IMG_0035.jpeg?v=3') center/cover no-repeat, #0b0b0b;
+      background: url('IMG_0035.jpeg?v=4') center/cover no-repeat, #0b0b0b;
       opacity: 0;
-      animation: fadeInBg 1.8s ease-out forwards;
+      animation: fadeInBg 1.2s ease-out forwards;
     }
-
     .bg img {
       position: absolute;
       top: 50%; left: 50%;
@@ -56,26 +56,29 @@
       filter: blur(18px) brightness(0.82);
       will-change: transform;
       opacity: 0;
-      animation: fadeInBg 1.8s ease-out forwards;
-      animation-delay: 0.15s;
+      animation: fadeInBg 1.2s ease-out forwards;
+      animation-delay: 0.1s;
     }
-
     .bg::after {
       content: "";
       position: absolute;
       inset: 0;
       z-index: 1;
+      /* slightly lighter vignette so it doesn’t look black */
       background: radial-gradient(ellipse at center,
-                  rgba(0,0,0,0.20) 0%,
-                  rgba(0,0,0,0.35) 60%,
-                  rgba(0,0,0,0.55) 100%);
+                  rgba(0,0,0,0.12) 0%,
+                  rgba(0,0,0,0.28) 60%,
+                  rgba(0,0,0,0.44) 100%);
       pointer-events: none;
     }
 
     .wrap {
+      position: relative;  /* ensure it sits above .bg */
+      z-index: 1;
       width: min(92vw, var(--max-width));
       padding: 4vh 0 6vh;
-      display: grid; place-items: center;
+      display: grid; 
+      place-items: center;
     }
 
     .polaroid {
@@ -91,12 +94,10 @@
       background-size: 6px 6px, 10px 10px;
       background-position: 0 0, 3px 3px;
     }
-
     .polaroid:hover {
       transform: rotate(0deg) translateY(-2px);
       box-shadow: 0 24px 48px rgba(0,0,0,0.16);
     }
-
     .polaroid button {
       appearance: none;
       padding: 0;
@@ -106,30 +107,27 @@
       cursor: zoom-in;
       border-radius: 6px;
     }
-
     .polaroid img {
       display: block;
       max-width: 100%;
       height: auto;
       border-radius: 6px;
       opacity: 0;
-      animation: fadeInBg 1.2s ease-out forwards;
-      animation-delay: 0.4s;
+      animation: fadeInBg 0.9s ease-out forwards;
+      animation-delay: 0.25s;
     }
 
     /* Lightbox */
     .lightbox {
       position: fixed; inset: 0; background: rgba(0,0,0,0.8);
       display: none; align-items: center; justify-content: center;
-      padding: 2rem; z-index: 999;
+      padding: 2rem; z-index: 3;  /* above bg and content */
     }
     .lightbox[aria-hidden="false"] { display: flex; }
-
     .lightbox img {
       max-width: 92vw; max-height: 88vh; width: auto; height: auto;
       border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
-
     .lightbox button.close {
       position: fixed;
       top: calc(1rem + env(safe-area-inset-top));
@@ -147,7 +145,7 @@
 </head>
 <body>
   <div class="bg" aria-hidden="true">
-    <img src="IMG_0035.jpeg?v=3" alt="">
+    <img src="IMG_0035.jpeg?v=4" alt="">
   </div>
 
   <main class="wrap">
