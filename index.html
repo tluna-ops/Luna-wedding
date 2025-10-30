@@ -10,13 +10,13 @@
   <meta property="og:description" content="Luna Wedding — RSVP • June 5, 2026" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://luna.wedding" />
-  <meta property="og:image" content="/assets/og.jpg?v=20" />
+  <meta property="og:image" content="/assets/og.jpg?v=21" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 5, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 5, 2026" />
-  <meta name="twitter:image" content="/assets/og.jpg?v=20" />
+  <meta name="twitter:image" content="/assets/og.jpg?v=21" />
 
-  <!-- Icons (inline temp monogram) -->
+  <!-- Inline temp monogram favicon (script-style) -->
   <link rel="icon" type="image/svg+xml"
     href='data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -32,8 +32,8 @@
     </svg>' />
 
   <!-- Performance -->
-  <link rel="preload" as="image" href="assets/bg.jpg?v=20" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/image.jpg?v=20">
+  <link rel="preload" as="image" href="assets/bg.jpg?v=21" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/image.jpg?v=21">
 
   <style>
     :root { --fallback:#000; --hint-bg: rgba(255,255,255,.92); --hint-fg:#111; }
@@ -126,11 +126,11 @@
 <body>
   <!-- Background -->
   <div class="bg" aria-hidden="true">
-    <img src="assets/bg.jpg?v=20" alt="">
+    <img src="assets/bg.jpg?v=21" alt="">
   </div>
 
   <!-- Invitation -->
-  <img id="invite" class="invite" src="assets/image.jpg?v=20" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/image.jpg?v=21" alt="Wedding invitation">
 
   <!-- Hint -->
   <div id="hint" class="hint" aria-hidden="true">Tap to zoom</div>
@@ -174,7 +174,7 @@
         document.body.style.overflow = 'hidden';
         if (hint) hint.classList.add('hide');
         actionsWrap.setAttribute('aria-hidden','false');
-        tryFadeInAudio(); // counts as gesture if needed
+        unlockAudio(); // counts as gesture if needed
       }
       function closeLB(){
         lb.classList.add('closing');
@@ -235,10 +235,10 @@ END:VCALENDAR`;
       icsBtn.addEventListener('click', downloadICS);
       gcalBtn.addEventListener('click', openGCal);
 
-      /* ---------- Audio: 1s fade-in ASAP, iOS-safe fallback ---------- */
+      /* ---------- Audio: robust iPad handling + 1s fade-in ---------- */
       let bgm = null, started = false, fadedIn = false;
       const TARGET_VOL = 0.35;
-      const SRC = 'assets/bgm_small.mp3?v=20';
+      const SRC = 'assets/bgm_small.mp3?v=21'; // cache-bust
 
       function createAudio(){
         if (bgm) return bgm;
@@ -246,7 +246,7 @@ END:VCALENDAR`;
         bgm.src = SRC;
         bgm.loop = true;
         bgm.preload = 'auto';
-        bgm.playsInline = true;  // iOS
+        bgm.playsInline = true;  // iOS/iPadOS hint
         bgm.volume = 0;          // start silent for fade
         started = true;
         return bgm;
@@ -259,38 +259,50 @@ END:VCALENDAR`;
         function step(t){
           const k = Math.min(1, (t - start) / ms);
           bgm.volume = v0 + (target - v0) * k;
-          if (k < 1) requestAnimationFrame(step);
-          else fadedIn = true;
+          if (k < 1) requestAnimationFrame(step); else fadedIn = true;
         }
         requestAnimationFrame(step);
       }
 
-      // Try to play with sound immediately; if blocked, fall back to muted until first interaction
       async function tryAutoPlayNow(){
         createAudio();
-        bgm.muted = false;
         try {
-          await bgm.play();       // some browsers allow if user has previously interacted
-          fadeTo(TARGET_VOL, 1000);
+          // Best case: allowed to start with sound on load
+          bgm.muted = false;
+          await bgm.play();
+          if (bgm.volume === 0) fadeTo(TARGET_VOL, 1000);
         } catch {
-          // Autoplay with sound blocked: start muted, then wait for gesture to unmute + fade
+          // Fallback: start muted; wait for a user gesture
           bgm.muted = true;
           bgm.play().catch(()=>{});
         }
       }
 
-      function tryFadeInAudio(){
+      async function unlockAudio(){
         createAudio();
-        if (bgm.muted || bgm.volume === 0){
+        try {
           bgm.muted = false;
-          if (bgm.paused) bgm.play().catch(()=>{});
-          fadeTo(TARGET_VOL, 1000);
+          if (bgm.paused) await bgm.play();
+          if (!fadedIn) { bgm.volume = 0; fadeTo(TARGET_VOL, 1000); }
+        } catch {
+          // Some iPads need a quick second attempt after the first gesture
+          setTimeout(async ()=>{
+            try {
+              bgm.muted = false;
+              if (bgm.paused) await bgm.play();
+              if (!fadedIn) { bgm.volume = 0; fadeTo(TARGET_VOL, 1000); }
+            } catch(e){}
+          }, 150);
         }
       }
 
+      // Try immediate autoplay on load (works on some devices/browsers)
       window.addEventListener('load', tryAutoPlayNow);
-      // First pointer anywhere ensures fade-in if needed
-      window.addEventListener('pointerdown', tryFadeInAudio, { once:true, passive:true });
+
+      // Count *any* sensible gesture as consent on iPad
+      ['pointerdown','click','touchend','keydown'].forEach(evt=>{
+        window.addEventListener(evt, unlockAudio, { once:true, passive:true });
+      });
 
       /* ---------- Music toggle (kept) ---------- */
       let pref = localStorage.getItem('music') || 'on';
