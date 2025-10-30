@@ -19,7 +19,7 @@
   <meta property="og:title" content="Luna Wedding — June 5, 2026" />
   <meta property="og:description" content="Luna Wedding — RSVP • June 5, 2026" />
   <meta property="og:url" content="https://luna.wedding/" />
-  <meta property="og:image" content="https://luna.wedding/assets/og.jpg?v=36" />
+  <meta property="og:image" content="https://luna.wedding/assets/og.jpg?v=37" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -29,7 +29,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 5, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 5, 2026" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/og.jpg?v=36" />
+  <meta name="twitter:image" content="https://luna.wedding/assets/og.jpg?v=37" />
 
   <!-- Favicon (inline SVG monogram) -->
   <link rel="icon" type="image/svg+xml"
@@ -47,9 +47,9 @@
     </svg>' />
 
   <!-- Performance: preload hero assets -->
-  <link rel="preload" as="image" href="assets/bg.jpg?v=36" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/image.jpg?v=36">
-  <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=36" />
+  <link rel="preload" as="image" href="assets/bg.jpg?v=37" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/image.jpg?v=37">
+  <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=37" />
 
   <style>
     :root { --fallback:#000; --hint-bg: rgba(255,255,255,.74); --hint-fg:#111; }
@@ -73,22 +73,21 @@
       cursor:zoom-in; user-select:none; -webkit-user-drag:none; z-index:1;
     }
 
-    /* Hint: anchored to bottom so it stays visible on iPhone */
+    /* Hint button: anchored to bottom so it stays visible on iPhone */
     .hint{
       position:fixed;
       left:50%;
       bottom:calc(84px + env(safe-area-inset-bottom)); /* above dock + safe area */
-      transform:translateX(-50%);                      /* center horizontally */
+      transform:translateX(-50%);
       padding:8px 12px; border-radius:999px;
       background:var(--hint-bg); color:var(--hint-fg); font-size:13px;
       box-shadow:0 8px 24px rgba(0,0,0,.12);
-      pointer-events:none;
-      z-index:30;                                      /* above dock */
-      will-change: opacity, transform;
+      z-index:30; will-change: opacity, transform;
 
-      opacity:0;                                       /* hidden by default */
-      transition: opacity 600ms ease, transform 600ms ease;
+      border:0; appearance:none; cursor:pointer;  /* make it a proper button */
+      opacity:0; transition: opacity 600ms ease, transform 600ms ease;
     }
+    .hint:focus{ outline:2px solid rgba(0,0,0,.25); outline-offset:2px; }
     .hint.show{  opacity:1; transform:translate(-50%, -4px); }
     .hint.hide{  opacity:0; transform:translate(-50%, 4px); }
 
@@ -212,14 +211,14 @@
 <body>
   <!-- Background -->
   <div class="bg" aria-hidden="true">
-    <img src="assets/bg.jpg?v=36" alt="">
+    <img src="assets/bg.jpg?v=37" alt="">
   </div>
 
   <!-- Invitation -->
-  <img id="invite" class="invite" src="assets/image.jpg?v=36" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/image.jpg?v=37" alt="Wedding invitation">
 
-  <!-- Hint -->
-  <div id="hint" class="hint" aria-hidden="true">Tap to zoom</div>
+  <!-- Hint button -->
+  <button id="hint" class="hint" type="button" aria-label="Tap to zoom">Tap to zoom</button>
 
   <!-- Lightbox -->
   <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
@@ -307,6 +306,9 @@
       closeBtn.addEventListener('click', closeLB);
       document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeLB(); });
 
+      // NEW: Hint button opens the lightbox
+      hint.addEventListener('click', openLB, {passive:true});
+
       /* ---------- Click-away to close menu actions ---------- */
       document.addEventListener('click', (e)=>{
         const withinMenu = e.target.closest('#menuBtn');
@@ -389,7 +391,7 @@
       /* ---------- Audio: robust iPad/iPhone handling + 1s fade-in ---------- */
       let bgm = null, started = false, fadedIn = false;
       const TARGET_VOL = 0.35;
-      const SRC = 'assets/bgm_small.mp3?v=36';
+      const SRC = 'assets/bgm_small.mp3?v=37';
 
       function createAudio(){
         if (bgm) return bgm;
@@ -472,7 +474,7 @@
         }
       });
 
-      /* ---------- Hint show + smooth fade-away ---------- */
+      /* ---------- Hint show + smooth fade-away (still hides after 5s) ---------- */
       setTimeout(()=>{ if (hint) hint.classList.add('show'); }, 150);
       setTimeout(()=>{ if (hint) hint.classList.add('hide'); }, 5150);
     })();
