@@ -16,37 +16,49 @@
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 5, 2026" />
   <meta name="twitter:image" content="/assets/og.jpg?v=4" />
 
+  <!-- Small perf hints -->
+  <link rel="preload" as="image" href="assets/bg.jpg?v=4" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/image.jpg?v=4">
+
   <style>
-    :root { --fallback:#000; }
+    :root { --fallback:#000; --hint-bg: rgba(255,255,255,.92); --hint-fg:#111; }
     html,body { height:100%; margin:0; background:var(--fallback); overflow:hidden;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; }
 
     /* Fade-ins */
     @keyframes fadeBg { from {opacity:0} to {opacity:1} }
-    @keyframes fadeCard {
-      from {opacity:0; transform:translate(-50%,-48%) scale(.98)}
-      to {opacity:1; transform:translate(-50%,-50%) scale(1)}
-    }
+    @keyframes fadeCard { from {opacity:0; transform:translate(-50%,-48%) scale(.985)}
+                          to   {opacity:1; transform:translate(-50%,-50%) scale(1)} }
+    @keyframes hintIn  { from {opacity:0; transform:translate(-50%,-46%)}
+                         to   {opacity:1; transform:translate(-50%,-40%)} }
+    @keyframes hintOut { to {opacity:0; transform:translate(-50%,-36%) } }
 
     /* Background */
-    .bg {
-      position:fixed; inset:0; opacity:0;
-      animation:fadeBg 1s ease-out .05s forwards;
-    }
-    .bg img {
-      width:100vw; height:100vh; object-fit:cover; object-position:center;
-      user-select:none; -webkit-user-drag:none;
-    }
+    .bg { position:fixed; inset:0; opacity:0; animation:fadeBg 900ms ease-out .05s forwards; }
+    .bg img { width:100vw; height:100vh; object-fit:cover; object-position:center;
+      user-select:none; -webkit-user-drag:none; }
 
-    /* Invitation */
+    /* Invitation (centered card) */
     .invite {
       position:fixed; left:50%; top:50%; transform:translate(-50%,-50%);
       width:min(92vw,900px); max-height:88vh; height:auto;
       border-radius:12px; background:#fff;
       box-shadow:0 20px 48px rgba(0,0,0,.25);
-      opacity:0; animation:fadeCard .8s ease-out .25s forwards;
+      opacity:0; animation:fadeCard .75s cubic-bezier(.21,.98,.25,.99) .2s forwards;
       cursor:zoom-in; user-select:none; -webkit-user-drag:none;
     }
+
+    /* Tap-to-zoom hint */
+    .hint {
+      position:fixed; left:50%; top:calc(50% + min(50vh, 460px));
+      transform:translate(-50%,-40%);
+      padding:8px 12px; border-radius:999px;
+      background:var(--hint-bg); color:var(--hint-fg);
+      font-size:13px; box-shadow:0 8px 24px rgba(0,0,0,.18);
+      opacity:0; animation:hintIn .5s ease .8s forwards;
+      pointer-events:none; /* passive */
+    }
+    .hint.hide { animation:hintOut .35s ease forwards; }
 
     /* Lightbox */
     .lightbox {
@@ -57,13 +69,18 @@
     .lightbox img {
       max-width:94vw; max-height:92vh; width:auto; height:auto;
       border-radius:14px; box-shadow:0 24px 64px rgba(0,0,0,.6);
+      touch-action:pinch-zoom; /* allow native pinch zoom */
     }
     .close {
-      position:fixed;
-      top:calc(12px + env(safe-area-inset-top));
+      position:fixed; top:calc(12px + env(safe-area-inset-top));
       right:calc(12px + env(safe-area-inset-right));
       width:44px; height:44px; border:0; border-radius:999px;
       background:#fff; color:#000; font-size:22px; line-height:1; cursor:pointer;
+    }
+
+    /* Motion safety */
+    @media (prefers-reduced-motion: reduce) {
+      .bg, .invite, .hint { animation-duration: 0.001s; }
     }
   </style>
 </head>
@@ -76,31 +93,71 @@
   <!-- Invitation -->
   <img id="invite" class="invite" src="assets/image.jpg?v=4" alt="Wedding invitation">
 
+  <!-- Hint -->
+  <div id="hint" class="hint" aria-hidden="true">Tap to zoom</div>
+
   <!-- Lightbox -->
   <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
-    <img id="lbimg" alt="">
+    <img id="lbimg" alt="Wedding invitation (zoomed)">
     <button class="close" aria-label="Close">×</button>
   </div>
+
+  <noscript>
+    <style>.hint{display:none}</style>
+  </noscript>
 
   <script>
     (function(){
       const invite = document.getElementById("invite");
+      const hint = document.getElementById("hint");
       const lb = document.getElementById("lightbox");
       const lbimg = document.getElementById("lbimg");
       const closeBtn = lb.querySelector(".close");
 
-      invite.addEventListener("click", () => {
-        lbimg.src = invite.src;
+      // Open lightbox
+      function openLB() {
+        lbimg.src = invite.src; // same file, full viewport
         lb.setAttribute("aria-hidden","false");
         document.body.style.overflow="hidden";
-      });
-      function close(){
+        if (hint) hint.classList.add('hide');
+      }
+
+      // Close lightbox
+      function closeLB(){
         lb.setAttribute("aria-hidden","true");
         document.body.style.overflow="";
       }
-      closeBtn.addEventListener("click", close);
-      lb.addEventListener("click", (e)=>{ if(e.target===lb) close(); });
-      document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") close();});
+
+      // Single tap/click to open
+      invite.addEventListener("click", openLB, { passive:true });
+
+      // Double-tap support (mobile)
+      let lastTap = 0;
+      invite.addEventListener("touchend", (e) => {
+        const now = Date.now();
+        if (now - lastTap < 300) { openLB(); }
+        lastTap = now;
+      }, { passive:true });
+
+      // Swipe-down to close (mobile)
+      let startY = null;
+      lb.addEventListener("touchstart", (e) => { startY = e.touches[0].clientY; }, { passive:true });
+      lb.addEventListener("touchmove", (e) => {
+        if (startY == null) return;
+        const dy = e.touches[0].clientY - startY;
+        if (dy > 70) closeLB();
+      }, { passive:true });
+      lb.addEventListener("touchend", () => { startY = null; }, { passive:true });
+
+      // Click outside or close button
+      lb.addEventListener("click", (e) => { if (e.target === lb) closeLB(); });
+      closeBtn.addEventListener("click", closeLB);
+
+      // Escape to close
+      document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeLB(); });
+
+      // Auto-hide hint after a few seconds
+      setTimeout(() => { if (hint) hint.classList.add('hide'); }, 2500);
     })();
   </script>
 </body>
