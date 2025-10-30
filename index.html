@@ -5,63 +5,103 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Luna Wedding — June 5, 2026</title>
 
-  <!-- Social / Link Preview -->
+  <!-- Social Sharing -->
   <meta property="og:title" content="Luna Wedding — June 5, 2026" />
-  <meta property="og:description" content="Luna Wedding — RSVP • June 5 2026" />
+  <meta property="og:description" content="Tobias & Michelle — Save the Date • June 5, 2026 • New York City" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://luna.wedding" />
-  <meta property="og:image" content="/assets/og.jpg?v=2" />
+  <meta property="og:image" content="/assets/og.jpg?v=4" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 5, 2026" />
   <meta name="twitter:description" content="Tobias & Michelle — Save the Date • June 5, 2026 • New York City" />
-  <meta name="twitter:image" content="/assets/og.jpg?v=2" />
+  <meta name="twitter:image" content="/assets/og.jpg?v=4" />
 
   <style>
     :root { --fallback:#000; }
-    html,body { height:100%; margin:0; background:var(--fallback); overflow:hidden; }
+    html,body { height:100%; margin:0; background:var(--fallback); overflow:hidden;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; }
 
     /* Fade-ins */
-    @keyframes fadeBg { from{opacity:0} to{opacity:1} }
-    @keyframes fadeCard { from{opacity:0; transform:translate(-50%,-48%) scale(.98)} to{opacity:1; transform:translate(-50%,-50%) scale(1)} }
+    @keyframes fadeBg { from {opacity:0} to {opacity:1} }
+    @keyframes fadeCard {
+      from {opacity:0; transform:translate(-50%,-48%) scale(.98)}
+      to {opacity:1; transform:translate(-50%,-50%) scale(1)}
+    }
 
-    /* Fullscreen background */
+    /* Background */
     .bg {
       position:fixed; inset:0; opacity:0;
       animation:fadeBg 1s ease-out .05s forwards;
     }
     .bg img {
-      position:absolute; inset:0;
-      width:100vw; height:100vh;
-      object-fit:cover; object-position:center;
+      width:100vw; height:100vh; object-fit:cover; object-position:center;
       user-select:none; -webkit-user-drag:none;
     }
 
-    /* Centered invitation image */
+    /* Invitation */
     .invite {
-      position:fixed; left:50%; top:50%;
-      transform:translate(-50%,-50%);
-      width:min(92vw, 900px);           /* responsive max width */
-      max-height:88vh;                  /* keep within viewport */
-      height:auto;
-      border-radius:12px;               /* slight rounding looks nice on iOS */
+      position:fixed; left:50%; top:50%; transform:translate(-50%,-50%);
+      width:min(92vw,900px); max-height:88vh; height:auto;
+      border-radius:12px; background:#fff;
       box-shadow:0 20px 48px rgba(0,0,0,.25);
       opacity:0; animation:fadeCard .8s ease-out .25s forwards;
-      background:#fff;                  /* prevents edge transparency artifacts */
+      cursor:zoom-in; user-select:none; -webkit-user-drag:none;
     }
 
-    /* Respect iPhone safe areas a bit */
-    @supports(padding:max(0px)) {
-      .invite { margin: max(0px, env(safe-area-inset-top)) auto; }
+    /* Lightbox */
+    .lightbox {
+      position:fixed; inset:0; background:rgba(0,0,0,.88);
+      display:none; align-items:center; justify-content:center; z-index:10;
+    }
+    .lightbox[aria-hidden="false"] { display:flex; }
+    .lightbox img {
+      max-width:94vw; max-height:92vh; width:auto; height:auto;
+      border-radius:14px; box-shadow:0 24px 64px rgba(0,0,0,.6);
+    }
+    .close {
+      position:fixed;
+      top:calc(12px + env(safe-area-inset-top));
+      right:calc(12px + env(safe-area-inset-right));
+      width:44px; height:44px; border:0; border-radius:999px;
+      background:#fff; color:#000; font-size:22px; line-height:1; cursor:pointer;
     }
   </style>
 </head>
 <body>
   <!-- Background -->
   <div class="bg" aria-hidden="true">
-    <img src="/assets/bg.jpg?v=2" alt="">
+    <img src="assets/bg.jpg?v=4" alt="">
   </div>
 
-  <!-- Centered invitation -->
-  <img class="invite" src="/assets/image.jpg?v=2" alt="Wedding invitation">
+  <!-- Invitation -->
+  <img id="invite" class="invite" src="assets/image.jpg?v=4" alt="Wedding invitation">
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
+    <img id="lbimg" alt="">
+    <button class="close" aria-label="Close">×</button>
+  </div>
+
+  <script>
+    (function(){
+      const invite = document.getElementById("invite");
+      const lb = document.getElementById("lightbox");
+      const lbimg = document.getElementById("lbimg");
+      const closeBtn = lb.querySelector(".close");
+
+      invite.addEventListener("click", () => {
+        lbimg.src = invite.src;
+        lb.setAttribute("aria-hidden","false");
+        document.body.style.overflow="hidden";
+      });
+      function close(){
+        lb.setAttribute("aria-hidden","true");
+        document.body.style.overflow="";
+      }
+      closeBtn.addEventListener("click", close);
+      lb.addEventListener("click", (e)=>{ if(e.target===lb) close(); });
+      document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") close();});
+    })();
+  </script>
 </body>
 </html>
