@@ -19,7 +19,7 @@
   <meta property="og:title" content="Luna Wedding — June 5, 2026" />
   <meta property="og:description" content="Luna Wedding — RSVP • June 5, 2026" />
   <meta property="og:url" content="https://luna.wedding/" />
-  <meta property="og:image" content="https://luna.wedding/assets/og.jpg?v=32" />
+  <meta property="og:image" content="https://luna.wedding/assets/og.jpg?v=33" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -29,7 +29,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 5, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 5, 2026" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/og.jpg?v=32" />
+  <meta name="twitter:image" content="https://luna.wedding/assets/og.jpg?v=33" />
 
   <!-- Favicon (inline SVG monogram) -->
   <link rel="icon" type="image/svg+xml"
@@ -47,9 +47,9 @@
     </svg>' />
 
   <!-- Performance: preload hero assets -->
-  <link rel="preload" as="image" href="assets/bg.jpg?v=32" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/image.jpg?v=32">
-  <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=32" />
+  <link rel="preload" as="image" href="assets/bg.jpg?v=33" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/image.jpg?v=33">
+  <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=33" />
 
   <style>
     :root { --fallback:#000; --hint-bg: rgba(255,255,255,.74); --hint-fg:#111; }
@@ -58,10 +58,9 @@
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
     }
 
-    /* Page animations */
+    /* Page animations (bg/invite) */
     @keyframes fadeBg { from {opacity:0} to {opacity:1} }
     @keyframes fadeCard { from {opacity:0; transform:translate(-50%,-48%) scale(.985)} to {opacity:1; transform:translate(-50%,-50%) scale(1)} }
-    @keyframes hintIn { from {opacity:0; transform:translate(-50%,-46%)} to {opacity:1; transform:translate(-50%,-40%)} }
 
     .bg { position:fixed; inset:0; opacity:0; animation:fadeBg 900ms ease-out .05s forwards; }
     .bg img { width:100vw; height:100vh; object-fit:cover; object-position:center; user-select:none; -webkit-user-drag:none; }
@@ -74,23 +73,24 @@
       cursor:zoom-in; user-select:none; -webkit-user-drag:none; z-index:1;
     }
 
-    /* Hint: smooth fade/slide with gentle entrance */
+    /* Hint: pure transition show/hide (no keyframes) */
     .hint{
       position:fixed; left:50%; top:calc(50% + min(50vh, 460px));
-      transform:translate(-50%,-40%);
+      transform:translate(-50%,-42%);        /* slightly higher at rest */
       padding:8px 12px; border-radius:999px;
       background:var(--hint-bg); color:var(--hint-fg); font-size:13px;
       box-shadow:0 8px 24px rgba(0,0,0,.12);
       pointer-events:none; z-index:2;
       will-change: opacity, transform;
 
-      /* entrance */
-      opacity:0; animation:hintIn .5s ease .8s forwards;
-
-      /* exit transition */
+      opacity:0;                               /* hidden by default */
       transition: opacity 600ms ease, transform 600ms ease;
     }
-    .hint.hide{
+    .hint.show{                                 /* fades/slides in */
+      opacity:1;
+      transform:translate(-50%,-40%);
+    }
+    .hint.hide{                                 /* fades/slides out */
       opacity:0;
       transform:translate(-50%,-36%);
     }
@@ -202,11 +202,11 @@
 <body>
   <!-- Background -->
   <div class="bg" aria-hidden="true">
-    <img src="assets/bg.jpg?v=32" alt="">
+    <img src="assets/bg.jpg?v=33" alt="">
   </div>
 
   <!-- Invitation -->
-  <img id="invite" class="invite" src="assets/image.jpg?v=32" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/image.jpg?v=33" alt="Wedding invitation">
 
   <!-- Hint -->
   <div id="hint" class="hint" aria-hidden="true">Tap to zoom</div>
@@ -369,7 +369,7 @@
       function openGCal(){
         const details = encodeURIComponent(desc);
         const text = encodeURIComponent(title);
-        const location = encodeURIComponent(`${venue}, ${address}`);
+        aconst location = encodeURIComponent(`${venue}, ${address}`);
         const href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${dtStartUTC}/${dtEndUTC}&details=${details}&location=${location}&sf=true&output=xml`;
         window.open(href, '_blank', 'noopener,noreferrer');
       }
@@ -380,7 +380,7 @@
       /* ---------- Audio: robust iPad handling + 1s fade-in ---------- */
       let bgm = null, started = false, fadedIn = false;
       const TARGET_VOL = 0.35;
-      const SRC = 'assets/bgm_small.mp3?v=32';
+      const SRC = 'assets/bgm_small.mp3?v=33';
 
       function createAudio(){
         if (bgm) return bgm;
@@ -463,8 +463,10 @@
         }
       });
 
-      // Smoothly hide the "Tap to zoom" hint after 5s
-      setTimeout(()=>{ if (hint) hint.classList.add('hide'); }, 5000);
+      /* ---------- Hint show + timed fade-away (now smooth) ---------- */
+      // Slight delay to ensure CSS is applied, then show, then hide after ~5s.
+      setTimeout(()=>{ if (hint) hint.classList.add('show'); }, 150);
+      setTimeout(()=>{ if (hint) hint.classList.add('hide'); }, 5150);
     })();
   </script>
 </body>
