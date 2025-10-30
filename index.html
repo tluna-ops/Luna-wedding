@@ -10,16 +10,16 @@
   <meta property="og:description" content="Luna Wedding — RSVP • June 5, 2026" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://luna.wedding" />
-  <meta property="og:image" content="/assets/og.jpg?v=17" />
+  <meta property="og:image" content="/assets/og.jpg?v=18" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 5, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 5, 2026" />
-  <meta name="twitter:image" content="/assets/og.jpg?v=17" />
+  <meta name="twitter:image" content="/assets/og.jpg?v=18" />
 
   <!-- Performance -->
-  <link rel="preload" as="image" href="assets/bg.jpg?v=17" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/image.jpg?v=17">
-  <!-- No <audio> tag: created in JS to avoid iOS overlay -->
+  <link rel="preload" as="image" href="assets/bg.jpg?v=18" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/image.jpg?v=18">
+  <!-- audio created in JS (no <audio> tag) -->
 
   <style>
     :root { --fallback:#000; --hint-bg: rgba(255,255,255,.92); --hint-fg:#111; }
@@ -89,6 +89,8 @@
     .music .dot{ width:8px; height:8px; border-radius:999px; background:#ff4d4f; }
     .music.on .dot{ background:#3bd16f; }
     .music .label{ letter-spacing:.2px; }
+    .music.error{ opacity:.85; cursor:not-allowed; border-style:dashed; }
+    .music.error .label::after{ content:" (not found)"; font-weight:500; }
 
     @media (prefers-reduced-motion: reduce){ .bg, .invite, .hint{ animation-duration:.01s; } }
   </style>
@@ -96,11 +98,11 @@
 <body>
   <!-- Background -->
   <div class="bg" aria-hidden="true">
-    <img src="assets/bg.jpg?v=17" alt="">
+    <img src="assets/bg.jpg?v=18" alt="">
   </div>
 
   <!-- Invitation -->
-  <img id="invite" class="invite" src="assets/image.jpg?v=17" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/image.jpg?v=18" alt="Wedding invitation">
 
   <!-- Hint -->
   <div id="hint" class="hint" aria-hidden="true">Tap to zoom</div>
@@ -150,55 +152,84 @@
       closeBtn.addEventListener('click', closeLB);
       document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeLB(); });
 
-      /* ---------- Audio (programmatic, fixed volume, no JS fade) ---------- */
-      let bgm = null, started = false;
-      function createAudio(){
-        if (bgm) return bgm;
-        bgm = new Audio();
-        bgm.src = 'assets/bgm_small.mp3?v=17'; // cache-bust
-        bgm.loop = true;
-        bgm.preload = 'auto';
-        bgm.playsInline = true;   // iOS
-        bgm.muted = true;         // allow autoplay
-        bgm.volume = 0.35;        // fixed volume (no fade)
-        bgm.play().catch(()=>{}); // start silently
-        started = true;
-        return bgm;
-      }
+      /* ---------- Audio: robust path detection ---------- */
+      const paths = [
+        '/assets/bgm_small.mp3?v=18',
+        'assets/bgm_small.mp3?v=18',
+        '/assets/bgm_small.mp3',
+        'assets/bgm_small.mp3'
+      ];
+      let bgm = null, chosen = null, triedAutoplay = false;
 
-      function ensureAudible(){
-        createAudio();
-        bgm.muted = false;        // unmute immediately
-        if (bgm.paused) bgm.play().catch(()=>{});
-      }
-
-      // First pointer anywhere enables sound at fixed volume
-      window.addEventListener('pointerdown', ensureAudible, { once:true, passive:true });
-
-      // Music toggle with remembered preference
-      let pref = localStorage.getItem('music') || 'on';
       function setBtn(state){
         musicBtn.classList.toggle('on', state === 'on');
         musicBtn.setAttribute('aria-pressed', state === 'on' ? 'true' : 'false');
       }
+      let pref = localStorage.getItem('music') || 'on';
       setBtn(pref);
 
+      async function resolveAudioSrc(){
+        for (const p of paths) {
+          try {
+            const res = await fetch(p, { method:'HEAD', cache:'no-store' });
+            if (res.ok) { chosen = p; return p; }
+          } catch(e){ /* try next */ }
+        }
+        return null;
+      }
+
+      async function createAudio(){
+        if (bgm) return bgm;
+        if (!chosen) await resolveAudioSrc();
+        if (!chosen) {
+          musicBtn.classList.add('error');
+          musicBtn.title = 'Audio file not found in /assets';
+          return null;
+        }
+        bgm = new Audio();
+        bgm.src = chosen;
+        bgm.loop = true;
+        bgm.preload = 'auto';
+        bgm.playsInline = true;  // iOS
+        bgm.muted = true;        // allow autoplay
+        bgm.volume = 0.35;       // fixed volume (no JS fade)
+        const p = bgm.play();
+        if (p && typeof p.catch === 'function') p.catch(()=>{});
+        triedAutoplay = true;
+        return bgm;
+      }
+
+      function ensureAudible(){
+        createAudio().then(a=>{
+          if (!a) return;
+          a.muted = false;
+          if (a.paused) a.play().catch(()=>{});
+        });
+      }
+
+      // First pointer anywhere enables sound
+      window.addEventListener('pointerdown', ensureAudible, { once:true, passive:true });
+
+      // Music toggle with remembered preference
       musicBtn.addEventListener('click', ()=>{
-        createAudio();
+        if (musicBtn.classList.contains('error')) return;
         pref = (pref === 'on') ? 'off' : 'on';
         localStorage.setItem('music', pref);
         setBtn(pref);
-        if (pref === 'on'){
-          bgm.muted = false;
-          if (bgm.paused) bgm.play().catch(()=>{});
-          bgm.volume = 0.35; // keep same fixed volume
-        } else {
-          bgm.muted = true;
-        }
+        createAudio().then(a=>{
+          if (!a) return;
+          if (pref === 'on'){
+            a.muted = false;
+            if (a.paused) a.play().catch(()=>{});
+            a.volume = 0.35;
+          } else {
+            a.muted = true;
+          }
+        });
       });
 
-      // Create audio after load so it can buffer silently
-      window.addEventListener('load', ()=>{ if (!started) createAudio(); });
+      // Create audio on load so it can buffer silently
+      window.addEventListener('load', ()=>{ createAudio(); });
 
       // Hide hint after a moment
       setTimeout(()=>{ if (hint) hint.classList.add('hide'); }, 2500);
