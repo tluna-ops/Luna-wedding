@@ -1,36 +1,37 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- Charset & viewport FIRST for parsers -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luna Wedding — June 5, 2026</title>
 
-  <!-- Canonical -->
-  <link rel="canonical" href="https://luna.wedding/">
+  <title>Luna Wedding — June 5, 2026</title>
+  <link rel="canonical" href="https://luna.wedding/" />
 
   <!-- Basic meta -->
   <meta name="title" content="Luna Wedding — June 5, 2026" />
   <meta name="description" content="Luna Wedding — RSVP • June 5, 2026" />
 
-  <!-- Open Graph (iMessage uses these; must be absolute URLs) -->
+  <!-- Open Graph (absolute URLs for iMessage/FB/TikTok) -->
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Luna Wedding" />
   <meta property="og:title" content="Luna Wedding — June 5, 2026" />
   <meta property="og:description" content="Luna Wedding — RSVP • June 5, 2026" />
   <meta property="og:url" content="https://luna.wedding/" />
-  <meta property="og:image" content="https://luna.wedding/assets/og.jpg?v=24" />
+  <meta property="og:image" content="https://luna.wedding/assets/og.jpg?v=27" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Luna Wedding — June 5, 2026" />
 
-  <!-- Twitter (also helps some link preview parsers) -->
+  <!-- Twitter fallback -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 5, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 5, 2026" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/og.jpg?v=24" />
+  <meta name="twitter:image" content="https://luna.wedding/assets/og.jpg?v=27" />
 
-  <!-- Monogram favicon -->
+  <!-- Favicon (inline SVG monogram) -->
   <link rel="icon" type="image/svg+xml"
     href='data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -45,11 +46,11 @@
       </g>
     </svg>' />
 
-  <!-- Performance -->
-  <link rel="preload" as="image" href="assets/bg.jpg?v=24" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/image.jpg?v=24">
-</head>
-  
+  <!-- Performance: preload hero assets -->
+  <link rel="preload" as="image" href="assets/bg.jpg?v=27" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/image.jpg?v=27">
+  <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=27" />
+
   <style>
     :root { --fallback:#000; --hint-bg: rgba(255,255,255,.92); --hint-fg:#111; }
     html,body{
@@ -119,7 +120,7 @@
     .music.on .dot{ background:#3bd16f }
     .music .label{ letter-spacing:.2px }
 
-    /* Save the Date + RSVP (show when lightbox is open) */
+    /* Actions row */
     .actions{
       position:fixed; left:50%; bottom:calc(16px + env(safe-area-inset-bottom));
       transform:translateX(-50%); z-index:15;
@@ -141,11 +142,11 @@
 <body>
   <!-- Background -->
   <div class="bg" aria-hidden="true">
-    <img src="assets/bg.jpg?v=23" alt="">
+    <img src="assets/bg.jpg?v=27" alt="">
   </div>
 
   <!-- Invitation -->
-  <img id="invite" class="invite" src="assets/image.jpg?v=23" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/image.jpg?v=27" alt="Wedding invitation">
 
   <!-- Hint -->
   <div id="hint" class="hint" aria-hidden="true">Tap to zoom</div>
@@ -158,12 +159,12 @@
 
   <!-- Actions: Apple Calendar + Google + Email RSVP -->
   <div id="actions" class="actions" aria-hidden="true">
-    <button id="icsBtn" class="btn" aria-label="Add to Apple Calendar">Save to Apple Calendar</button>
-    <button id="gcalBtn" class="btn" aria-label="Add to Google Calendar">Save to Google Calendar</button>
+    <button id="icsBtn" class="btn" aria-label="Add to Apple Calendar">Add to Apple Calendar</button>
+    <button id="gcalBtn" class="btn" aria-label="Add to Google Calendar">Save to Google</button>
     <a id="rsvpBtn" class="btn" aria-label="Email RSVP" href="mailto:rsvp@luna.wedding?subject=RSVP%3A%20Luna%20Wedding&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AWe%27re%20delighted%20to%20RSVP%20for%20June%205%2C%202026.%0A%0ANames%3A%20%0ANumber%20of%20Guests%3A%20%0ADietary%20notes%3A%20%0A%0AWith%20love%2C%0A" rel="noopener">Email RSVP</a>
   </div>
 
-  <!-- Music button -->
+  <!-- Music toggle -->
   <button id="music" class="music" aria-pressed="false" aria-label="Toggle music">
     <span class="dot" aria-hidden="true"></span><span class="label">Music</span>
   </button>
@@ -189,7 +190,7 @@
         document.body.style.overflow = 'hidden';
         if (hint) hint.classList.add('hide');
         actionsWrap.setAttribute('aria-hidden','false');
-        unlockAudio(); // counts as gesture if needed
+        unlockAudio(); // gesture counts on iOS/iPadOS
       }
       function closeLB(){
         lb.classList.add('closing');
@@ -213,14 +214,13 @@
       const venue   = 'Carne Mare – Seaport';
       const address = '89 South St, New York, NY 10038';
 
-      // Apple Maps deep link is handled by Calendar when LOCATION is recognized.
-      // Extra boost: X-APPLE-STRUCTURED-LOCATION with geo:lat,long + title.
-      // Coordinates approximate for Carne Mare (Seaport, NYC):
+      // Apple Maps deep link via structured location (Apple Calendar)
+      // Coordinates for Carne Mare (approx Seaport, NYC):
       const geoLat = 40.7061, geoLng = -74.0032;
 
-      // June 5, 2026 — 7:00 PM to 10:00 PM ET
-      const dtStartUTC = '20260605T230000Z'; // 7:00 PM ET
-      const dtEndUTC   = '20260606T020000Z'; // 10:00 PM ET
+      // June 5, 2026 — 7:00 PM to 10:00 PM ET (UTC times in ICS)
+      const dtStartUTC = '20260605T230000Z';
+      const dtEndUTC   = '20260606T020000Z';
 
       function fold(line){
         const CRLF = '\r\n';
@@ -249,7 +249,6 @@
           `DTSTART:${dtStartUTC}`,
           `DTEND:${dtEndUTC}`,
           fold(`SUMMARY:${title}`),
-          // Keep description minimal; iOS Calendar will still show Notes, but we avoid links here.
           fold(`DESCRIPTION:${desc}`),
           fold(`LOCATION:${venue}, ${address}`),
           fold(xApple),
@@ -280,7 +279,7 @@
       /* ---------- Audio: robust iPad handling + 1s fade-in ---------- */
       let bgm = null, started = false, fadedIn = false;
       const TARGET_VOL = 0.35;
-      const SRC = 'assets/bgm_small.mp3?v=23'; // cache-bust
+      const SRC = 'assets/bgm_small.mp3?v=27';
 
       function createAudio(){
         if (bgm) return bgm;
@@ -289,7 +288,7 @@
         bgm.loop = true;
         bgm.preload = 'auto';
         bgm.playsInline = true;
-        bgm.volume = 0;
+        bgm.volume = 0; // fade-in
         started = true;
         return bgm;
       }
@@ -340,7 +339,7 @@
         window.addEventListener(evt, unlockAudio, { once:true, passive:true });
       });
 
-      /* ---------- Music toggle (kept) ---------- */
+      /* ---------- Music toggle ---------- */
       let pref = localStorage.getItem('music') || 'on';
       function setBtn(state){
         musicBtn.classList.toggle('on', state === 'on');
