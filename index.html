@@ -3,144 +3,109 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Coming Soon</title>
+  <title>Luna Wedding — June 5, 2026</title>
+
+  <!-- Social Sharing (iMessage, etc.) -->
+  <meta property="og:title" content="Luna Wedding — June 5, 2026">
+  <meta property="og:description" content="Tobias & Michelle — Save the Date • June 5, 2026 • New York City">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://luna.wedding">
+  <meta name="twitter:card" content="summary_large_image">
+
   <style>
-    :root {
-      --bg: #0b0b0b;            /* fallback color while image loads */
-      --polaroid-bg: #ffffff;
-      --shadow: 0 20px 40px rgba(0,0,0,0.12);
-      --frame: 14px;
-      --frame-bottom: 40px;
-      --max-width: 720px;
+    :root{
+      --bg: #0b0b0b;         /* fallback while image loads */
+      --polaroid-bg:#fff;
+      --shadow:0 20px 40px rgba(0,0,0,.12);
+      --frame:14px;
+      --frame-bottom:40px;
+      --max-width:720px;
     }
-    html, body {
-      height: 100%;
-      margin: 0;
-      background: var(--bg);
-    }
-    body {
-      display: grid;
-      place-items: center;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      padding-top: calc(2vh + env(safe-area-inset-top));
-      padding-left: env(safe-area-inset-left);
-      padding-right: env(safe-area-inset-right);
-      padding-bottom: env(safe-area-inset-bottom);
-      overflow-x: hidden;
+    html,body{height:100%;margin:0;background:var(--bg);}
+    body{
+      display:grid;place-items:center;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      padding-top:calc(2vh + env(safe-area-inset-top));
+      padding-left:env(safe-area-inset-left);
+      padding-right:env(safe-area-inset-right);
+      padding-bottom:env(safe-area-inset-bottom);
+      overflow-x:hidden;
     }
 
-    /* Fade-in animation */
-    @keyframes fadeInBg { from { opacity: 0; } to { opacity: 1; } }
+    /* Fade-in */
+    @keyframes fadeIn {from{opacity:0} to{opacity:1}}
 
-    /* Background layer (now above body background) */
-    .bg {
-      position: fixed;
-      inset: 0;
-      z-index: 0;                    /* <-- was -2 */
-      overflow: hidden;
-      pointer-events: none;          /* don't block taps */
-      background: url('IMG_0035.jpeg?v=4') center/cover no-repeat, #0b0b0b;
-      opacity: 0;
-      animation: fadeInBg 1.8s ease-out forwards;
+    /* Background layer (fixed, covers viewport, iOS friendly) */
+    .bg{
+      position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none;
+      background:#0b0b0b;
+      opacity:0; animation:fadeIn 1.2s ease-out .05s forwards;
     }
-    .bg img {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%) scale(1.08);
-      width: 120%;
-      height: auto;
-      min-height: 100%;
-      filter: blur(18px) brightness(0.82);
-      will-change: transform;
-      opacity: 0;
-      animation: fadeInBg 1.8s ease-out forwards;
-      animation-delay: 0.15s;
+    .bg img{
+      position:absolute; inset:0;
+      width:100vw; height:100vh; object-fit:cover;   /* prevents blown-out zoom */
+      filter: blur(16px) brightness(1.06);            /* B1: slightly brighter */
+      will-change:transform,filter;
+      opacity:0; animation:fadeIn 1.2s ease-out .15s forwards;
+      transform:translateZ(0); -webkit-backface-visibility:hidden;
     }
-    .bg::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 1;
+    /* Softer vignette (less dark for iOS) */
+    .bg::after{
+      content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
       background: radial-gradient(ellipse at center,
-                  rgba(0,0,0,0.20) 0%,
-                  rgba(0,0,0,0.35) 60%,
-                  rgba(0,0,0,0.55) 100%);
-      pointer-events: none;
+                  rgba(0,0,0,0.14) 0%,
+                  rgba(0,0,0,0.22) 55%,
+                  rgba(0,0,0,0.38) 100%);
     }
 
-    .wrap {
-      position: relative;            /* <-- ensure above background */
-      z-index: 1;
-      width: min(92vw, var(--max-width));
-      padding: 4vh 0 6vh;
-      display: grid;
-      place-items: center;
+    /* Slightly different tuning for iOS Safari */
+    @supports (-webkit-touch-callout: none){
+      .bg img{ filter: blur(14px) brightness(1.10); }
     }
-    .polaroid {
-      background: var(--polaroid-bg);
-      box-shadow: var(--shadow);
-      border-radius: 10px;
-      padding: var(--frame) var(--frame) var(--frame-bottom);
-      transform: rotate(-0.25deg);
-      transition: transform .25s ease, box-shadow .25s ease;
+
+    .wrap{
+      position:relative; z-index:1;
+      width:min(92vw,var(--max-width));
+      padding:4vh 0 6vh; display:grid; place-items:center;
+      animation:fadeIn .9s ease-out .25s both;
+    }
+    .polaroid{
+      background:var(--polaroid-bg); box-shadow:var(--shadow);
+      border-radius:10px; padding:var(--frame) var(--frame) var(--frame-bottom);
+      transform:rotate(-.25deg);
+      transition:transform .25s ease, box-shadow .25s ease;
       background-image:
-        radial-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
-        radial-gradient(rgba(0,0,0,0.015) 1px, transparent 1px);
-      background-size: 6px 6px, 10px 10px;
-      background-position: 0 0, 3px 3px;
+        radial-gradient(rgba(0,0,0,.02) 1px,transparent 1px),
+        radial-gradient(rgba(0,0,0,.015) 1px,transparent 1px);
+      background-size:6px 6px,10px 10px; background-position:0 0,3px 3px;
     }
-    .polaroid:hover {
-      transform: rotate(0deg) translateY(-2px);
-      box-shadow: 0 24px 48px rgba(0,0,0,0.16);
-    }
-    .polaroid button {
-      appearance: none;
-      padding: 0;
-      margin: 0;
-      border: 0;
-      background: transparent;
-      cursor: zoom-in;
-      border-radius: 6px;
-    }
-    .polaroid img {
-      display: block;
-      max-width: 100%;
-      height: auto;
-      border-radius: 6px;
-      opacity: 0;
-      animation: fadeInBg 1.2s ease-out forwards;
-      animation-delay: 0.4s;
-    }
+    .polaroid:hover{ transform:rotate(0) translateY(-2px); box-shadow:0 24px 48px rgba(0,0,0,.16); }
+    .polaroid button{ appearance:none; padding:0; margin:0; border:0; background:transparent; cursor:zoom-in; border-radius:6px; }
+    .polaroid img{ display:block; max-width:100%; height:auto; border-radius:6px; }
 
     /* Lightbox */
-    .lightbox {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-      display: none; align-items: center; justify-content: center;
-      padding: 2rem; z-index: 99;
+    .lightbox{
+      position:fixed; inset:0; background:rgba(0,0,0,.8);
+      display:none; align-items:center; justify-content:center;
+      padding:2rem; z-index:99;
     }
-    .lightbox[aria-hidden="false"] { display: flex; }
-    .lightbox img {
-      max-width: 92vw; max-height: 88vh; width: auto; height: auto;
-      border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-    .lightbox button.close {
-      position: fixed;
-      top: calc(1rem + env(safe-area-inset-top));
-      right: calc(1rem + env(safe-area-inset-right));
-      background: rgba(255,255,255,0.9); border: 0; border-radius: 999px;
-      width: 44px; height: 44px; display: grid; place-items: center;
-      font-size: 24px; line-height: 1; cursor: pointer;
+    .lightbox[aria-hidden="false"]{ display:flex; }
+    .lightbox img{ max-width:92vw; max-height:88vh; width:auto; height:auto; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,.5); }
+    .lightbox button.close{
+      position:fixed; top:calc(1rem + env(safe-area-inset-top)); right:calc(1rem + env(safe-area-inset-right));
+      background:rgba(255,255,255,.9); border:0; border-radius:999px; width:44px; height:44px;
+      display:grid; place-items:center; font-size:24px; line-height:1; cursor:pointer;
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      .polaroid, .polaroid:hover { transition: none; transform: none; }
-      .bg, .bg img { animation: none; opacity: 1; }
+    @media (prefers-reduced-motion: reduce){
+      .bg, .bg img, .wrap{ animation:none; opacity:1; }
     }
   </style>
 </head>
 <body>
   <div class="bg" aria-hidden="true">
-    <img src="IMG_0035.jpeg?v=4" alt="">
+    <!-- Cache-bust with ?v=5 -->
+    <img src="IMG_0035.jpeg?v=5" alt="">
   </div>
 
   <main class="wrap">
@@ -161,12 +126,12 @@
       var openBtn = document.getElementById('open');
       var lb = document.getElementById('lightbox');
       var closeBtn = lb.querySelector('.close');
-      function open() { lb.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden'; }
-      function close(){ lb.setAttribute('aria-hidden', 'true');  document.body.style.overflow = ''; openBtn.focus({preventScroll:true}); }
+      function open(){ lb.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
+      function close(){ lb.setAttribute('aria-hidden','true');  document.body.style.overflow=''; openBtn.focus({preventScroll:true}); }
       openBtn.addEventListener('click', open);
       closeBtn.addEventListener('click', close);
-      lb.addEventListener('click', function(e){ if (e.target === lb) close(); });
-      document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
+      lb.addEventListener('click', function(e){ if(e.target===lb) close(); });
+      document.addEventListener('keydown', function(e){ if(e.key==='Escape') close(); });
     })();
   </script>
 </body>
