@@ -10,16 +10,16 @@
   <meta property="og:description" content="Luna Wedding — RSVP • June 5, 2026" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://luna.wedding" />
-  <meta property="og:image" content="/assets/og.jpg?v=6" />
+  <meta property="og:image" content="/assets/og.jpg?v=9" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 5, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 5, 2026" />
-  <meta name="twitter:image" content="/assets/og.jpg?v=6" />
+  <meta name="twitter:image" content="/assets/og.jpg?v=9" />
 
   <!-- Performance -->
-  <link rel="preload" as="image" href="assets/bg.jpg?v=6" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/image.jpg?v=6">
-  <link rel="preload" as="audio" href="assets/bgm.mp3?v=6">
+  <link rel="preload" as="image" href="assets/bg.jpg?v=9" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/image.jpg?v=9">
+  <link rel="preload" as="audio" href="assets/bgm.mp3?v=9">
 
   <style>
     :root { --fallback:#000; --hint-bg: rgba(255,255,255,.92); --hint-fg:#111; }
@@ -34,10 +34,7 @@
       from {opacity:0; transform:translate(-50%,-48%) scale(.985)}
       to   {opacity:1; transform:translate(-50%,-50%) scale(1)}
     }
-    @keyframes hintIn {
-      from {opacity:0; transform:translate(-50%,-46%)}
-      to   {opacity:1; transform:translate(-50%,-40%)}
-    }
+    @keyframes hintIn { from {opacity:0; transform:translate(-50%,-46%)} to {opacity:1; transform:translate(-50%,-40%)} }
     @keyframes hintOut { to {opacity:0; transform:translate(-50%,-36%) } }
 
     /* Background */
@@ -52,6 +49,7 @@
       box-shadow:0 20px 48px rgba(0,0,0,.25);
       opacity:0; animation:fadeCard .75s cubic-bezier(.21,.98,.25,.99) .2s forwards;
       cursor:zoom-in; user-select:none; -webkit-user-drag:none;
+      z-index: 1;
     }
 
     /* Tap-to-zoom hint */
@@ -62,6 +60,7 @@
       background:var(--hint-bg); color:var(--hint-fg);
       font-size:13px; box-shadow:0 8px 24px rgba(0,0,0,.18);
       opacity:0; animation:hintIn .5s ease .8s forwards; pointer-events:none;
+      z-index: 2;
     }
     .hint.hide { animation:hintOut .35s ease forwards; }
 
@@ -97,21 +96,24 @@
     }
     .lightbox.visible .close { opacity:1; transform:scale(1); }
 
-    /* Music toggle */
+    /* Music toggle — always visible, above everything */
     .music {
       position:fixed; left:12px; bottom:calc(12px + env(safe-area-inset-bottom));
       display:inline-flex; align-items:center; gap:8px;
       padding:10px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.5);
-      background:rgba(0,0,0,.35); color:#fff; font-size:14px;
+      background:rgba(0,0,0,.40); color:#fff; font-size:14px;
       backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
       box-shadow:0 8px 24px rgba(0,0,0,.18);
       cursor:pointer; user-select:none;
       transition:opacity .25s ease, transform .25s ease, background .25s ease;
+      z-index: 20;
     }
-    .music:hover { transform:translateY(-1px); background:rgba(0,0,0,.45); }
+    .music:hover { transform:translateY(-1px); background:rgba(0,0,0,.5); }
     .music .dot { width:8px; height:8px; border-radius:999px; background:#ff4d4f; }
     .music.on .dot { background:#3bd16f; }
     .music .label { letter-spacing:.2px; }
+    .music.error { opacity:.75; cursor:not-allowed; border-style:dashed; }
+    .music.error .label::after { content:" (not found)"; font-weight:500; }
 
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce) { .bg, .invite, .hint { animation-duration: 0.01s; } }
@@ -120,11 +122,11 @@
 <body>
   <!-- Background -->
   <div class="bg" aria-hidden="true">
-    <img src="assets/bg.jpg?v=6" alt="">
+    <img src="assets/bg.jpg?v=9" alt="">
   </div>
 
   <!-- Invitation -->
-  <img id="invite" class="invite" src="assets/image.jpg?v=6" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/image.jpg?v=9" alt="Wedding invitation">
 
   <!-- Hint -->
   <div id="hint" class="hint" aria-hidden="true">Tap to zoom</div>
@@ -136,7 +138,7 @@
   </div>
 
   <!-- Background music -->
-  <audio id="bgm" src="assets/bgm.mp3?v=6" preload="auto" loop playsinline></audio>
+  <audio id="bgm" src="assets/bgm.mp3?v=9" preload="auto" loop playsinline></audio>
   <button id="music" class="music" aria-pressed="false" aria-label="Toggle music">
     <span class="dot" aria-hidden="true"></span>
     <span class="label">Music</span>
@@ -161,7 +163,6 @@
         lb.classList.add("visible");
         document.body.style.overflow="hidden";
         if (hint) hint.classList.add('hide');
-        // Count as a gesture in case autoplay was blocked
         maybeStartMusicOnFirstGesture();
       }
 
@@ -268,12 +269,12 @@
 
       // Try to autoplay on load if userPref = 'on'
       window.addEventListener("load", () => {
-        if (userPref === "on") startMusic(); // will set autoplayBlocked=true if blocked (iOS)
+        if (userPref === "on") startMusic(); // if blocked (iOS), will start on first tap
       });
 
       // Button is always a valid gesture
       musicBtn.addEventListener("click", () => {
-        // If autoplay blocked, this click is a gesture—attempt start before toggling state
+        if (musicBtn.classList.contains('error')) return; // disabled if missing file
         if (userPref === "on" && (autoplayBlocked || bgm.paused)) {
           startMusic().then(() => { autoplayBlocked = false; });
         } else {
@@ -284,8 +285,11 @@
       // Any first pointer interaction counts as gesture
       window.addEventListener("pointerdown", () => { maybeStartMusicOnFirstGesture(); }, { once:true, passive:true });
 
-      // If audio missing, hide toggle to avoid confusion
-      bgm.addEventListener("error", () => { musicBtn.style.display = "none"; }, { once:true });
+      // If audio missing, keep button visible but mark error
+      bgm.addEventListener("error", () => {
+        musicBtn.classList.add("error");
+        musicBtn.title = "Audio file not found: assets/bgm.mp3";
+      }, { once:true });
     })();
   </script>
 </body>
