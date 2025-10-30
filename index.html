@@ -19,7 +19,7 @@
   <meta property="og:title" content="Luna Wedding — June 5, 2026" />
   <meta property="og:description" content="Luna Wedding — RSVP • June 5, 2026" />
   <meta property="og:url" content="https://luna.wedding/" />
-  <meta property="og:image" content="https://luna.wedding/assets/og.jpg?v=28" />
+  <meta property="og:image" content="https://luna.wedding/assets/og.jpg?v=29" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -29,7 +29,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 5, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 5, 2026" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/og.jpg?v=28" />
+  <meta name="twitter:image" content="https://luna.wedding/assets/og.jpg?v=29" />
 
   <!-- Favicon (inline SVG monogram) -->
   <link rel="icon" type="image/svg+xml"
@@ -47,9 +47,9 @@
     </svg>' />
 
   <!-- Performance: preload hero assets -->
-  <link rel="preload" as="image" href="assets/bg.jpg?v=28" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/image.jpg?v=28">
-  <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=28" />
+  <link rel="preload" as="image" href="assets/bg.jpg?v=29" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/image.jpg?v=29">
+  <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=29" />
 
   <style>
     :root { --fallback:#000; --hint-bg: rgba(255,255,255,.92); --hint-fg:#111; }
@@ -136,9 +136,11 @@
       appearance:none; border:1px solid rgba(255,255,255,.6); color:#fff; background:rgba(0,0,0,.45);
       padding:10px 14px; border-radius:999px; font-size:14px; backdrop-filter:blur(6px);
       -webkit-backdrop-filter:blur(6px); box-shadow:0 8px 24px rgba(0,0,0,.18); cursor:pointer;
-      flex:0 0 auto; white-space:nowrap;
+      flex:0 0 auto; white-space:nowrap; text-decoration:none; /* remove underline */
     }
-    .btn:hover{ background:rgba(0,0,0,.56); transform:translateY(-1px) }
+    .btn:hover,
+    .btn:focus,
+    .btn:active{ text-decoration:none; }
 
     /* Music toggle */
     .music{
@@ -165,11 +167,11 @@
 <body>
   <!-- Background -->
   <div class="bg" aria-hidden="true">
-    <img src="assets/bg.jpg?v=28" alt="">
+    <img src="assets/bg.jpg?v=29" alt="">
   </div>
 
   <!-- Invitation -->
-  <img id="invite" class="invite" src="assets/image.jpg?v=28" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/image.jpg?v=29" alt="Wedding invitation">
 
   <!-- Hint -->
   <div id="hint" class="hint" aria-hidden="true">Tap to zoom</div>
@@ -182,14 +184,14 @@
 
   <!-- Horizontal Actions: show only when lightbox is visible -->
   <div id="actions" class="actions" aria-hidden="true">
-    <button id="icsBtn" class="btn" aria-label="Add to Apple Calendar">Add to Apple Calendar</button>
-    <button id="gcalBtn" class="btn" aria-label="Add to Google Calendar">Add to Google Calendar</button>
+    <button id="icsBtn" class="btn" aria-label="Apple Calendar">Apple Calendar</button>
+    <button id="gcalBtn" class="btn" aria-label="Google Calendar">Google Calendar</button>
     <a id="rsvpBtn" class="btn" aria-label="Email RSVP"
        href="mailto:rsvp@luna.wedding?subject=RSVP%3A%20Luna%20Wedding&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AWe%27re%20delighted%20to%20RSVP%20for%20June%205%2C%202026.%0A%0ANames%3A%20%0ANumber%20of%20Guests%3A%20%0ADietary%20notes%3A%20%0A%0AWith%20love%2C%0A"
        rel="noopener">Email RSVP</a>
-    <a id="askBtn" class="btn" aria-label="Email the Couple"
-       href="mailto:hello@luna.wedding?subject=Question%20about%20Luna%20Wedding%20%E2%80%94%20June%205%2C%202026&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AMy%20name%3A%0APhone%20(optional)%3A%0A%0ATopic%3A%20RSVP%20%2F%20Dietary%20%2F%20Accessibility%20%2F%20Logistics%20%2F%20Other%0A%0AMy%20question%3A%0A%0AThanks!%0A%E2%80%94%20"
-       rel="noopener">Email the Couple</a>
+    <a id="askBtn" class="btn" aria-label="Contact the Couple"
+       href="mailto:hello@luna.wedding?subject=Question%20about%20Luna%20Wedding%20%E2%80%94%20June%205%2C%202026&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AMy%20name%3A%0APhone%20(optional)%3A%0A%0AMy%20question%3A%0A%0AThanks!%0A%E2%80%94%20"
+       rel="noopener">Contact the Couple</a>
   </div>
 
   <!-- Music toggle -->
@@ -306,7 +308,7 @@
       /* ---------- Audio: robust iPad handling + 1s fade-in ---------- */
       let bgm = null, started = false, fadedIn = false;
       const TARGET_VOL = 0.35;
-      const SRC = 'assets/bgm_small.mp3?v=28';
+      const SRC = 'assets/bgm_small.mp3?v=29';
 
       function createAudio(){
         if (bgm) return bgm;
