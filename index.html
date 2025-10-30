@@ -29,24 +29,37 @@
       overflow-x: hidden;
     }
 
-    /* Background layer */
+    /* Fade-in animation */
+    @keyframes fadeInBg {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    /* Background layer with fade-in */
     .bg {
       position: fixed;
       inset: 0;
       z-index: -2;
       overflow: hidden;
+      background: url('IMG_0035.jpeg?v=3') center/cover no-repeat, #0b0b0b;
+      opacity: 0;
+      animation: fadeInBg 1.8s ease-out forwards;
     }
+
     .bg img {
       position: absolute;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%) scale(1.08);
       width: 120%;
       height: auto;
       min-height: 100%;
       filter: blur(18px) brightness(0.82);
       will-change: transform;
+      opacity: 0;
+      animation: fadeInBg 1.8s ease-out forwards;
+      animation-delay: 0.15s;
     }
+
     .bg::after {
       content: "";
       position: absolute;
@@ -62,9 +75,9 @@
     .wrap {
       width: min(92vw, var(--max-width));
       padding: 4vh 0 6vh;
-      display: grid;
-      place-items: center;
+      display: grid; place-items: center;
     }
+
     .polaroid {
       background: var(--polaroid-bg);
       box-shadow: var(--shadow);
@@ -78,10 +91,12 @@
       background-size: 6px 6px, 10px 10px;
       background-position: 0 0, 3px 3px;
     }
+
     .polaroid:hover {
       transform: rotate(0deg) translateY(-2px);
       box-shadow: 0 24px 48px rgba(0,0,0,0.16);
     }
+
     .polaroid button {
       appearance: none;
       padding: 0;
@@ -91,56 +106,48 @@
       cursor: zoom-in;
       border-radius: 6px;
     }
+
     .polaroid img {
       display: block;
       max-width: 100%;
       height: auto;
       border-radius: 6px;
+      opacity: 0;
+      animation: fadeInBg 1.2s ease-out forwards;
+      animation-delay: 0.4s;
     }
 
     /* Lightbox */
     .lightbox {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      z-index: 999;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+      display: none; align-items: center; justify-content: center;
+      padding: 2rem; z-index: 999;
     }
     .lightbox[aria-hidden="false"] { display: flex; }
+
     .lightbox img {
-      max-width: 92vw;
-      max-height: 88vh;
-      width: auto;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      max-width: 92vw; max-height: 88vh; width: auto; height: auto;
+      border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
+
     .lightbox button.close {
       position: fixed;
       top: calc(1rem + env(safe-area-inset-top));
       right: calc(1rem + env(safe-area-inset-right));
-      background: rgba(255,255,255,0.9);
-      border: 0;
-      border-radius: 999px;
-      width: 44px;
-      height: 44px;
-      display: grid;
-      place-items: center;
-      font-size: 24px;
-      line-height: 1;
-      cursor: pointer;
+      background: rgba(255,255,255,0.9); border: 0; border-radius: 999px;
+      width: 44px; height: 44px; display: grid; place-items: center;
+      font-size: 24px; line-height: 1; cursor: pointer;
     }
+
     @media (prefers-reduced-motion: reduce) {
       .polaroid, .polaroid:hover { transition: none; transform: none; }
+      .bg, .bg img { animation: none; opacity: 1; }
     }
   </style>
 </head>
 <body>
   <div class="bg" aria-hidden="true">
-    <img src="assets/bg.jpg" alt="">
+    <img src="IMG_0035.jpeg?v=3" alt="">
   </div>
 
   <main class="wrap">
@@ -166,11 +173,12 @@
         lb.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
       }
-      function close() {
+      function close(){
         lb.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
         openBtn.focus({preventScroll:true});
       }
+
       openBtn.addEventListener('click', open);
       closeBtn.addEventListener('click', close);
       lb.addEventListener('click', function(e){ if (e.target === lb) close(); });
