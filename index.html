@@ -6,7 +6,7 @@
   <title>Coming Soon</title>
   <style>
     :root {
-      --bg: #ffffff;
+      --bg: #0b0b0b;
       --polaroid-bg: #ffffff;
       --shadow: 0 20px 40px rgba(0,0,0,0.12);
       --frame: 14px;
@@ -27,7 +27,41 @@
       padding-left: env(safe-area-inset-left);
       padding-right: env(safe-area-inset-right);
       padding-bottom: env(safe-area-inset-bottom);
+      overflow-x: hidden;
     }
+
+    /* Background layer */
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      overflow: hidden;
+    }
+    .bg img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1.08);
+      width: 120%;
+      height: auto;
+      min-height: 100%;
+      filter: blur(18px) brightness(0.82);
+      /* iOS rendering hint */
+      will-change: transform;
+    }
+    /* Subtle vignette */
+    .bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: radial-gradient(ellipse at center,
+                  rgba(0,0,0,0.20) 0%,
+                  rgba(0,0,0,0.35) 60%,
+                  rgba(0,0,0,0.55) 100%);
+      pointer-events: none;
+    }
+
     .wrap {
       width: min(92vw, var(--max-width));
       padding: 4vh 0 6vh;
@@ -41,7 +75,7 @@
       padding: var(--frame) var(--frame) var(--frame-bottom);
       transform: rotate(-0.25deg);
       transition: transform .25s ease, box-shadow .25s ease;
-      /* Subtle film texture using layered gradients for zero network requests */
+      /* Subtle film texture using layered gradients (no extra files) */
       background-image:
         radial-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
         radial-gradient(rgba(0,0,0,0.015) 1px, transparent 1px);
@@ -67,6 +101,7 @@
       height: auto;
       border-radius: 6px;
     }
+
     /* Lightbox */
     .lightbox {
       position: fixed;
@@ -108,6 +143,10 @@
   </style>
 </head>
 <body>
+  <div class="bg" aria-hidden="true">
+    <img src="assets/bg.jpg" alt="">
+  </div>
+
   <main class="wrap">
     <figure class="polaroid">
       <button id="open" aria-label="Open image in full view">
