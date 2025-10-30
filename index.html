@@ -19,7 +19,7 @@
   <meta property="og:title" content="Luna Wedding — June 5, 2026" />
   <meta property="og:description" content="Luna Wedding — RSVP • June 5, 2026" />
   <meta property="og:url" content="https://luna.wedding/" />
-  <meta property="og:image" content="https://luna.wedding/assets/og.jpg?v=29" />
+  <meta property="og:image" content="https://luna.wedding/assets/og.jpg?v=30" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -29,7 +29,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 5, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 5, 2026" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/og.jpg?v=29" />
+  <meta name="twitter:image" content="https://luna.wedding/assets/og.jpg?v=30" />
 
   <!-- Favicon (inline SVG monogram) -->
   <link rel="icon" type="image/svg+xml"
@@ -47,9 +47,9 @@
     </svg>' />
 
   <!-- Performance: preload hero assets -->
-  <link rel="preload" as="image" href="assets/bg.jpg?v=29" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/image.jpg?v=29">
-  <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=29" />
+  <link rel="preload" as="image" href="assets/bg.jpg?v=30" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/image.jpg?v=30">
+  <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=30" />
 
   <style>
     :root { --fallback:#000; --hint-bg: rgba(255,255,255,.92); --hint-fg:#111; }
@@ -106,7 +106,7 @@
     }
     .lightbox.visible .close{ opacity:1; transform:scale(1) }
 
-    /* Horizontal action bar (only after zoom) */
+    /* Horizontal action bar */
     .actions{
       position:fixed;
       left:50%;
@@ -128,7 +128,10 @@
       transition:opacity .28s ease, transform .28s ease;
     }
     .actions::-webkit-scrollbar{ display:none; }
-    .lightbox.visible + .actions{
+
+    /* Show actions when lightbox is open or when menu toggled */
+    .lightbox.visible + .actions,
+    .actions.show{
       opacity:1; pointer-events:auto; transform:translateX(-50%) translateY(-4px);
     }
 
@@ -142,20 +145,23 @@
     .btn:focus,
     .btn:active{ text-decoration:none; }
 
-    /* Music toggle */
-    .music{
+    /* Dock for Music + Menu buttons (bottom-left) */
+    .dock{
       position:fixed; left:12px; bottom:calc(12px + env(safe-area-inset-bottom));
+      display:flex; align-items:center; gap:8px; z-index:20;
+    }
+    .pill{
       display:inline-flex; align-items:center; gap:8px; padding:10px 12px;
       border-radius:999px; border:1px solid rgba(255,255,255,.5);
       background:rgba(0,0,0,.40); color:#fff; font-size:14px;
       backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
       box-shadow:0 8px 24px rgba(0,0,0,.18); cursor:pointer; user-select:none;
-      transition:opacity .25s ease, transform .25s ease, background .25s ease; z-index:20;
+      transition:opacity .25s ease, transform .25s ease, background .25s ease;
     }
-    .music:hover{ transform:translateY(-1px); background:rgba(0,0,0,.5) }
-    .music .dot{ width:8px; height:8px; border-radius:999px; background:#ff4d4f }
-    .music.on .dot{ background:#3bd16f }
-    .music .label{ letter-spacing:.2px }
+    .pill:hover{ transform:translateY(-1px); background:rgba(0,0,0,.5) }
+    .pill .dot{ width:8px; height:8px; border-radius:999px; background:#ff4d4f }
+    .pill.on .dot{ background:#3bd16f }
+    .pill .label{ letter-spacing:.2px }
 
     /* Phones: wrap into two rows (2x2) instead of hidden scroll */
     @media (max-width: 430px){
@@ -185,11 +191,11 @@
 <body>
   <!-- Background -->
   <div class="bg" aria-hidden="true">
-    <img src="assets/bg.jpg?v=29" alt="">
+    <img src="assets/bg.jpg?v=30" alt="">
   </div>
 
   <!-- Invitation -->
-  <img id="invite" class="invite" src="assets/image.jpg?v=29" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/image.jpg?v=30" alt="Wedding invitation">
 
   <!-- Hint -->
   <div id="hint" class="hint" aria-hidden="true">Tap to zoom</div>
@@ -200,22 +206,27 @@
     <button class="close" aria-label="Close">×</button>
   </div>
 
-  <!-- Actions (appear only when lightbox is visible) -->
+  <!-- Actions (can appear after zoom OR via Menu) -->
   <div id="actions" class="actions" aria-hidden="true">
-    <a id="rsvpBtn" class="btn" aria-label="RSVP"
-       href="mailto:rsvp@luna.wedding?subject=RSVP%3A%20Luna%20Wedding&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AWe%27re%20delighted%20to%20RSVP%20for%20June%205%2C%202026.%0A%0ANames%3A%20%0ANumber%20of%20Guests%3A%20%0ADietary%20notes%3A%20%0A%0AWith%20love%2C%0A"
-       rel="noopener">RSVP</a>
     <button id="icsBtn" class="btn" aria-label="Apple Calendar">Apple Calendar</button>
     <button id="gcalBtn" class="btn" aria-label="Google Calendar">Google Calendar</button>
+    <a id="rsvpBtn" class="btn" aria-label="Email RSVP"
+       href="mailto:rsvp@luna.wedding?subject=RSVP%3A%20Luna%20Wedding&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AWe%27re%20delighted%20to%20RSVP%20for%20June%205%2C%202026.%0A%0ANames%3A%20%0ANumber%20of%20Guests%3A%20%0ADietary%20notes%3A%20%0A%0AWith%20love%2C%0A"
+       rel="noopener">Email RSVP</a>
     <a id="askBtn" class="btn" aria-label="Contact the Couple"
        href="mailto:hello@luna.wedding?subject=Question%20about%20Luna%20Wedding%20%E2%80%94%20June%205%2C%202026&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AMy%20name%3A%0APhone%20(optional)%3A%0A%0AMy%20question%3A%0A%0AThanks!%0A%E2%80%94%20"
        rel="noopener">Contact the Couple</a>
   </div>
 
-  <!-- Music toggle -->
-  <button id="music" class="music" aria-pressed="false" aria-label="Toggle music">
-    <span class="dot" aria-hidden="true"></span><span class="label">Music</span>
-  </button>
+  <!-- Dock: Music + Menu -->
+  <div class="dock">
+    <button id="music" class="pill" aria-pressed="false" aria-label="Toggle music">
+      <span class="dot" aria-hidden="true"></span><span class="label">Music</span>
+    </button>
+    <button id="menuBtn" class="pill" aria-pressed="false" aria-label="Toggle menu">
+      <span class="label">Menu</span>
+    </button>
+  </div>
 
   <noscript><style>.hint{display:none}</style></noscript>
 
@@ -230,21 +241,40 @@
       const icsBtn = document.getElementById('icsBtn');
       const gcalBtn = document.getElementById('gcalBtn');
       const musicBtn = document.getElementById('music');
+      const menuBtn = document.getElementById('menuBtn');
+
+      /* ---------- Helpers for actions visibility ---------- */
+      function showActions(){
+        actionsWrap.classList.add('show');
+        actionsWrap.setAttribute('aria-hidden','false');
+        menuBtn.setAttribute('aria-pressed','true');
+        menuBtn.classList.add('on');
+      }
+      function hideActions(){
+        actionsWrap.classList.remove('show');
+        actionsWrap.setAttribute('aria-hidden','true');
+        menuBtn.setAttribute('aria-pressed','false');
+        menuBtn.classList.remove('on');
+      }
+      function toggleActions(e){
+        e?.stopPropagation();
+        if (actionsWrap.classList.contains('show')) hideActions(); else showActions();
+      }
 
       /* ---------- Lightbox ---------- */
       function openLB(){
+        // Hide menu actions when zooming to keep UI clean
+        hideActions();
         lbimg.src = invite.src;
         lb.classList.add('visible');
         document.body.style.overflow = 'hidden';
         if (hint) hint.classList.add('hide');
-        actionsWrap.setAttribute('aria-hidden','false');
         unlockAudio(); // gesture counts on iOS/iPadOS
       }
       function closeLB(){
         lb.classList.add('closing');
         setTimeout(()=>{ lb.classList.remove('visible');
           setTimeout(()=>{ lb.classList.remove('closing'); document.body.style.overflow=''; }, 300);
-          actionsWrap.setAttribute('aria-hidden','true');
         },120);
       }
       invite.addEventListener('click', openLB, {passive:true});
@@ -255,6 +285,18 @@
       lb.addEventListener('click', e=>{ if(e.target===lb) closeLB(); });
       closeBtn.addEventListener('click', closeLB);
       document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeLB(); });
+
+      /* ---------- Click-away to close menu actions ---------- */
+      document.addEventListener('click', (e)=>{
+        const withinMenu = e.target.closest('#menuBtn');
+        const withinActions = e.target.closest('#actions');
+        const withinLB = e.target.closest('#lightbox');
+        if (!withinMenu && !withinActions && !withinLB){
+          hideActions();
+        }
+      });
+
+      menuBtn.addEventListener('click', toggleActions);
 
       /* ---------- Calendar ---------- */
       const title   = 'Luna Wedding';
@@ -326,7 +368,7 @@
       /* ---------- Audio: robust iPad handling + 1s fade-in ---------- */
       let bgm = null, started = false, fadedIn = false;
       const TARGET_VOL = 0.35;
-      const SRC = 'assets/bgm_small.mp3?v=29';
+      const SRC = 'assets/bgm_small.mp3?v=30';
 
       function createAudio(){
         if (bgm) return bgm;
@@ -388,17 +430,17 @@
 
       /* ---------- Music toggle ---------- */
       let pref = localStorage.getItem('music') || 'on';
-      function setBtn(state){
+      function setMusicBtn(state){
         musicBtn.classList.toggle('on', state === 'on');
         musicBtn.setAttribute('aria-pressed', state === 'on' ? 'true' : 'false');
       }
-      setBtn(pref);
+      setMusicBtn(pref);
 
       musicBtn.addEventListener('click', ()=>{
         createAudio();
         pref = (pref === 'on') ? 'off' : 'on';
         localStorage.setItem('music', pref);
-        setBtn(pref);
+        setMusicBtn(pref);
         if (pref === 'on'){
           bgm.muted = false;
           if (bgm.paused) bgm.play().catch(()=>{});
