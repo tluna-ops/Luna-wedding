@@ -37,9 +37,7 @@
       from {opacity:0; transform:translate(-50%,-46%)}
       to   {opacity:1; transform:translate(-50%,-40%)}
     }
-    @keyframes hintOut {
-      to   {opacity:0; transform:translate(-50%,-36%) }
-    }
+    @keyframes hintOut { to {opacity:0; transform:translate(-50%,-36%) } }
 
     /* Background */
     .bg {
@@ -73,20 +71,21 @@
     }
     .hint.hide { animation:hintOut .35s ease forwards; }
 
-    /* Lightbox — fade + scale + blur */
+    /* Lightbox — fade + scale + iOS backdrop blur */
     .lightbox {
       position:fixed; inset:0;
       background:rgba(0,0,0,0.6);
       display:flex; align-items:center; justify-content:center;
       opacity:0; pointer-events:none; z-index:10;
-      transition:opacity 280ms ease;
+      transition:opacity 280ms ease, background-color 180ms ease;
 
-      /* iOS-style backdrop blur */
       -webkit-backdrop-filter: blur(8px) saturate(120%);
       backdrop-filter: blur(8px) saturate(120%);
     }
     .lightbox.visible { opacity:1; pointer-events:auto; }
 
+    /* Gentle closing polish: briefly deepen to black, then fade out */
+    .lightbox.closing { background:rgba(0,0,0,0.95); }
     .lightbox img {
       max-width:94vw; max-height:92vh; width:auto; height:auto;
       border-radius:14px; box-shadow:0 24px 64px rgba(0,0,0,.6);
@@ -95,6 +94,7 @@
       touch-action:pinch-zoom;
     }
     .lightbox.visible img { transform:scale(1); }
+    .lightbox.closing img { transform:scale(.98); }
 
     .close {
       position:fixed;
@@ -149,8 +149,17 @@
       }
 
       function closeLB(){
-        lb.classList.remove("visible");
-        document.body.style.overflow="";
+        // Briefly deepen to black, then fade out smoothly
+        lb.classList.add("closing");
+        // After the deepen moment, start the fade-out by removing 'visible'
+        setTimeout(() => {
+          lb.classList.remove("visible");
+          // After opacity transition ends, clean up and re-enable scroll
+          setTimeout(() => {
+            lb.classList.remove("closing");
+            document.body.style.overflow="";
+          }, 300); // match opacity transition (280ms) + small buffer
+        }, 120);   // deepen for 120ms before fading
       }
 
       invite.addEventListener("click", openLB, { passive:true });
