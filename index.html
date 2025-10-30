@@ -10,15 +10,16 @@
   <meta property="og:description" content="Luna Wedding — RSVP • June 5, 2026" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://luna.wedding" />
-  <meta property="og:image" content="/assets/og.jpg?v=4" />
+  <meta property="og:image" content="/assets/og.jpg?v=6" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 5, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 5, 2026" />
-  <meta name="twitter:image" content="/assets/og.jpg?v=4" />
+  <meta name="twitter:image" content="/assets/og.jpg?v=6" />
 
   <!-- Performance -->
-  <link rel="preload" as="image" href="assets/bg.jpg?v=4" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/image.jpg?v=4">
+  <link rel="preload" as="image" href="assets/bg.jpg?v=6" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/image.jpg?v=6">
+  <link rel="preload" as="audio" href="assets/bgm.mp3?v=6">
 
   <style>
     :root { --fallback:#000; --hint-bg: rgba(255,255,255,.92); --hint-fg:#111; }
@@ -40,14 +41,8 @@
     @keyframes hintOut { to {opacity:0; transform:translate(-50%,-36%) } }
 
     /* Background */
-    .bg {
-      position:fixed; inset:0; opacity:0;
-      animation:fadeBg 900ms ease-out .05s forwards;
-    }
-    .bg img {
-      width:100vw; height:100vh; object-fit:cover; object-position:center;
-      user-select:none; -webkit-user-drag:none;
-    }
+    .bg { position:fixed; inset:0; opacity:0; animation:fadeBg 900ms ease-out .05s forwards; }
+    .bg img { width:100vw; height:100vh; object-fit:cover; object-position:center; user-select:none; -webkit-user-drag:none; }
 
     /* Invitation (center) */
     .invite {
@@ -66,8 +61,7 @@
       padding:8px 12px; border-radius:999px;
       background:var(--hint-bg); color:var(--hint-fg);
       font-size:13px; box-shadow:0 8px 24px rgba(0,0,0,.18);
-      opacity:0; animation:hintIn .5s ease .8s forwards;
-      pointer-events:none;
+      opacity:0; animation:hintIn .5s ease .8s forwards; pointer-events:none;
     }
     .hint.hide { animation:hintOut .35s ease forwards; }
 
@@ -78,13 +72,10 @@
       display:flex; align-items:center; justify-content:center;
       opacity:0; pointer-events:none; z-index:10;
       transition:opacity 280ms ease, background-color 180ms ease;
-
       -webkit-backdrop-filter: blur(8px) saturate(120%);
       backdrop-filter: blur(8px) saturate(120%);
     }
     .lightbox.visible { opacity:1; pointer-events:auto; }
-
-    /* Gentle closing polish: briefly deepen to black, then fade out */
     .lightbox.closing { background:rgba(0,0,0,0.95); }
     .lightbox img {
       max-width:94vw; max-height:92vh; width:auto; height:auto;
@@ -97,8 +88,7 @@
     .lightbox.closing img { transform:scale(.98); }
 
     .close {
-      position:fixed;
-      top:calc(12px + env(safe-area-inset-top));
+      position:fixed; top:calc(12px + env(safe-area-inset-top));
       right:calc(12px + env(safe-area-inset-right));
       width:44px; height:44px; border:0; border-radius:999px;
       background:#fff; color:#000; font-size:22px; line-height:1; cursor:pointer;
@@ -107,20 +97,34 @@
     }
     .lightbox.visible .close { opacity:1; transform:scale(1); }
 
-    /* Reduced motion */
-    @media (prefers-reduced-motion: reduce) {
-      .bg, .invite, .hint { animation-duration: 0.01s; }
+    /* Music toggle */
+    .music {
+      position:fixed; left:12px; bottom:calc(12px + env(safe-area-inset-bottom));
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.5);
+      background:rgba(0,0,0,.35); color:#fff; font-size:14px;
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      box-shadow:0 8px 24px rgba(0,0,0,.18);
+      cursor:pointer; user-select:none;
+      transition:opacity .25s ease, transform .25s ease, background .25s ease;
     }
+    .music:hover { transform:translateY(-1px); background:rgba(0,0,0,.45); }
+    .music .dot { width:8px; height:8px; border-radius:999px; background:#ff4d4f; }
+    .music.on .dot { background:#3bd16f; }
+    .music .label { letter-spacing:.2px; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) { .bg, .invite, .hint { animation-duration: 0.01s; } }
   </style>
 </head>
 <body>
   <!-- Background -->
   <div class="bg" aria-hidden="true">
-    <img src="assets/bg.jpg?v=4" alt="">
+    <img src="assets/bg.jpg?v=6" alt="">
   </div>
 
   <!-- Invitation -->
-  <img id="invite" class="invite" src="assets/image.jpg?v=4" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/image.jpg?v=6" alt="Wedding invitation">
 
   <!-- Hint -->
   <div id="hint" class="hint" aria-hidden="true">Tap to zoom</div>
@@ -131,35 +135,45 @@
     <button class="close" aria-label="Close">×</button>
   </div>
 
+  <!-- Background music -->
+  <audio id="bgm" src="assets/bgm.mp3?v=6" preload="auto" loop playsinline></audio>
+  <button id="music" class="music" aria-pressed="false" aria-label="Toggle music">
+    <span class="dot" aria-hidden="true"></span>
+    <span class="label">Music</span>
+  </button>
+
   <noscript><style>.hint{display:none}</style></noscript>
 
   <script>
     (function(){
+      // Elements
       const invite = document.getElementById("invite");
       const hint = document.getElementById("hint");
       const lb = document.getElementById("lightbox");
       const lbimg = document.getElementById("lbimg");
       const closeBtn = lb.querySelector(".close");
+      const musicBtn = document.getElementById("music");
+      const bgm = document.getElementById("bgm");
 
+      // ===== Lightbox actions =====
       function openLB() {
         lbimg.src = invite.src;
         lb.classList.add("visible");
         document.body.style.overflow="hidden";
         if (hint) hint.classList.add('hide');
+        // Count as a gesture in case autoplay was blocked
+        maybeStartMusicOnFirstGesture();
       }
 
       function closeLB(){
-        // Briefly deepen to black, then fade out smoothly
         lb.classList.add("closing");
-        // After the deepen moment, start the fade-out by removing 'visible'
         setTimeout(() => {
           lb.classList.remove("visible");
-          // After opacity transition ends, clean up and re-enable scroll
           setTimeout(() => {
             lb.classList.remove("closing");
             document.body.style.overflow="";
-          }, 300); // match opacity transition (280ms) + small buffer
-        }, 120);   // deepen for 120ms before fading
+          }, 300);
+        }, 120);
       }
 
       invite.addEventListener("click", openLB, { passive:true });
@@ -191,6 +205,87 @@
 
       // Auto-hide hint
       setTimeout(() => { if (hint) hint.classList.add('hide'); }, 2500);
+
+      // ===== Music controls (autoplay attempt + gesture fallback + fade) =====
+      let userPref = localStorage.getItem("music") || "on"; // default 'on'
+      let autoplayBlocked = false;
+      let fading = null;
+
+      function setBtn(state) {
+        musicBtn.classList.toggle("on", state === "on");
+        musicBtn.setAttribute("aria-pressed", state === "on" ? "true" : "false");
+      }
+      setBtn(userPref);
+
+      function fadeTo(targetVol = 1, ms = 1200) {
+        if (!bgm) return;
+        if (fading) cancelAnimationFrame(fading.rid);
+        const start = performance.now();
+        const startVol = bgm.volume;
+        const clamp = v => Math.max(0, Math.min(1, v));
+        function step(now) {
+          const t = Math.min(1, (now - start) / ms);
+          bgm.volume = clamp(startVol + (targetVol - startVol) * t);
+          if (t < 1) {
+            fading = { rid: requestAnimationFrame(step) };
+          } else {
+            fading = null;
+            if (bgm.volume === 0) bgm.pause();
+          }
+        }
+        requestAnimationFrame(step);
+      }
+
+      function startMusic() {
+        if (!bgm) return Promise.resolve();
+        try {
+          bgm.volume = 0;
+          const p = bgm.play();
+          if (p && typeof p.then === "function") {
+            return p.then(() => fadeTo(1, 1200)).catch(() => { autoplayBlocked = true; });
+          } else {
+            fadeTo(1, 1200);
+            return Promise.resolve();
+          }
+        } catch(e) { autoplayBlocked = true; return Promise.resolve(); }
+      }
+
+      function stopMusic() { fadeTo(0, 800); }
+
+      function toggleMusic() {
+        userPref = (userPref === "on") ? "off" : "on";
+        localStorage.setItem("music", userPref);
+        setBtn(userPref);
+        if (userPref === "on") startMusic();
+        else stopMusic();
+      }
+
+      function maybeStartMusicOnFirstGesture() {
+        if (userPref === "on" && (autoplayBlocked || bgm.paused)) {
+          startMusic();
+        }
+      }
+
+      // Try to autoplay on load if userPref = 'on'
+      window.addEventListener("load", () => {
+        if (userPref === "on") startMusic(); // will set autoplayBlocked=true if blocked (iOS)
+      });
+
+      // Button is always a valid gesture
+      musicBtn.addEventListener("click", () => {
+        // If autoplay blocked, this click is a gesture—attempt start before toggling state
+        if (userPref === "on" && (autoplayBlocked || bgm.paused)) {
+          startMusic().then(() => { autoplayBlocked = false; });
+        } else {
+          toggleMusic();
+        }
+      }, { passive:true });
+
+      // Any first pointer interaction counts as gesture
+      window.addEventListener("pointerdown", () => { maybeStartMusicOnFirstGesture(); }, { once:true, passive:true });
+
+      // If audio missing, hide toggle to avoid confusion
+      bgm.addEventListener("error", () => { musicBtn.style.display = "none"; }, { once:true });
     })();
   </script>
 </body>
