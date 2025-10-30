@@ -10,62 +10,30 @@
   <meta property="og:description" content="Luna Wedding — June 5 2026" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://luna.wedding" />
-  <meta property="og:image" content="https://luna.wedding/assets/og.jpg?v=1" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+  <meta property="og:image" content="/assets/og.jpg?v=2" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 5, 2026" />
   <meta name="twitter:description" content="Tobias & Michelle — Save the Date • June 5, 2026 • New York City" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/og.jpg?v=1" />
-
-  <!-- Preload Background -->
-  <link rel="preload" as="image"
-    href="assets/bg.webp?v=1"
-    imagesrcset="
-      assets/bg-1280.webp?v=1 1280w,
-      assets/bg-1920.webp?v=1 1920w,
-      assets/bg.webp?v=1 2560w
-    " />
+  <meta name="twitter:image" content="/assets/og.jpg?v=2" />
 
   <style>
     :root { --fallback:#000; }
-    html, body {
-      height: 100%;
-      margin: 0;
-      background: var(--fallback);
-      overflow: hidden;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    html,body { height:100%; margin:0; background:var(--fallback); overflow:hidden; }
+    @keyframes fadeIn { from {opacity:0} to {opacity:1} }
     .bg {
-      position: fixed;
-      inset: 0;
-      opacity: 0;
-      animation: fadeIn 1.2s ease-out .05s forwards;
+      position:fixed; inset:0; opacity:0;
+      animation:fadeIn 1.0s ease-out .05s forwards;
     }
-    .bg picture, .bg img {
-      position: absolute;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      object-position: center;
+    .bg img {
+      position:absolute; inset:0;
+      width:100vw; height:100vh;
+      object-fit:cover; object-position:center;
     }
   </style>
 </head>
-
 <body>
   <div class="bg" aria-hidden="true">
-    <picture>
-      <source srcset="
-        assets/bg-1280.webp?v=1 1280w,
-        assets/bg-1920.webp?v=1 1920w,
-        assets/bg.webp?v=1 2560w
-      " type="image/webp" />
-      <img src="assets/bg.jpg?v=1" alt="" />
-    </picture>
+    <img src="/assets/bg.jpg?v=2" alt="">
   </div>
 </body>
 </html>
