@@ -10,11 +10,11 @@
   <meta property="og:description" content="Luna Wedding — RSVP • June 5, 2026" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://luna.wedding" />
-  <meta property="og:image" content="/assets/og.jpg?v=21" />
+  <meta property="og:image" content="/assets/og.jpg?v=22" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 5, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 5, 2026" />
-  <meta name="twitter:image" content="/assets/og.jpg?v=21" />
+  <meta name="twitter:image" content="/assets/og.jpg?v=22" />
 
   <!-- Inline temp monogram favicon (script-style) -->
   <link rel="icon" type="image/svg+xml"
@@ -32,8 +32,8 @@
     </svg>' />
 
   <!-- Performance -->
-  <link rel="preload" as="image" href="assets/bg.jpg?v=21" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/image.jpg?v=21">
+  <link rel="preload" as="image" href="assets/bg.jpg?v=22" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/image.jpg?v=22">
 
   <style>
     :root { --fallback:#000; --hint-bg: rgba(255,255,255,.92); --hint-fg:#111; }
@@ -126,11 +126,11 @@
 <body>
   <!-- Background -->
   <div class="bg" aria-hidden="true">
-    <img src="assets/bg.jpg?v=21" alt="">
+    <img src="assets/bg.jpg?v=22" alt="">
   </div>
 
   <!-- Invitation -->
-  <img id="invite" class="invite" src="assets/image.jpg?v=21" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/image.jpg?v=22" alt="Wedding invitation">
 
   <!-- Hint -->
   <div id="hint" class="hint" aria-hidden="true">Tap to zoom</div>
@@ -145,7 +145,7 @@
   <div id="actions" class="actions" aria-hidden="true">
     <button id="icsBtn" class="btn" aria-label="Add to Apple/Outlook Calendar">Save the Date (Apple/Outlook)</button>
     <button id="gcalBtn" class="btn" aria-label="Add to Google Calendar">Save to Google</button>
-<a id="rsvpBtn" class="btn" aria-label="Email RSVP" href="mailto:rsvp@luna.wedding?subject=RSVP%3A%20Luna%20Wedding&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AWe%27re%20delighted%20to%20RSVP%20for%20June%205%2C%202026.%0A%0ANames%3A%20%0ANumber%20of%20Guests%3A%20%0ADietary%20notes%3A%20%0A%0AWith%20love%2C%0A" rel="noopener">Email RSVP</a>
+    <a id="rsvpBtn" class="btn" aria-label="Email RSVP" href="mailto:rsvp@luna.wedding?subject=RSVP%3A%20Luna%20Wedding&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AWe%27re%20delighted%20to%20RSVP%20for%20June%205%2C%202026.%0A%0ANames%3A%20%0ANumber%20of%20Guests%3A%20%0ADietary%20notes%3A%20%0A%0AWith%20love%2C%0A" rel="noopener">Email RSVP</a>
   </div>
 
   <!-- Music button -->
@@ -197,26 +197,46 @@
       const desc    = 'Dress Code: Formal Attire';
       const venue   = 'Carne Mare – Seaport';
       const address = '89 South St, New York, NY 10038';
+      const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Carne%20Mare%20%E2%80%93%20Seaport%2C%2089%20South%20St%2C%20New%20York%2C%20NY%2010038';
+
+      // June 5, 2026 — 7:00 PM to 10:00 PM America/New_York
+      // Use UTC in ICS for universal compatibility (23:00Z to 02:00Z)
       const dtStartUTC = '20260605T230000Z'; // 7:00 PM ET
       const dtEndUTC   = '20260606T020000Z'; // 10:00 PM ET
 
+      function fold(line){
+        // Soft-wrap ICS lines at 74 chars with CRLF + space continuation (RFC 5545)
+        const CRLF = '\r\n';
+        if (line.length <= 74) return line;
+        let out = '';
+        while (line.length > 74){
+          out += line.slice(0,74) + CRLF + ' ';
+          line = line.slice(74);
+        }
+        return out + line;
+      }
+
       function downloadICS(){
-        const ics =
-`BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//luna.wedding//SaveTheDate//EN
-CALSCALE:GREGORIAN
-METHOD:PUBLISH
-BEGIN:VEVENT
-UID:${crypto.randomUUID()}@luna.wedding
-DTSTAMP:${new Date().toISOString().replace(/[-:]/g,'').split('.')[0]}Z
-DTSTART:${dtStartUTC}
-DTEND:${dtEndUTC}
-SUMMARY:${title}
-DESCRIPTION:${desc}
-LOCATION:${venue}, ${address}
-END:VEVENT
-END:VCALENDAR`;
+        const CRLF = '\r\n';
+        const lines = [
+          'BEGIN:VCALENDAR',
+          'VERSION:2.0',
+          'PRODID:-//luna.wedding//SaveTheDate//EN',
+          'CALSCALE:GREGORIAN',
+          'METHOD:PUBLISH',
+          'BEGIN:VEVENT',
+          `UID:${crypto.randomUUID()}@luna.wedding`,
+          `DTSTAMP:${new Date().toISOString().replace(/[-:]/g,'').split('.')[0]}Z`,
+          `DTSTART:${dtStartUTC}`,
+          `DTEND:${dtEndUTC}`,
+          fold(`SUMMARY:${title}`),
+          fold(`DESCRIPTION:${desc}\\nMap: ${mapsUrl}`),
+          fold(`LOCATION:${venue}, ${address}`),
+          fold(`URL:${mapsUrl}`),
+          'END:VEVENT',
+          'END:VCALENDAR'
+        ];
+        const ics = lines.join(CRLF) + CRLF;
         const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -225,20 +245,22 @@ END:VCALENDAR`;
         a.click(); a.remove();
         setTimeout(()=>URL.revokeObjectURL(url), 3000);
       }
+
       function openGCal(){
-        const details = encodeURIComponent(desc);
+        const details = encodeURIComponent(`${desc}\nMap: ${mapsUrl}`);
         const text = encodeURIComponent(title);
         const location = encodeURIComponent(`${venue}, ${address}`);
         const href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${dtStartUTC}/${dtEndUTC}&details=${details}&location=${location}&sf=true&output=xml`;
         window.open(href, '_blank', 'noopener,noreferrer');
       }
+
       icsBtn.addEventListener('click', downloadICS);
       gcalBtn.addEventListener('click', openGCal);
 
       /* ---------- Audio: robust iPad handling + 1s fade-in ---------- */
       let bgm = null, started = false, fadedIn = false;
       const TARGET_VOL = 0.35;
-      const SRC = 'assets/bgm_small.mp3?v=21'; // cache-bust
+      const SRC = 'assets/bgm_small.mp3?v=22'; // cache-bust
 
       function createAudio(){
         if (bgm) return bgm;
@@ -267,12 +289,10 @@ END:VCALENDAR`;
       async function tryAutoPlayNow(){
         createAudio();
         try {
-          // Best case: allowed to start with sound on load
           bgm.muted = false;
           await bgm.play();
           if (bgm.volume === 0) fadeTo(TARGET_VOL, 1000);
         } catch {
-          // Fallback: start muted; wait for a user gesture
           bgm.muted = true;
           bgm.play().catch(()=>{});
         }
@@ -285,7 +305,6 @@ END:VCALENDAR`;
           if (bgm.paused) await bgm.play();
           if (!fadedIn) { bgm.volume = 0; fadeTo(TARGET_VOL, 1000); }
         } catch {
-          // Some iPads need a quick second attempt after the first gesture
           setTimeout(async ()=>{
             try {
               bgm.muted = false;
@@ -296,10 +315,7 @@ END:VCALENDAR`;
         }
       }
 
-      // Try immediate autoplay on load (works on some devices/browsers)
       window.addEventListener('load', tryAutoPlayNow);
-
-      // Count *any* sensible gesture as consent on iPad
       ['pointerdown','click','touchend','keydown'].forEach(evt=>{
         window.addEventListener(evt, unlockAudio, { once:true, passive:true });
       });
