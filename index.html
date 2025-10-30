@@ -10,11 +10,11 @@
   <meta property="og:description" content="Luna Wedding — RSVP • June 5, 2026" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://luna.wedding" />
-  <meta property="og:image" content="/assets/og.jpg?v=22" />
+  <meta property="og:image" content="/assets/og.jpg?v=23" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 5, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 5, 2026" />
-  <meta name="twitter:image" content="/assets/og.jpg?v=22" />
+  <meta name="twitter:image" content="/assets/og.jpg?v=23" />
 
   <!-- Inline temp monogram favicon (script-style) -->
   <link rel="icon" type="image/svg+xml"
@@ -32,8 +32,8 @@
     </svg>' />
 
   <!-- Performance -->
-  <link rel="preload" as="image" href="assets/bg.jpg?v=22" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/image.jpg?v=22">
+  <link rel="preload" as="image" href="assets/bg.jpg?v=23" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/image.jpg?v=23">
 
   <style>
     :root { --fallback:#000; --hint-bg: rgba(255,255,255,.92); --hint-fg:#111; }
@@ -126,11 +126,11 @@
 <body>
   <!-- Background -->
   <div class="bg" aria-hidden="true">
-    <img src="assets/bg.jpg?v=22" alt="">
+    <img src="assets/bg.jpg?v=23" alt="">
   </div>
 
   <!-- Invitation -->
-  <img id="invite" class="invite" src="assets/image.jpg?v=22" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/image.jpg?v=23" alt="Wedding invitation">
 
   <!-- Hint -->
   <div id="hint" class="hint" aria-hidden="true">Tap to zoom</div>
@@ -141,9 +141,9 @@
     <button class="close" aria-label="Close">×</button>
   </div>
 
-  <!-- Actions: Save the Date + Google + Email RSVP -->
+  <!-- Actions: Apple Calendar + Google + Email RSVP -->
   <div id="actions" class="actions" aria-hidden="true">
-    <button id="icsBtn" class="btn" aria-label="Add to Apple/Outlook Calendar">Save the Date (Apple/Outlook)</button>
+    <button id="icsBtn" class="btn" aria-label="Add to Apple Calendar">Add to Apple Calendar</button>
     <button id="gcalBtn" class="btn" aria-label="Add to Google Calendar">Save to Google</button>
     <a id="rsvpBtn" class="btn" aria-label="Email RSVP" href="mailto:rsvp@luna.wedding?subject=RSVP%3A%20Luna%20Wedding&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AWe%27re%20delighted%20to%20RSVP%20for%20June%205%2C%202026.%0A%0ANames%3A%20%0ANumber%20of%20Guests%3A%20%0ADietary%20notes%3A%20%0A%0AWith%20love%2C%0A" rel="noopener">Email RSVP</a>
   </div>
@@ -197,15 +197,17 @@
       const desc    = 'Dress Code: Formal Attire';
       const venue   = 'Carne Mare – Seaport';
       const address = '89 South St, New York, NY 10038';
-      const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Carne%20Mare%20%E2%80%93%20Seaport%2C%2089%20South%20St%2C%20New%20York%2C%20NY%2010038';
 
-      // June 5, 2026 — 7:00 PM to 10:00 PM America/New_York
-      // Use UTC in ICS for universal compatibility (23:00Z to 02:00Z)
+      // Apple Maps deep link is handled by Calendar when LOCATION is recognized.
+      // Extra boost: X-APPLE-STRUCTURED-LOCATION with geo:lat,long + title.
+      // Coordinates approximate for Carne Mare (Seaport, NYC):
+      const geoLat = 40.7061, geoLng = -74.0032;
+
+      // June 5, 2026 — 7:00 PM to 10:00 PM ET
       const dtStartUTC = '20260605T230000Z'; // 7:00 PM ET
       const dtEndUTC   = '20260606T020000Z'; // 10:00 PM ET
 
       function fold(line){
-        // Soft-wrap ICS lines at 74 chars with CRLF + space continuation (RFC 5545)
         const CRLF = '\r\n';
         if (line.length <= 74) return line;
         let out = '';
@@ -216,8 +218,10 @@
         return out + line;
       }
 
-      function downloadICS(){
+      function downloadICSForApple(){
         const CRLF = '\r\n';
+        const xApple = `X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-APPLE-RADIUS=72;X-TITLE=${venue.replace(/[,;]/g,'')}:geo:${geoLat},${geoLng}`;
+
         const lines = [
           'BEGIN:VCALENDAR',
           'VERSION:2.0',
@@ -230,9 +234,10 @@
           `DTSTART:${dtStartUTC}`,
           `DTEND:${dtEndUTC}`,
           fold(`SUMMARY:${title}`),
-          fold(`DESCRIPTION:${desc}\\nMap: ${mapsUrl}`),
+          // Keep description minimal; iOS Calendar will still show Notes, but we avoid links here.
+          fold(`DESCRIPTION:${desc}`),
           fold(`LOCATION:${venue}, ${address}`),
-          fold(`URL:${mapsUrl}`),
+          fold(xApple),
           'END:VEVENT',
           'END:VCALENDAR'
         ];
@@ -247,20 +252,20 @@
       }
 
       function openGCal(){
-        const details = encodeURIComponent(`${desc}\nMap: ${mapsUrl}`);
+        const details = encodeURIComponent(desc);
         const text = encodeURIComponent(title);
         const location = encodeURIComponent(`${venue}, ${address}`);
         const href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${dtStartUTC}/${dtEndUTC}&details=${details}&location=${location}&sf=true&output=xml`;
         window.open(href, '_blank', 'noopener,noreferrer');
       }
 
-      icsBtn.addEventListener('click', downloadICS);
+      icsBtn.addEventListener('click', downloadICSForApple);
       gcalBtn.addEventListener('click', openGCal);
 
       /* ---------- Audio: robust iPad handling + 1s fade-in ---------- */
       let bgm = null, started = false, fadedIn = false;
       const TARGET_VOL = 0.35;
-      const SRC = 'assets/bgm_small.mp3?v=22'; // cache-bust
+      const SRC = 'assets/bgm_small.mp3?v=23'; // cache-bust
 
       function createAudio(){
         if (bgm) return bgm;
@@ -268,8 +273,8 @@
         bgm.src = SRC;
         bgm.loop = true;
         bgm.preload = 'auto';
-        bgm.playsInline = true;  // iOS/iPadOS hint
-        bgm.volume = 0;          // start silent for fade
+        bgm.playsInline = true;
+        bgm.volume = 0;
         started = true;
         return bgm;
       }
