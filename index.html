@@ -10,16 +10,16 @@
   <meta property="og:description" content="Luna Wedding — RSVP • June 5, 2026" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://luna.wedding" />
-  <meta property="og:image" content="/assets/og.jpg?v=11" />
+  <meta property="og:image" content="/assets/og.jpg?v=12" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 5, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 5, 2026" />
-  <meta name="twitter:image" content="/assets/og.jpg?v=11" />
+  <meta name="twitter:image" content="/assets/og.jpg?v=12" />
 
   <!-- Performance -->
-  <link rel="preload" as="image" href="assets/bg.jpg?v=11" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/image.jpg?v=11">
-  <link rel="preload" as="audio" href="assets/bgm.mp3?v=11">
+  <link rel="preload" as="image" href="assets/bg.jpg?v=12" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/image.jpg?v=12">
+  <link rel="preload" as="audio" href="assets/bgm.mp3?v=12">
 
   <style>
     :root { --fallback:#000; --hint-bg: rgba(255,255,255,.92); --hint-fg:#111; }
@@ -112,7 +112,7 @@
     .music .dot { width:8px; height:8px; border-radius:999px; background:#ff4d4f; }
     .music.on .dot { background:#3bd16f; }
     .music .label { letter-spacing:.2px; }
-    .music.error { opacity:.75; cursor:not-allowed; border-style:dashed; }
+    .music.error { opacity:.85; cursor:not-allowed; border-style:dashed; }
     .music.error .label::after { content:" (not found)"; font-weight:500; }
 
     /* Reduced motion */
@@ -122,11 +122,11 @@
 <body>
   <!-- Background -->
   <div class="bg" aria-hidden="true">
-    <img src="assets/bg.jpg?v=11" alt="">
+    <img src="assets/bg.jpg?v=12" alt="">
   </div>
 
   <!-- Invitation -->
-  <img id="invite" class="invite" src="assets/image.jpg?v=11" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/image.jpg?v=12" alt="Wedding invitation">
 
   <!-- Hint -->
   <div id="hint" class="hint" aria-hidden="true">Tap to zoom</div>
@@ -138,7 +138,7 @@
   </div>
 
   <!-- Background music (muted autoplay; fades in on first interaction) -->
-  <audio id="bgm" src="assets/bgm.mp3?v=11" preload="auto" loop playsinline muted></audio>
+  <audio id="bgm" preload="auto" loop playsinline muted></audio>
   <button id="music" class="music" aria-pressed="false" aria-label="Toggle music">
     <span class="dot" aria-hidden="true"></span>
     <span class="label">Music</span>
@@ -205,6 +205,10 @@
       let userPref = localStorage.getItem("music") || "on"; // default 'on'
       let fading = null;
       let triedAutoplay = false;
+      let attempts = 0;
+
+      const baseAudioPath = "assets/bgm.mp3";
+      function v() { return `?v=${12 + attempts}`; } // unique cache-buster per attempt
 
       function setBtn(state) {
         musicBtn.classList.toggle("on", state === "on");
@@ -212,30 +216,51 @@
       }
       setBtn(userPref);
 
+      function markError(on) {
+        musicBtn.classList.toggle("error", !!on);
+        if (on) musicBtn.title = `Audio file not found: ${baseAudioPath}`;
+        else musicBtn.removeAttribute("title");
+      }
+
+      // Verify the file exists (HEAD), then set src and (muted) play
+      async function loadAudioWithRetry(maxTries = 3) {
+        for (attempts = 0; attempts < maxTries; attempts++) {
+          const url = `${baseAudioPath}${v()}`;
+          try {
+            const res = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+            if (res.ok) {
+              bgm.src = url;
+              markError(false);
+              tryMutedAutoplay();
+              return true;
+            }
+          } catch(e) { /* ignore and retry */ }
+        }
+        markError(true);
+        return false;
+      }
+
       // Fade helper
       function fadeTo(targetVol = 0.35, ms = 3000) {
         if (!bgm) return;
-        if (fading) cancelAnimationFrame(fading.rid);
+        if (fading) cancelAnimationFrame(fading);
         const start = performance.now();
         const startVol = bgm.volume;
         const clamp = v => Math.max(0, Math.min(1, v));
         function step(now) {
           const t = Math.min(1, (now - start) / ms);
           bgm.volume = clamp(startVol + (targetVol - startVol) * t);
-          if (t < 1) {
-            fading = { rid: requestAnimationFrame(step) };
-          } else {
-            fading = null;
-          }
+          if (t < 1) { fading = requestAnimationFrame(step); }
+          else { fading = null; }
         }
-        requestAnimationFrame(step);
+        fading = requestAnimationFrame(step);
       }
 
       // Autoplay muted, then wait for gesture to unmute & fade in
       function tryMutedAutoplay() {
         if (!bgm) return;
         triedAutoplay = true;
-        bgm.volume = 0;        // start silent
+        bgm.volume = 0;        // silent
         bgm.muted = true;      // iOS allows muted autoplay
         const p = bgm.play();
         if (p && typeof p.catch === "function") p.catch(()=>{ /* ignore */ });
@@ -257,13 +282,11 @@
         localStorage.setItem("music", userPref);
         setBtn(userPref);
         if (userPref === "on") {
-          // If not started yet, start now
           if (!triedAutoplay) tryMutedAutoplay();
           ensureAudible();
         } else {
-          // Fade out and mute
           if (!bgm.paused) {
-            if (fading) cancelAnimationFrame(fading.rid);
+            if (fading) cancelAnimationFrame(fading);
             const start = performance.now();
             const startVol = bgm.volume;
             function step(now){
@@ -279,25 +302,21 @@
         }
       }
 
-      // Start muted autoplay after load (silent)
+      // Load audio (with HEAD check + retries), then muted autoplay
       window.addEventListener("load", () => {
-        if (userPref === "on") tryMutedAutoplay();
+        loadAudioWithRetry(3).then(() => {
+          if (userPref === "on") tryMutedAutoplay();
+        });
       });
 
       // Any first pointer counts as gesture to unmute+fade
       window.addEventListener("pointerdown", ensureAudible, { once:true, passive:true });
 
-      // The toggle itself is always a valid gesture
+      // Toggle is a gesture
       musicBtn.addEventListener("click", () => {
-        if (musicBtn.classList.contains('error')) return;
         toggleMusic();
       });
 
-      // If audio missing, keep button visible but mark error
-      bgm.addEventListener("error", () => {
-        musicBtn.classList.add("error");
-        musicBtn.title = "Audio file not found: assets/bgm.mp3";
-      }, { once:true });
     })();
   </script>
 </body>
