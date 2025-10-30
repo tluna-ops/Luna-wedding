@@ -10,16 +10,16 @@
   <meta property="og:description" content="Luna Wedding — RSVP • June 5, 2026" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://luna.wedding" />
-  <meta property="og:image" content="/assets/og.jpg?v=9" />
+  <meta property="og:image" content="/assets/og.jpg?v=11" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 5, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 5, 2026" />
-  <meta name="twitter:image" content="/assets/og.jpg?v=9" />
+  <meta name="twitter:image" content="/assets/og.jpg?v=11" />
 
   <!-- Performance -->
-  <link rel="preload" as="image" href="assets/bg.jpg?v=9" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/image.jpg?v=9">
-  <link rel="preload" as="audio" href="assets/bgm.mp3?v=9">
+  <link rel="preload" as="image" href="assets/bg.jpg?v=11" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/image.jpg?v=11">
+  <link rel="preload" as="audio" href="assets/bgm.mp3?v=11">
 
   <style>
     :root { --fallback:#000; --hint-bg: rgba(255,255,255,.92); --hint-fg:#111; }
@@ -96,7 +96,7 @@
     }
     .lightbox.visible .close { opacity:1; transform:scale(1); }
 
-    /* Music toggle — always visible, above everything */
+    /* Music toggle */
     .music {
       position:fixed; left:12px; bottom:calc(12px + env(safe-area-inset-bottom));
       display:inline-flex; align-items:center; gap:8px;
@@ -122,11 +122,11 @@
 <body>
   <!-- Background -->
   <div class="bg" aria-hidden="true">
-    <img src="assets/bg.jpg?v=9" alt="">
+    <img src="assets/bg.jpg?v=11" alt="">
   </div>
 
   <!-- Invitation -->
-  <img id="invite" class="invite" src="assets/image.jpg?v=9" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/image.jpg?v=11" alt="Wedding invitation">
 
   <!-- Hint -->
   <div id="hint" class="hint" aria-hidden="true">Tap to zoom</div>
@@ -137,8 +137,8 @@
     <button class="close" aria-label="Close">×</button>
   </div>
 
-  <!-- Background music -->
-  <audio id="bgm" src="assets/bgm.mp3?v=9" preload="auto" loop playsinline></audio>
+  <!-- Background music (muted autoplay; fades in on first interaction) -->
+  <audio id="bgm" src="assets/bgm.mp3?v=11" preload="auto" loop playsinline muted></audio>
   <button id="music" class="music" aria-pressed="false" aria-label="Toggle music">
     <span class="dot" aria-hidden="true"></span>
     <span class="label">Music</span>
@@ -148,7 +148,6 @@
 
   <script>
     (function(){
-      // Elements
       const invite = document.getElementById("invite");
       const hint = document.getElementById("hint");
       const lb = document.getElementById("lightbox");
@@ -157,15 +156,14 @@
       const musicBtn = document.getElementById("music");
       const bgm = document.getElementById("bgm");
 
-      // ===== Lightbox actions =====
+      /* ---------------- Lightbox ---------------- */
       function openLB() {
         lbimg.src = invite.src;
         lb.classList.add("visible");
         document.body.style.overflow="hidden";
         if (hint) hint.classList.add('hide');
-        maybeStartMusicOnFirstGesture();
+        ensureAudible(); // counts as a gesture
       }
-
       function closeLB(){
         lb.classList.add("closing");
         setTimeout(() => {
@@ -176,10 +174,9 @@
           }, 300);
         }, 120);
       }
-
       invite.addEventListener("click", openLB, { passive:true });
 
-      // Double-tap to open
+      // Double-tap open
       let lastTap = 0;
       invite.addEventListener("touchend", (e) => {
         const now = Date.now();
@@ -187,11 +184,8 @@
         lastTap = now;
       }, { passive:true });
 
-      // Click outside or X
       lb.addEventListener("click", (e) => { if (e.target === lb) closeLB(); });
       closeBtn.addEventListener("click", closeLB);
-
-      // Esc closes
       document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeLB(); });
 
       // Swipe-down to close
@@ -207,10 +201,10 @@
       // Auto-hide hint
       setTimeout(() => { if (hint) hint.classList.add('hide'); }, 2500);
 
-      // ===== Music controls (autoplay attempt + gesture fallback + fade) =====
+      /* ---------------- Music ---------------- */
       let userPref = localStorage.getItem("music") || "on"; // default 'on'
-      let autoplayBlocked = false;
       let fading = null;
+      let triedAutoplay = false;
 
       function setBtn(state) {
         musicBtn.classList.toggle("on", state === "on");
@@ -218,7 +212,8 @@
       }
       setBtn(userPref);
 
-      function fadeTo(targetVol = 1, ms = 1200) {
+      // Fade helper
+      function fadeTo(targetVol = 0.35, ms = 3000) {
         if (!bgm) return;
         if (fading) cancelAnimationFrame(fading.rid);
         const start = performance.now();
@@ -231,59 +226,72 @@
             fading = { rid: requestAnimationFrame(step) };
           } else {
             fading = null;
-            if (bgm.volume === 0) bgm.pause();
           }
         }
         requestAnimationFrame(step);
       }
 
-      function startMusic() {
-        if (!bgm) return Promise.resolve();
-        try {
-          bgm.volume = 0;
-          const p = bgm.play();
-          if (p && typeof p.then === "function") {
-            return p.then(() => fadeTo(1, 1200)).catch(() => { autoplayBlocked = true; });
-          } else {
-            fadeTo(1, 1200);
-            return Promise.resolve();
-          }
-        } catch(e) { autoplayBlocked = true; return Promise.resolve(); }
+      // Autoplay muted, then wait for gesture to unmute & fade in
+      function tryMutedAutoplay() {
+        if (!bgm) return;
+        triedAutoplay = true;
+        bgm.volume = 0;        // start silent
+        bgm.muted = true;      // iOS allows muted autoplay
+        const p = bgm.play();
+        if (p && typeof p.catch === "function") p.catch(()=>{ /* ignore */ });
       }
 
-      function stopMusic() { fadeTo(0, 800); }
+      // On first gesture, unmute and fade in if userPref=on
+      function ensureAudible() {
+        if (!bgm || userPref !== "on") return;
+        if (bgm.muted || bgm.volume === 0) {
+          bgm.muted = false;
+          if (bgm.paused) { bgm.play().catch(()=>{}); }
+          fadeTo(0.35, 3000);
+        }
+      }
 
+      // Toggle button
       function toggleMusic() {
         userPref = (userPref === "on") ? "off" : "on";
         localStorage.setItem("music", userPref);
         setBtn(userPref);
-        if (userPref === "on") startMusic();
-        else stopMusic();
-      }
-
-      function maybeStartMusicOnFirstGesture() {
-        if (userPref === "on" && (autoplayBlocked || bgm.paused)) {
-          startMusic();
+        if (userPref === "on") {
+          // If not started yet, start now
+          if (!triedAutoplay) tryMutedAutoplay();
+          ensureAudible();
+        } else {
+          // Fade out and mute
+          if (!bgm.paused) {
+            if (fading) cancelAnimationFrame(fading.rid);
+            const start = performance.now();
+            const startVol = bgm.volume;
+            function step(now){
+              const t = Math.min(1, (now - start)/800);
+              bgm.volume = Math.max(0, startVol * (1 - t));
+              if (t < 1) requestAnimationFrame(step);
+              else { bgm.muted = true; }
+            }
+            requestAnimationFrame(step);
+          } else {
+            bgm.muted = true;
+          }
         }
       }
 
-      // Try to autoplay on load if userPref = 'on'
+      // Start muted autoplay after load (silent)
       window.addEventListener("load", () => {
-        if (userPref === "on") startMusic(); // if blocked (iOS), will start on first tap
+        if (userPref === "on") tryMutedAutoplay();
       });
 
-      // Button is always a valid gesture
-      musicBtn.addEventListener("click", () => {
-        if (musicBtn.classList.contains('error')) return; // disabled if missing file
-        if (userPref === "on" && (autoplayBlocked || bgm.paused)) {
-          startMusic().then(() => { autoplayBlocked = false; });
-        } else {
-          toggleMusic();
-        }
-      }, { passive:true });
+      // Any first pointer counts as gesture to unmute+fade
+      window.addEventListener("pointerdown", ensureAudible, { once:true, passive:true });
 
-      // Any first pointer interaction counts as gesture
-      window.addEventListener("pointerdown", () => { maybeStartMusicOnFirstGesture(); }, { once:true, passive:true });
+      // The toggle itself is always a valid gesture
+      musicBtn.addEventListener("click", () => {
+        if (musicBtn.classList.contains('error')) return;
+        toggleMusic();
+      });
 
       // If audio missing, keep button visible but mark error
       bgm.addEventListener("error", () => {
