@@ -157,10 +157,28 @@
     .music.on .dot{ background:#3bd16f }
     .music .label{ letter-spacing:.2px }
 
-    @media (max-width: 380px){
-      .btn{ padding:8px 12px; font-size:13px; }
-      .actions{ gap:6px; }
+    /* Phones: wrap into two rows (2x2) instead of hidden scroll */
+    @media (max-width: 430px){
+      .actions{
+        overflow-x: visible;
+        flex-wrap: wrap;
+        justify-content: center;
+        row-gap: 8px;
+        max-width: 92vw;
+        padding: 0 12px;
+      }
+      .btn{
+        flex: 1 1 calc(50% - 8px);
+        text-align: center;
+      }
     }
+    /* Extra-narrow phones: stack 1 per row */
+    @media (max-width: 340px){
+      .btn{
+        flex: 1 1 100%;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce){ .bg, .invite, .hint{ animation-duration:.01s } }
   </style>
 </head>
@@ -182,7 +200,7 @@
     <button class="close" aria-label="Close">×</button>
   </div>
 
-  <!-- Horizontal Actions: show only when lightbox is visible -->
+  <!-- Actions (appear only when lightbox is visible) -->
   <div id="actions" class="actions" aria-hidden="true">
     <button id="icsBtn" class="btn" aria-label="Apple Calendar">Apple Calendar</button>
     <button id="gcalBtn" class="btn" aria-label="Google Calendar">Google Calendar</button>
