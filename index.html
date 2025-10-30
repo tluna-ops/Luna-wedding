@@ -6,7 +6,7 @@
   <title>Coming Soon</title>
   <style>
     :root {
-      --bg: #0b0b0b;
+      --bg: #0b0b0b;            /* fallback color while image loads */
       --polaroid-bg: #ffffff;
       --shadow: 0 20px 40px rgba(0,0,0,0.12);
       --frame: 14px;
@@ -30,21 +30,18 @@
     }
 
     /* Fade-in animation */
-    @keyframes fadeInBg {
-      0% { opacity: 0; }
-      100% { opacity: 1; }
-    }
+    @keyframes fadeInBg { from { opacity: 0; } to { opacity: 1; } }
 
-    /* Background layer (no negative z-index on iOS!) */
+    /* Background layer (now above body background) */
     .bg {
       position: fixed;
       inset: 0;
-      z-index: 0;              /* was -2 -> causes iOS to hide it */
-      pointer-events: none;    /* don’t intercept taps/scrolls */
+      z-index: 0;                    /* <-- was -2 */
       overflow: hidden;
+      pointer-events: none;          /* don't block taps */
       background: url('IMG_0035.jpeg?v=4') center/cover no-repeat, #0b0b0b;
       opacity: 0;
-      animation: fadeInBg 1.2s ease-out forwards;
+      animation: fadeInBg 1.8s ease-out forwards;
     }
     .bg img {
       position: absolute;
@@ -56,31 +53,29 @@
       filter: blur(18px) brightness(0.82);
       will-change: transform;
       opacity: 0;
-      animation: fadeInBg 1.2s ease-out forwards;
-      animation-delay: 0.1s;
+      animation: fadeInBg 1.8s ease-out forwards;
+      animation-delay: 0.15s;
     }
     .bg::after {
       content: "";
       position: absolute;
       inset: 0;
       z-index: 1;
-      /* slightly lighter vignette so it doesn’t look black */
       background: radial-gradient(ellipse at center,
-                  rgba(0,0,0,0.12) 0%,
-                  rgba(0,0,0,0.28) 60%,
-                  rgba(0,0,0,0.44) 100%);
+                  rgba(0,0,0,0.20) 0%,
+                  rgba(0,0,0,0.35) 60%,
+                  rgba(0,0,0,0.55) 100%);
       pointer-events: none;
     }
 
     .wrap {
-      position: relative;  /* ensure it sits above .bg */
+      position: relative;            /* <-- ensure above background */
       z-index: 1;
       width: min(92vw, var(--max-width));
       padding: 4vh 0 6vh;
-      display: grid; 
+      display: grid;
       place-items: center;
     }
-
     .polaroid {
       background: var(--polaroid-bg);
       box-shadow: var(--shadow);
@@ -113,15 +108,15 @@
       height: auto;
       border-radius: 6px;
       opacity: 0;
-      animation: fadeInBg 0.9s ease-out forwards;
-      animation-delay: 0.25s;
+      animation: fadeInBg 1.2s ease-out forwards;
+      animation-delay: 0.4s;
     }
 
     /* Lightbox */
     .lightbox {
       position: fixed; inset: 0; background: rgba(0,0,0,0.8);
       display: none; align-items: center; justify-content: center;
-      padding: 2rem; z-index: 3;  /* above bg and content */
+      padding: 2rem; z-index: 99;
     }
     .lightbox[aria-hidden="false"] { display: flex; }
     .lightbox img {
@@ -166,17 +161,8 @@
       var openBtn = document.getElementById('open');
       var lb = document.getElementById('lightbox');
       var closeBtn = lb.querySelector('.close');
-
-      function open() {
-        lb.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-      }
-      function close(){
-        lb.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-        openBtn.focus({preventScroll:true});
-      }
-
+      function open() { lb.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden'; }
+      function close(){ lb.setAttribute('aria-hidden', 'true');  document.body.style.overflow = ''; openBtn.focus({preventScroll:true}); }
       openBtn.addEventListener('click', open);
       closeBtn.addEventListener('click', close);
       lb.addEventListener('click', function(e){ if (e.target === lb) close(); });
