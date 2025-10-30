@@ -10,123 +10,97 @@
   <meta property="og:description" content="Luna Wedding — RSVP • June 5, 2026" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://luna.wedding" />
-  <meta property="og:image" content="/assets/og.jpg?v=12" />
+  <meta property="og:image" content="/assets/og.jpg?v=17" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 5, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 5, 2026" />
-  <meta name="twitter:image" content="/assets/og.jpg?v=12" />
+  <meta name="twitter:image" content="/assets/og.jpg?v=17" />
 
   <!-- Performance -->
-  <link rel="preload" as="image" href="assets/bg.jpg?v=12" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/image.jpg?v=12">
-  <link rel="preload" as="audio" href="assets/bgm.mp3?v=12">
+  <link rel="preload" as="image" href="assets/bg.jpg?v=17" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/image.jpg?v=17">
+  <!-- No <audio> tag: created in JS to avoid iOS overlay -->
 
   <style>
     :root { --fallback:#000; --hint-bg: rgba(255,255,255,.92); --hint-fg:#111; }
-    html,body {
+    html,body{
       height:100%; margin:0; background:var(--fallback); overflow:hidden;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
     }
 
-    /* Fade-ins */
+    /* Page animations (kept) */
     @keyframes fadeBg { from {opacity:0} to {opacity:1} }
-    @keyframes fadeCard {
-      from {opacity:0; transform:translate(-50%,-48%) scale(.985)}
-      to   {opacity:1; transform:translate(-50%,-50%) scale(1)}
-    }
+    @keyframes fadeCard { from {opacity:0; transform:translate(-50%,-48%) scale(.985)} to {opacity:1; transform:translate(-50%,-50%) scale(1)} }
     @keyframes hintIn { from {opacity:0; transform:translate(-50%,-46%)} to {opacity:1; transform:translate(-50%,-40%)} }
-    @keyframes hintOut { to {opacity:0; transform:translate(-50%,-36%) } }
+    @keyframes hintOut { to {opacity:0; transform:translate(-50%,-36%)} }
 
-    /* Background */
     .bg { position:fixed; inset:0; opacity:0; animation:fadeBg 900ms ease-out .05s forwards; }
     .bg img { width:100vw; height:100vh; object-fit:cover; object-position:center; user-select:none; -webkit-user-drag:none; }
 
-    /* Invitation (center) */
-    .invite {
+    .invite{
       position:fixed; left:50%; top:50%; transform:translate(-50%,-50%);
-      width:min(92vw,900px); max-height:88vh; height:auto;
-      border-radius:12px; background:#fff;
+      width:min(92vw,900px); max-height:88vh; height:auto; border-radius:12px; background:#fff;
       box-shadow:0 20px 48px rgba(0,0,0,.25);
       opacity:0; animation:fadeCard .75s cubic-bezier(.21,.98,.25,.99) .2s forwards;
-      cursor:zoom-in; user-select:none; -webkit-user-drag:none;
-      z-index: 1;
+      cursor:zoom-in; user-select:none; -webkit-user-drag:none; z-index:1;
     }
 
-    /* Tap-to-zoom hint */
-    .hint {
+    .hint{
       position:fixed; left:50%; top:calc(50% + min(50vh, 460px));
-      transform:translate(-50%,-40%);
-      padding:8px 12px; border-radius:999px;
-      background:var(--hint-bg); color:var(--hint-fg);
-      font-size:13px; box-shadow:0 8px 24px rgba(0,0,0,.18);
-      opacity:0; animation:hintIn .5s ease .8s forwards; pointer-events:none;
-      z-index: 2;
+      transform:translate(-50%,-40%); padding:8px 12px; border-radius:999px;
+      background:var(--hint-bg); color:var(--hint-fg); font-size:13px;
+      box-shadow:0 8px 24px rgba(0,0,0,.18); opacity:0; animation:hintIn .5s ease .8s forwards;
+      pointer-events:none; z-index:2;
     }
-    .hint.hide { animation:hintOut .35s ease forwards; }
+    .hint.hide{ animation:hintOut .35s ease forwards; }
 
-    /* Lightbox — fade + scale + iOS backdrop blur */
-    .lightbox {
-      position:fixed; inset:0;
-      background:rgba(0,0,0,0.6);
+    .lightbox{
+      position:fixed; inset:0; background:rgba(0,0,0,.6);
       display:flex; align-items:center; justify-content:center;
       opacity:0; pointer-events:none; z-index:10;
       transition:opacity 280ms ease, background-color 180ms ease;
-      -webkit-backdrop-filter: blur(8px) saturate(120%);
-      backdrop-filter: blur(8px) saturate(120%);
+      -webkit-backdrop-filter: blur(8px) saturate(120%); backdrop-filter: blur(8px) saturate(120%);
     }
-    .lightbox.visible { opacity:1; pointer-events:auto; }
-    .lightbox.closing { background:rgba(0,0,0,0.95); }
-    .lightbox img {
-      max-width:94vw; max-height:92vh; width:auto; height:auto;
-      border-radius:14px; box-shadow:0 24px 64px rgba(0,0,0,.6);
-      transform:scale(.96);
-      transition:transform 280ms cubic-bezier(.23,1,.32,1);
-      touch-action:pinch-zoom;
+    .lightbox.visible{ opacity:1; pointer-events:auto; }
+    .lightbox.closing{ background:rgba(0,0,0,.95); }
+    .lightbox img{
+      max-width:94vw; max-height:92vh; border-radius:14px; box-shadow:0 24px 64px rgba(0,0,0,.6);
+      transform:scale(.96); transition:transform 280ms cubic-bezier(.23,1,.32,1); touch-action:pinch-zoom;
     }
-    .lightbox.visible img { transform:scale(1); }
-    .lightbox.closing img { transform:scale(.98); }
+    .lightbox.visible img{ transform:scale(1); }
+    .lightbox.closing img{ transform:scale(.98); }
+    .close{
+      position:fixed; top:calc(12px + env(safe-area-inset-top)); right:calc(12px + env(safe-area-inset-right));
+      width:44px; height:44px; border:0; border-radius:999px; background:#fff; color:#000; font-size:22px; line-height:1; cursor:pointer;
+      opacity:0; transform:scale(.85); transition:opacity 260ms ease .1s, transform 260ms ease .1s;
+    }
+    .lightbox.visible .close{ opacity:1; transform:scale(1); }
 
-    .close {
-      position:fixed; top:calc(12px + env(safe-area-inset-top));
-      right:calc(12px + env(safe-area-inset-right));
-      width:44px; height:44px; border:0; border-radius:999px;
-      background:#fff; color:#000; font-size:22px; line-height:1; cursor:pointer;
-      opacity:0; transform:scale(.85);
-      transition:opacity 260ms ease .1s, transform 260ms ease .1s;
-    }
-    .lightbox.visible .close { opacity:1; transform:scale(1); }
-
-    /* Music toggle */
-    .music {
+    .music{
       position:fixed; left:12px; bottom:calc(12px + env(safe-area-inset-bottom));
-      display:inline-flex; align-items:center; gap:8px;
-      padding:10px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.5);
+      display:inline-flex; align-items:center; gap:8px; padding:10px 12px;
+      border-radius:999px; border:1px solid rgba(255,255,255,.5);
       background:rgba(0,0,0,.40); color:#fff; font-size:14px;
       backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-      box-shadow:0 8px 24px rgba(0,0,0,.18);
-      cursor:pointer; user-select:none;
-      transition:opacity .25s ease, transform .25s ease, background .25s ease;
-      z-index: 20;
+      box-shadow:0 8px 24px rgba(0,0,0,.18); cursor:pointer; user-select:none;
+      transition:opacity .25s ease, transform .25s ease, background .25s ease; z-index:20;
     }
-    .music:hover { transform:translateY(-1px); background:rgba(0,0,0,.5); }
-    .music .dot { width:8px; height:8px; border-radius:999px; background:#ff4d4f; }
-    .music.on .dot { background:#3bd16f; }
-    .music .label { letter-spacing:.2px; }
-    .music.error { opacity:.85; cursor:not-allowed; border-style:dashed; }
-    .music.error .label::after { content:" (not found)"; font-weight:500; }
+    .music:hover{ transform:translateY(-1px); background:rgba(0,0,0,.5); }
+    .music .dot{ width:8px; height:8px; border-radius:999px; background:#ff4d4f; }
+    .music.on .dot{ background:#3bd16f; }
+    .music .label{ letter-spacing:.2px; }
 
-    /* Reduced motion */
-    @media (prefers-reduced-motion: reduce) { .bg, .invite, .hint { animation-duration: 0.01s; } }
+    @media (prefers-reduced-motion: reduce){ .bg, .invite, .hint{ animation-duration:.01s; } }
   </style>
 </head>
 <body>
   <!-- Background -->
   <div class="bg" aria-hidden="true">
-    <img src="assets/bg.jpg?v=12" alt="">
+    <img src="assets/bg.jpg?v=17" alt="">
   </div>
 
   <!-- Invitation -->
-  <img id="invite" class="invite" src="assets/image.jpg?v=12" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/image.jpg?v=17" alt="Wedding invitation">
 
   <!-- Hint -->
   <div id="hint" class="hint" aria-hidden="true">Tap to zoom</div>
@@ -137,186 +111,97 @@
     <button class="close" aria-label="Close">×</button>
   </div>
 
-  <!-- Background music (muted autoplay; fades in on first interaction) -->
-  <audio id="bgm" preload="auto" loop playsinline muted></audio>
+  <!-- Music button -->
   <button id="music" class="music" aria-pressed="false" aria-label="Toggle music">
-    <span class="dot" aria-hidden="true"></span>
-    <span class="label">Music</span>
+    <span class="dot" aria-hidden="true"></span><span class="label">Music</span>
   </button>
 
   <noscript><style>.hint{display:none}</style></noscript>
 
   <script>
     (function(){
-      const invite = document.getElementById("invite");
-      const hint = document.getElementById("hint");
-      const lb = document.getElementById("lightbox");
-      const lbimg = document.getElementById("lbimg");
-      const closeBtn = lb.querySelector(".close");
-      const musicBtn = document.getElementById("music");
-      const bgm = document.getElementById("bgm");
+      const invite = document.getElementById('invite');
+      const hint = document.getElementById('hint');
+      const lb = document.getElementById('lightbox');
+      const lbimg = document.getElementById('lbimg');
+      const closeBtn = lb.querySelector('.close');
+      const musicBtn = document.getElementById('music');
 
-      /* ---------------- Lightbox ---------------- */
-      function openLB() {
+      /* ---------- Lightbox ---------- */
+      function openLB(){
         lbimg.src = invite.src;
-        lb.classList.add("visible");
-        document.body.style.overflow="hidden";
+        lb.classList.add('visible');
+        document.body.style.overflow = 'hidden';
         if (hint) hint.classList.add('hide');
-        ensureAudible(); // counts as a gesture
+        ensureAudible(); // gesture for iOS
       }
       function closeLB(){
-        lb.classList.add("closing");
-        setTimeout(() => {
-          lb.classList.remove("visible");
-          setTimeout(() => {
-            lb.classList.remove("closing");
-            document.body.style.overflow="";
-          }, 300);
-        }, 120);
+        lb.classList.add('closing');
+        setTimeout(()=>{ lb.classList.remove('visible');
+          setTimeout(()=>{ lb.classList.remove('closing'); document.body.style.overflow=''; }, 300);
+        },120);
       }
-      invite.addEventListener("click", openLB, { passive:true });
+      invite.addEventListener('click', openLB, {passive:true});
+      let lastTap=0;
+      invite.addEventListener('touchend', e=>{
+        const now=Date.now(); if(now-lastTap<300) openLB(); lastTap=now;
+      }, {passive:true});
+      lb.addEventListener('click', e=>{ if(e.target===lb) closeLB(); });
+      closeBtn.addEventListener('click', closeLB);
+      document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeLB(); });
 
-      // Double-tap open
-      let lastTap = 0;
-      invite.addEventListener("touchend", (e) => {
-        const now = Date.now();
-        if (now - lastTap < 300) openLB();
-        lastTap = now;
-      }, { passive:true });
-
-      lb.addEventListener("click", (e) => { if (e.target === lb) closeLB(); });
-      closeBtn.addEventListener("click", closeLB);
-      document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeLB(); });
-
-      // Swipe-down to close
-      let startY = null;
-      lb.addEventListener("touchstart", (e) => { startY = e.touches[0].clientY; }, { passive:true });
-      lb.addEventListener("touchmove", (e) => {
-        if (startY == null) return;
-        const dy = e.touches[0].clientY - startY;
-        if (dy > 70) closeLB();
-      }, { passive:true });
-      lb.addEventListener("touchend", () => { startY = null; }, { passive:true });
-
-      // Auto-hide hint
-      setTimeout(() => { if (hint) hint.classList.add('hide'); }, 2500);
-
-      /* ---------------- Music ---------------- */
-      let userPref = localStorage.getItem("music") || "on"; // default 'on'
-      let fading = null;
-      let triedAutoplay = false;
-      let attempts = 0;
-
-      const baseAudioPath = "assets/bgm.mp3";
-      function v() { return `?v=${12 + attempts}`; } // unique cache-buster per attempt
-
-      function setBtn(state) {
-        musicBtn.classList.toggle("on", state === "on");
-        musicBtn.setAttribute("aria-pressed", state === "on" ? "true" : "false");
-      }
-      setBtn(userPref);
-
-      function markError(on) {
-        musicBtn.classList.toggle("error", !!on);
-        if (on) musicBtn.title = `Audio file not found: ${baseAudioPath}`;
-        else musicBtn.removeAttribute("title");
+      /* ---------- Audio (programmatic, fixed volume, no JS fade) ---------- */
+      let bgm = null, started = false;
+      function createAudio(){
+        if (bgm) return bgm;
+        bgm = new Audio();
+        bgm.src = 'assets/bgm_small.mp3?v=17'; // cache-bust
+        bgm.loop = true;
+        bgm.preload = 'auto';
+        bgm.playsInline = true;   // iOS
+        bgm.muted = true;         // allow autoplay
+        bgm.volume = 0.35;        // fixed volume (no fade)
+        bgm.play().catch(()=>{}); // start silently
+        started = true;
+        return bgm;
       }
 
-      // Verify the file exists (HEAD), then set src and (muted) play
-      async function loadAudioWithRetry(maxTries = 3) {
-        for (attempts = 0; attempts < maxTries; attempts++) {
-          const url = `${baseAudioPath}${v()}`;
-          try {
-            const res = await fetch(url, { method: 'HEAD', cache: 'no-store' });
-            if (res.ok) {
-              bgm.src = url;
-              markError(false);
-              tryMutedAutoplay();
-              return true;
-            }
-          } catch(e) { /* ignore and retry */ }
-        }
-        markError(true);
-        return false;
+      function ensureAudible(){
+        createAudio();
+        bgm.muted = false;        // unmute immediately
+        if (bgm.paused) bgm.play().catch(()=>{});
       }
 
-      // Fade helper
-      function fadeTo(targetVol = 0.35, ms = 3000) {
-        if (!bgm) return;
-        if (fading) cancelAnimationFrame(fading);
-        const start = performance.now();
-        const startVol = bgm.volume;
-        const clamp = v => Math.max(0, Math.min(1, v));
-        function step(now) {
-          const t = Math.min(1, (now - start) / ms);
-          bgm.volume = clamp(startVol + (targetVol - startVol) * t);
-          if (t < 1) { fading = requestAnimationFrame(step); }
-          else { fading = null; }
-        }
-        fading = requestAnimationFrame(step);
-      }
+      // First pointer anywhere enables sound at fixed volume
+      window.addEventListener('pointerdown', ensureAudible, { once:true, passive:true });
 
-      // Autoplay muted, then wait for gesture to unmute & fade in
-      function tryMutedAutoplay() {
-        if (!bgm) return;
-        triedAutoplay = true;
-        bgm.volume = 0;        // silent
-        bgm.muted = true;      // iOS allows muted autoplay
-        const p = bgm.play();
-        if (p && typeof p.catch === "function") p.catch(()=>{ /* ignore */ });
+      // Music toggle with remembered preference
+      let pref = localStorage.getItem('music') || 'on';
+      function setBtn(state){
+        musicBtn.classList.toggle('on', state === 'on');
+        musicBtn.setAttribute('aria-pressed', state === 'on' ? 'true' : 'false');
       }
+      setBtn(pref);
 
-      // On first gesture, unmute and fade in if userPref=on
-      function ensureAudible() {
-        if (!bgm || userPref !== "on") return;
-        if (bgm.muted || bgm.volume === 0) {
+      musicBtn.addEventListener('click', ()=>{
+        createAudio();
+        pref = (pref === 'on') ? 'off' : 'on';
+        localStorage.setItem('music', pref);
+        setBtn(pref);
+        if (pref === 'on'){
           bgm.muted = false;
-          if (bgm.paused) { bgm.play().catch(()=>{}); }
-          fadeTo(0.35, 3000);
-        }
-      }
-
-      // Toggle button
-      function toggleMusic() {
-        userPref = (userPref === "on") ? "off" : "on";
-        localStorage.setItem("music", userPref);
-        setBtn(userPref);
-        if (userPref === "on") {
-          if (!triedAutoplay) tryMutedAutoplay();
-          ensureAudible();
+          if (bgm.paused) bgm.play().catch(()=>{});
+          bgm.volume = 0.35; // keep same fixed volume
         } else {
-          if (!bgm.paused) {
-            if (fading) cancelAnimationFrame(fading);
-            const start = performance.now();
-            const startVol = bgm.volume;
-            function step(now){
-              const t = Math.min(1, (now - start)/800);
-              bgm.volume = Math.max(0, startVol * (1 - t));
-              if (t < 1) requestAnimationFrame(step);
-              else { bgm.muted = true; }
-            }
-            requestAnimationFrame(step);
-          } else {
-            bgm.muted = true;
-          }
+          bgm.muted = true;
         }
-      }
-
-      // Load audio (with HEAD check + retries), then muted autoplay
-      window.addEventListener("load", () => {
-        loadAudioWithRetry(3).then(() => {
-          if (userPref === "on") tryMutedAutoplay();
-        });
       });
 
-      // Any first pointer counts as gesture to unmute+fade
-      window.addEventListener("pointerdown", ensureAudible, { once:true, passive:true });
+      // Create audio after load so it can buffer silently
+      window.addEventListener('load', ()=>{ if (!started) createAudio(); });
 
-      // Toggle is a gesture
-      musicBtn.addEventListener("click", () => {
-        toggleMusic();
-      });
-
+      // Hide hint after a moment
+      setTimeout(()=>{ if (hint) hint.classList.add('hide'); }, 2500);
     })();
   </script>
 </body>
