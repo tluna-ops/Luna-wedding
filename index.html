@@ -19,7 +19,7 @@
   <meta property="og:title" content="Luna Wedding — June 5, 2026" />
   <meta property="og:description" content="Luna Wedding — RSVP • June 5, 2026" />
   <meta property="og:url" content="https://luna.wedding/" />
-  <meta property="og:image" content="https://luna.wedding/assets/og.jpg?v=31" />
+  <meta property="og:image" content="https://luna.wedding/assets/og.jpg?v=32" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -29,7 +29,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 5, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 5, 2026" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/og.jpg?v=31" />
+  <meta name="twitter:image" content="https://luna.wedding/assets/og.jpg?v=32" />
 
   <!-- Favicon (inline SVG monogram) -->
   <link rel="icon" type="image/svg+xml"
@@ -47,9 +47,9 @@
     </svg>' />
 
   <!-- Performance: preload hero assets -->
-  <link rel="preload" as="image" href="assets/bg.jpg?v=31" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/image.jpg?v=31">
-  <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=31" />
+  <link rel="preload" as="image" href="assets/bg.jpg?v=32" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/image.jpg?v=32">
+  <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=32" />
 
   <style>
     :root { --fallback:#000; --hint-bg: rgba(255,255,255,.74); --hint-fg:#111; }
@@ -62,7 +62,6 @@
     @keyframes fadeBg { from {opacity:0} to {opacity:1} }
     @keyframes fadeCard { from {opacity:0; transform:translate(-50%,-48%) scale(.985)} to {opacity:1; transform:translate(-50%,-50%) scale(1)} }
     @keyframes hintIn { from {opacity:0; transform:translate(-50%,-46%)} to {opacity:1; transform:translate(-50%,-40%)} }
-    @keyframes hintOut { to {opacity:0; transform:translate(-50%,-36%)} }
 
     .bg { position:fixed; inset:0; opacity:0; animation:fadeBg 900ms ease-out .05s forwards; }
     .bg img { width:100vw; height:100vh; object-fit:cover; object-position:center; user-select:none; -webkit-user-drag:none; }
@@ -75,14 +74,26 @@
       cursor:zoom-in; user-select:none; -webkit-user-drag:none; z-index:1;
     }
 
+    /* Hint: smooth fade/slide with gentle entrance */
     .hint{
       position:fixed; left:50%; top:calc(50% + min(50vh, 460px));
-      transform:translate(-50%,-40%); padding:8px 12px; border-radius:999px;
+      transform:translate(-50%,-40%);
+      padding:8px 12px; border-radius:999px;
       background:var(--hint-bg); color:var(--hint-fg); font-size:13px;
-      box-shadow:0 8px 24px rgba(0,0,0,.12); opacity:0; animation:hintIn .5s ease .8s forwards;
+      box-shadow:0 8px 24px rgba(0,0,0,.12);
       pointer-events:none; z-index:2;
+      will-change: opacity, transform;
+
+      /* entrance */
+      opacity:0; animation:hintIn .5s ease .8s forwards;
+
+      /* exit transition */
+      transition: opacity 600ms ease, transform 600ms ease;
     }
-    .hint.hide{ animation:hintOut .35s ease forwards; }
+    .hint.hide{
+      opacity:0;
+      transform:translate(-50%,-36%);
+    }
 
     .lightbox{
       position:fixed; inset:0; background:rgba(0,0,0,.6);
@@ -191,11 +202,11 @@
 <body>
   <!-- Background -->
   <div class="bg" aria-hidden="true">
-    <img src="assets/bg.jpg?v=31" alt="">
+    <img src="assets/bg.jpg?v=32" alt="">
   </div>
 
   <!-- Invitation -->
-  <img id="invite" class="invite" src="assets/image.jpg?v=31" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/image.jpg?v=32" alt="Wedding invitation">
 
   <!-- Hint -->
   <div id="hint" class="hint" aria-hidden="true">Tap to zoom</div>
@@ -369,7 +380,7 @@
       /* ---------- Audio: robust iPad handling + 1s fade-in ---------- */
       let bgm = null, started = false, fadedIn = false;
       const TARGET_VOL = 0.35;
-      const SRC = 'assets/bgm_small.mp3?v=31';
+      const SRC = 'assets/bgm_small.mp3?v=32';
 
       function createAudio(){
         if (bgm) return bgm;
@@ -452,7 +463,7 @@
         }
       });
 
-      // Show hint and hide after 5s (more transparent now)
+      // Smoothly hide the "Tap to zoom" hint after 5s
       setTimeout(()=>{ if (hint) hint.classList.add('hide'); }, 5000);
     })();
   </script>
