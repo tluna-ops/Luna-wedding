@@ -12,14 +12,14 @@
   <meta name="title" content="Luna Wedding — June 5, 2026" />
   <meta name="description" content="Luna Wedding — RSVP • June 5, 2026" />
 
-  <!-- Open Graph (absolute URLs for iMessage/FB/TikTok) -->
+  <!-- Open Graph (absolute URLs for iMessage/FB) -->
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Luna Wedding" />
   <meta property="og:title" content="Luna Wedding — June 5, 2026" />
   <meta property="og:description" content="Luna Wedding — RSVP • June 5, 2026" />
   <meta property="og:url" content="https://luna.wedding/" />
-  <meta property="og:image" content="https://luna.wedding/assets/og.jpg?v=27" />
+  <meta property="og:image" content="https://luna.wedding/assets/og.jpg?v=28" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -29,7 +29,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 5, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 5, 2026" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/og.jpg?v=27" />
+  <meta name="twitter:image" content="https://luna.wedding/assets/og.jpg?v=28" />
 
   <!-- Favicon (inline SVG monogram) -->
   <link rel="icon" type="image/svg+xml"
@@ -47,9 +47,9 @@
     </svg>' />
 
   <!-- Performance: preload hero assets -->
-  <link rel="preload" as="image" href="assets/bg.jpg?v=27" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/image.jpg?v=27">
-  <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=27" />
+  <link rel="preload" as="image" href="assets/bg.jpg?v=28" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/image.jpg?v=28">
+  <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=28" />
 
   <style>
     :root { --fallback:#000; --hint-bg: rgba(255,255,255,.92); --hint-fg:#111; }
@@ -106,6 +106,41 @@
     }
     .lightbox.visible .close{ opacity:1; transform:scale(1) }
 
+    /* Horizontal action bar (only after zoom) */
+    .actions{
+      position:fixed;
+      left:50%;
+      bottom:calc(16px + env(safe-area-inset-bottom));
+      transform:translateX(-50%);
+      z-index:15;
+
+      display:flex;
+      gap:8px;
+      flex-wrap:nowrap;
+      overflow-x:auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      max-width: min(92vw, 980px);
+      padding: 0 8px;
+
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .28s ease, transform .28s ease;
+    }
+    .actions::-webkit-scrollbar{ display:none; }
+    .lightbox.visible + .actions{
+      opacity:1; pointer-events:auto; transform:translateX(-50%) translateY(-4px);
+    }
+
+    .btn{
+      appearance:none; border:1px solid rgba(255,255,255,.6); color:#fff; background:rgba(0,0,0,.45);
+      padding:10px 14px; border-radius:999px; font-size:14px; backdrop-filter:blur(6px);
+      -webkit-backdrop-filter:blur(6px); box-shadow:0 8px 24px rgba(0,0,0,.18); cursor:pointer;
+      flex:0 0 auto; white-space:nowrap;
+    }
+    .btn:hover{ background:rgba(0,0,0,.56); transform:translateY(-1px) }
+
+    /* Music toggle */
     .music{
       position:fixed; left:12px; bottom:calc(12px + env(safe-area-inset-bottom));
       display:inline-flex; align-items:center; gap:8px; padding:10px 12px;
@@ -120,33 +155,21 @@
     .music.on .dot{ background:#3bd16f }
     .music .label{ letter-spacing:.2px }
 
-    /* Actions row */
-    .actions{
-      position:fixed; left:50%; bottom:calc(16px + env(safe-area-inset-bottom));
-      transform:translateX(-50%); z-index:15;
-      display:flex; gap:8px; opacity:0; pointer-events:none;
-      transition:opacity .28s ease, transform .28s ease;
-      flex-wrap:wrap; justify-content:center;
+    @media (max-width: 380px){
+      .btn{ padding:8px 12px; font-size:13px; }
+      .actions{ gap:6px; }
     }
-    .lightbox.visible + .actions { opacity:1; pointer-events:auto; transform:translateX(-50%) translateY(-4px) }
-    .btn{
-      appearance:none; border:1px solid rgba(255,255,255,.6); color:#fff; background:rgba(0,0,0,.45);
-      padding:10px 14px; border-radius:999px; font-size:14px; backdrop-filter:blur(6px);
-      -webkit-backdrop-filter:blur(6px); box-shadow:0 8px 24px rgba(0,0,0,.18); cursor:pointer;
-    }
-    .btn:hover{ background:rgba(0,0,0,.56); transform:translateY(-1px) }
-
     @media (prefers-reduced-motion: reduce){ .bg, .invite, .hint{ animation-duration:.01s } }
   </style>
 </head>
 <body>
   <!-- Background -->
   <div class="bg" aria-hidden="true">
-    <img src="assets/bg.jpg?v=27" alt="">
+    <img src="assets/bg.jpg?v=28" alt="">
   </div>
 
   <!-- Invitation -->
-  <img id="invite" class="invite" src="assets/image.jpg?v=27" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/image.jpg?v=28" alt="Wedding invitation">
 
   <!-- Hint -->
   <div id="hint" class="hint" aria-hidden="true">Tap to zoom</div>
@@ -157,11 +180,16 @@
     <button class="close" aria-label="Close">×</button>
   </div>
 
-  <!-- Actions: Apple Calendar + Google + Email RSVP -->
+  <!-- Horizontal Actions: show only when lightbox is visible -->
   <div id="actions" class="actions" aria-hidden="true">
     <button id="icsBtn" class="btn" aria-label="Add to Apple Calendar">Add to Apple Calendar</button>
-    <button id="gcalBtn" class="btn" aria-label="Add to Google Calendar">Save to Google</button>
-    <a id="rsvpBtn" class="btn" aria-label="Email RSVP" href="mailto:rsvp@luna.wedding?subject=RSVP%3A%20Luna%20Wedding&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AWe%27re%20delighted%20to%20RSVP%20for%20June%205%2C%202026.%0A%0ANames%3A%20%0ANumber%20of%20Guests%3A%20%0ADietary%20notes%3A%20%0A%0AWith%20love%2C%0A" rel="noopener">Email RSVP</a>
+    <button id="gcalBtn" class="btn" aria-label="Add to Google Calendar">Add to Google Calendar</button>
+    <a id="rsvpBtn" class="btn" aria-label="Email RSVP"
+       href="mailto:rsvp@luna.wedding?subject=RSVP%3A%20Luna%20Wedding&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AWe%27re%20delighted%20to%20RSVP%20for%20June%205%2C%202026.%0A%0ANames%3A%20%0ANumber%20of%20Guests%3A%20%0ADietary%20notes%3A%20%0A%0AWith%20love%2C%0A"
+       rel="noopener">Email RSVP</a>
+    <a id="askBtn" class="btn" aria-label="Email the Couple"
+       href="mailto:hello@luna.wedding?subject=Question%20about%20Luna%20Wedding%20%E2%80%94%20June%205%2C%202026&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AMy%20name%3A%0APhone%20(optional)%3A%0A%0ATopic%3A%20RSVP%20%2F%20Dietary%20%2F%20Accessibility%20%2F%20Logistics%20%2F%20Other%0A%0AMy%20question%3A%0A%0AThanks!%0A%E2%80%94%20"
+       rel="noopener">Email the Couple</a>
   </div>
 
   <!-- Music toggle -->
@@ -215,7 +243,6 @@
       const address = '89 South St, New York, NY 10038';
 
       // Apple Maps deep link via structured location (Apple Calendar)
-      // Coordinates for Carne Mare (approx Seaport, NYC):
       const geoLat = 40.7061, geoLng = -74.0032;
 
       // June 5, 2026 — 7:00 PM to 10:00 PM ET (UTC times in ICS)
@@ -279,7 +306,7 @@
       /* ---------- Audio: robust iPad handling + 1s fade-in ---------- */
       let bgm = null, started = false, fadedIn = false;
       const TARGET_VOL = 0.35;
-      const SRC = 'assets/bgm_small.mp3?v=27';
+      const SRC = 'assets/bgm_small.mp3?v=28';
 
       function createAudio(){
         if (bgm) return bgm;
