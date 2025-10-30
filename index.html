@@ -19,7 +19,7 @@
   <meta property="og:title" content="Luna Wedding — June 5, 2026" />
   <meta property="og:description" content="Luna Wedding — RSVP • June 5, 2026" />
   <meta property="og:url" content="https://luna.wedding/" />
-  <meta property="og:image" content="https://luna.wedding/assets/og.jpg?v=34" />
+  <meta property="og:image" content="https://luna.wedding/assets/og.jpg?v=35" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -29,7 +29,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 5, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 5, 2026" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/og.jpg?v=34" />
+  <meta name="twitter:image" content="https://luna.wedding/assets/og.jpg?v=35" />
 
   <!-- Favicon (inline SVG monogram) -->
   <link rel="icon" type="image/svg+xml"
@@ -47,9 +47,9 @@
     </svg>' />
 
   <!-- Performance: preload hero assets -->
-  <link rel="preload" as="image" href="assets/bg.jpg?v=34" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/image.jpg?v=34">
-  <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=34" />
+  <link rel="preload" as="image" href="assets/bg.jpg?v=35" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/image.jpg?v=35">
+  <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=35" />
 
   <style>
     :root { --fallback:#000; --hint-bg: rgba(255,255,255,.74); --hint-fg:#111; }
@@ -115,7 +115,7 @@
     .actions{
       position:fixed;
       left:50%;
-      bottom:calc(16px + env(safe-area-inset-bottom));
+      bottom:calc(16px + env(safe-area-inset-bottom));   /* default low */
       transform:translateX(-50%);
       z-index:15;
 
@@ -130,14 +130,22 @@
 
       opacity:0;
       pointer-events:none;
-      transition:opacity .28s ease, transform .28s ease;
+      transition:opacity .28s ease, transform .28s ease, bottom .28s ease;
     }
     .actions::-webkit-scrollbar{ display:none; }
 
-    /* Show actions when lightbox is open or when menu toggled */
-    .lightbox.visible + .actions,
+    /* When menu is opened (no lightbox), raise the bar above the dock */
     .actions.show{
+      bottom:calc(84px + env(safe-area-inset-bottom));   /* moved up to clear Menu pill */
       opacity:1; pointer-events:auto; transform:translateX(-50%) translateY(-4px);
+      z-index:30; /* ensure above dock */
+    }
+
+    /* When lightbox opens, show bar at the lower position (menu is hidden then) */
+    .lightbox.visible + .actions{
+      bottom:calc(16px + env(safe-area-inset-bottom));
+      opacity:1; pointer-events:auto; transform:translateX(-50%) translateY(-4px);
+      z-index:30;
     }
 
     .btn{
@@ -168,6 +176,11 @@
     .pill.on .dot{ background:#3bd16f }
     .pill .label{ letter-spacing:.2px }
 
+    /* Hide the Menu button while zoomed (lightbox open) */
+    .lightbox.visible ~ .dock #menuBtn{
+      opacity:0; pointer-events:none; transform:translateY(6px);
+    }
+
     /* Phones: wrap into two rows (2x2) instead of hidden scroll */
     @media (max-width: 430px){
       .actions{
@@ -196,11 +209,11 @@
 <body>
   <!-- Background -->
   <div class="bg" aria-hidden="true">
-    <img src="assets/bg.jpg?v=34" alt="">
+    <img src="assets/bg.jpg?v=35" alt="">
   </div>
 
   <!-- Invitation -->
-  <img id="invite" class="invite" src="assets/image.jpg?v=34" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/image.jpg?v=35" alt="Wedding invitation">
 
   <!-- Hint -->
   <div id="hint" class="hint" aria-hidden="true">Tap to zoom</div>
@@ -362,7 +375,7 @@
       function openGCal(){
         const details = encodeURIComponent(desc);
         const text = encodeURIComponent(title);
-        const location = encodeURIComponent(`${venue}, ${address}`); // <-- FIXED
+        const location = encodeURIComponent(`${venue}, ${address}`);
         const href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${dtStartUTC}/${dtEndUTC}&details=${details}&location=${location}&sf=true&output=xml`;
         window.open(href, '_blank', 'noopener,noreferrer');
       }
@@ -373,7 +386,7 @@
       /* ---------- Audio: robust iPad handling + 1s fade-in ---------- */
       let bgm = null, started = false, fadedIn = false;
       const TARGET_VOL = 0.35;
-      const SRC = 'assets/bgm_small.mp3?v=34';
+      const SRC = 'assets/bgm_small.mp3?v=35';
 
       function createAudio(){
         if (bgm) return bgm;
