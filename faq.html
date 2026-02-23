@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FAQ — Luna Wedding</title>
+  <link rel="canonical" href="https://luna.wedding/faq.html" />
+
+  <meta name="title" content="FAQ — Luna Wedding" />
+  <meta name="description" content="Frequently asked questions for Toby and Michelle's wedding celebration." />
+
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Luna Wedding" />
+  <meta property="og:title" content="FAQ — Luna Wedding" />
+  <meta property="og:description" content="Frequently asked questions for Toby and Michelle's wedding celebration." />
+  <meta property="og:url" content="https://luna.wedding/faq.html" />
+  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=15" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="FAQ — Luna Wedding" />
+  <meta name="twitter:description" content="Frequently asked questions for Toby and Michelle's wedding celebration." />
+  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=15" />
+
+  <style>
+    :root{
+      --bg:#000;
+      --card:rgba(255,255,255,.08);
+      --card-border:rgba(255,255,255,.18);
+      --text:#fff;
+      --muted:rgba(255,255,255,.80);
+      --pill:rgba(0,0,0,.45);
+      --pill-border:rgba(255,255,255,.45);
+      --shadow:0 20px 48px rgba(0,0,0,.28);
+    }
+
+    * { box-sizing:border-box; }
+
+    /* Match home page font stack */
+    html, body{
+      margin:0;
+      min-height:100%;
+      color:var(--text);
+      background:var(--bg);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    }
+
+    .bg{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      background:
+        linear-gradient(rgba(0,0,0,.42), rgba(0,0,0,.68)),
+        url("assets/bg.jpg?v=37") center / cover no-repeat;
+    }
+
+    .wrap{
+      position:relative;
+      z-index:1;
+      width:min(940px, 94vw);
+      margin:18px auto 36px;
+      padding:8px 0 24px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:#fff;
+      text-decoration:none;
+      font-weight:600;
+      letter-spacing:.2px;
+    }
+
+    .monogram{
+      width:34px; height:34px;
+      border-radius:999px;
+      background:#fff;
+      color:#000;
+      display:grid;
+      place-items:center;
+      font-family:Georgia, "Times New Roman", serif;
+      font-style:italic;
+      font-weight:700;
+      box-shadow:0 4px 18px rgba(0,0,0,.25);
+    }
+
+    .nav{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      appearance:none;
+      border:1px solid var(--pill-border);
+      color:#fff;
+      background:var(--pill);
+      padding:10px 14px;
+      border-radius:999px;
+      font-size:14px;
+      line-height:1;
+      text-decoration:none;
+      cursor:pointer;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow:0 8px 24px rgba(0,0,0,.18);
+      white-space:nowrap;
+    }
+
+    .hero{
+      background:var(--card);
+      border:1px solid var(--card-border);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      margin-bottom:12px;
+    }
+
+    .hero h1{
+      margin:0 0 6px;
+      font-size:clamp(24px, 4vw, 34px);
+      line-height:1.05;
+      letter-spacing:.2px;
+    }
+
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.45;
+    }
+
+    .faq-list{
+      display:grid;
+      gap:10px;
+    }
+
+    details.faq{
+      background:var(--card);
+      border:1px solid var(--card-border);
+      border-radius:14px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      overflow:hidden;
+    }
+
+    details.faq summary{
+      list-style:none;
+      cursor:pointer;
+      padding:14px 16px;
+      font-weight:600;
+      line-height:1.25;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    details.faq summary::-webkit-details-marker{ display:none; }
+
+    .chev{
+      flex:0 0 auto;
+      width:24px; height:24px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.25);
+      display:grid;
+      place-items:center;
+      font-size:13px;
+      color:rgba(255,255,255,.92);
+      background:rgba(255,255,255,.04);
+      transition:transform .18s ease, background .18s ease;
+    }
+    details.faq[open] .chev{
+      transform:rotate(180deg);
+      background:rgba(255,255,255,.10);
+    }
+
+    .answer{
+      padding:0 16px 16px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.55;
+      border-top:1px solid rgba(255,255,255,.09);
+    }
+
+    .answer p{ margin:10px 0 0; }
+    .answer p:first-child{ margin-top:12px; }
+    .answer ul{ margin:10px 0 0 18px; padding:0; }
+    .answer li{ margin:6px 0; }
+
+    .answer a{
+      color:#fff;
+      text-decoration:underline;
+      text-underline-offset:2px;
+    }
+
+    .footer-note{
+      margin-top:14px;
+      text-align:center;
+      color:rgba(255,255,255,.66);
+      font-size:12px;
+    }
+
+    @media (max-width: 520px){
+      .topbar{ align-items:stretch; }
+      .nav{ width:100%; }
+      .nav .btn{ flex:1 1 auto; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+
+  <main class="wrap">
+    <div class="topbar">
+      <a class="brand" href="index.html" aria-label="Back to home">
+        <span class="monogram">LM</span>
+        <span>Luna Wedding</span>
+      </a>
+
+      <div class="nav">
+        <a class="btn" href="index.html">Home</a>
+        <a class="btn" href="registry.html">Registry</a>
+      </div>
+    </div>
+
+    <section class="hero">
+      <h1>Frequently Asked Questions</h1>
+      <p>Everything you need to know for our celebration on Saturday, June 6, 2026.</p>
+    </section>
+
+    <section class="faq-list" aria-label="Wedding FAQ">
+      <details class="faq" open>
+        <summary>
+          <span>Where and when is the event?</span>
+          <span class="chev" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>
+            Carne Mare at <strong>89 South Street</strong> at <strong>Pier 17</strong> (behind the Tin Building) on
+            <strong>June 6th</strong> from <strong>7:00 PM–10:00 PM</strong>.
+            Please arrive promptly at <strong>7:00 PM</strong> to avoid delaying the event.
+          </p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>How do I get there?</span>
+          <span class="chev" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>
+            Carne Mare is on <strong>Pier 17</strong>, behind the Tin Building, in the Seaport.
+            Cars are <strong>not allowed to drive up to the door</strong>, so please plan for a short
+            <strong>~1-minute walk</strong> from the adjacent sidewalk, down the pier, and past the Tin Building.
+          </p>
+
+          <p><strong>By car / rideshare</strong></p>
+          <ul>
+            <li>Use <strong>89 South Street, New York, NY 10038</strong> as your destination.</li>
+            <li>Ask to be dropped off near the Seaport / Tin Building / Pier 17 entrance area.</li>
+            <li>From there, walk down the pier to Carne Mare (cars cannot pull up to the restaurant entrance).</li>
+          </ul>
+
+          <p><strong>By public transit</strong></p>
+          <ul>
+            <li>Take the subway to the <strong>Fulton Street</strong> area (several lines stop nearby).</li>
+            <li>Walk east toward the Seaport / Pier 17 and continue past the Tin Building.</li>
+            <li>Please allow a few extra minutes if it’s your first time navigating the Seaport.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>What is parking situation?</span>
+          <span class="chev" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>
+            There is no on-site parking, and street parking is limited.
+            We recommend the <strong>SpotHero</strong> app to book nearby parking garages at low rates.
+          </p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>Who is invited?</span>
+          <span class="chev" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>
+            While we unfortunately can't invite all of our friends and loved ones, we did our best to include those that matter the most.
+            Please refer to your invitation for specific invitees to the dinner.
+          </p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>Can I bring my kids, a mutual friend, situationship, or any other uninvited guests?</span>
+          <span class="chev" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>
+            Given the smaller capacity, we've had to make difficult choices to be surrounded by those that matter most.
+            Please refrain from any unapproved plus 1's, as they may be turned away from the venue.
+          </p>
+          <p>
+            Parents — please understand that this is a <strong>child-free event</strong>.
+          </p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>What is the dress code?</span>
+          <span class="chev" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>
+            We request <strong>formal, cocktail attire</strong> for the reception dinner.
+          </p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>Will there be vows, speeches, music and dancing?</span>
+          <span class="chev" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>
+            No — instead, a small, private wedding ceremony will be held prior to this event.
+            We look forward to meeting you all on <strong>Saturday, June 6th 2026 at 7:00 PM</strong> to celebrate our marriage
+            over delicious food and drink at Carne Mare.
+          </p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>What’s on the menu?</span>
+          <span class="chev" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>
+            A special 5-course menu that includes oysters, shrimp, caviar, lobster pasta, and tomahawk steak will be served.
+            You can review Carne Mare's full menu on this page:
+            <a href="https://www.carnemare.com/menus/#dinner" target="_blank" rel="noopener noreferrer">
+              Carne Mare Dinner Menu
+            </a>.
+            Come hungry!
+          </p>
+          <p>
+            Please include any food allergies in your RSVP, or use the "Contact the Couple" button from the Menu option on the home page to share any concerns.
+          </p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>Are you registered anywhere?</span>
+          <span class="chev" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>
+            Yes we are! Please visit our
+            <a href="registry.html">registry page</a>
+            for more information. Thank you in advance for your generosity!
+          </p>
+        </div>
+      </details>
+
+      <!-- Additional helpful items -->
+      <details class="faq">
+        <summary>
+          <span>What time should I arrive?</span>
+          <span class="chev" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>
+            Please plan to arrive at <strong>7:00 PM sharp</strong>. This helps us start on time and keeps the dinner service flowing smoothly.
+          </p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>What if I have food allergies or dietary restrictions?</span>
+          <span class="chev" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>
+            Please include any allergies or dietary restrictions in your RSVP.
+            If you’ve already RSVP’d and need to update us, use the "Contact the Couple" button from the Menu option on the home page.
+          </p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>Can I arrive late?</span>
+          <span class="chev" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>
+            We kindly ask everyone to arrive on time. Late arrivals may disrupt the event and dinner service, so please plan ahead for traffic, parking, and the short walk onto Pier 17.
+          </p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>How do I get in touch with you for questions?</span>
+          <span class="chev" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="answer">
+          <p>
+            Reach out at any time via email by using the "Contact the Couple" button from the Menu option on the home page.
+          </p>
+        </div>
+      </details>
+    </section>
+
+    <p class="footer-note">More details may be added as we get closer. We can’t wait to celebrate with you.</p>
+  </main>
+</body>
+</html>
