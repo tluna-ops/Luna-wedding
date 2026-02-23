@@ -10,24 +10,21 @@
   <meta name="title" content="Luna Wedding — June 6, 2026" />
   <meta name="description" content="Luna Wedding — RSVP • June 6, 2026" />
 
-  <!-- Open Graph -->
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Luna Wedding" />
   <meta property="og:title" content="Luna Wedding — June 6, 2026" />
   <meta property="og:description" content="Luna Wedding — RSVP • June 6, 2026" />
   <meta property="og:url" content="https://luna.wedding/" />
-  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=5" />
+  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=6" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:alt" content="Luna Wedding — June 6, 2026" />
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 6, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 6, 2026" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=5" />
+  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=6" />
 
-  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml"
     href='data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -43,7 +40,7 @@
     </svg>' />
 
   <link rel="preload" as="image" href="assets/bg.jpg?v=37" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/weddinginvite.png?v=5" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/weddinginvite.png?v=6" fetchpriority="high">
   <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=37">
 
   <style>
@@ -64,57 +61,36 @@
     }
 
     .bg { position:fixed; inset:0; opacity:0; animation:fadeBg 900ms ease-out .05s forwards; }
-    .bg img {
-      width:100vw; height:100vh; object-fit:cover; object-position:center;
-      user-select:none; -webkit-user-drag:none;
-    }
+    .bg img { width:100vw; height:100vh; object-fit:cover; object-position:center; user-select:none; -webkit-user-drag:none; }
 
     .invite{
-      position:fixed;
-      left:50%; top:50%;
+      position:fixed; left:50%; top:50%;
       transform:translate(-50%,-50%);
-      max-width:min(92vw,900px);
-      max-height:88vh;
-      width:auto; height:auto;
-      border-radius:12px;
-      background:#fff;
+      max-width:min(92vw,900px); max-height:88vh;
+      width:auto; height:auto; display:block;
+      border-radius:12px; background:#fff;
       box-shadow:0 20px 48px rgba(0,0,0,.25);
-      opacity:0;
-      animation:fadeCard .75s cubic-bezier(.21,.98,.25,.99) .2s forwards;
-      cursor:zoom-in;
-      user-select:none;
-      -webkit-user-drag:none;
-      z-index:1;
-      display:block;
+      opacity:0; animation:fadeCard .75s cubic-bezier(.21,.98,.25,.99) .2s forwards;
+      cursor:zoom-in; user-select:none; -webkit-user-drag:none; z-index:1;
     }
 
     .hint{
-      position:fixed;
-      left:50%;
+      position:fixed; left:50%;
       bottom:calc(84px + env(safe-area-inset-bottom));
       transform:translateX(-50%);
-      padding:8px 12px;
-      border-radius:999px;
-      background:var(--hint-bg);
-      color:var(--hint-fg);
-      font-size:13px;
+      padding:8px 12px; border-radius:999px;
+      background:var(--hint-bg); color:var(--hint-fg); font-size:13px;
       box-shadow:0 8px 24px rgba(0,0,0,.12);
-      z-index:30;
-      border:0;
-      cursor:pointer;
-      opacity:0;
-      transition: opacity 600ms ease, transform 600ms ease;
+      z-index:30; border:0; cursor:pointer;
+      opacity:0; transition: opacity 600ms ease, transform 600ms ease;
     }
-    .hint:focus{ outline:2px solid rgba(0,0,0,.25); outline-offset:2px; }
     .hint.show{ opacity:1; transform:translate(-50%, -4px); }
     .hint.hide{ opacity:0; transform:translate(-50%, 4px); }
 
     .lightbox{
-      position:fixed; inset:0;
-      background:rgba(0,0,0,.6);
+      position:fixed; inset:0; background:rgba(0,0,0,.6);
       display:flex; align-items:center; justify-content:center;
-      opacity:0; pointer-events:none;
-      z-index:10;
+      opacity:0; pointer-events:none; z-index:10;
       transition:opacity 280ms ease, background-color 180ms ease;
       -webkit-backdrop-filter: blur(8px) saturate(120%);
       backdrop-filter: blur(8px) saturate(120%);
@@ -123,79 +99,55 @@
     .lightbox.closing{ background:rgba(0,0,0,.95); }
 
     .lightbox img{
-      max-width:94vw; max-height:92vh;
-      border-radius:14px;
+      max-width:94vw; max-height:92vh; border-radius:14px;
       box-shadow:0 24px 64px rgba(0,0,0,.6);
       transform:scale(.96);
       transition:transform 280ms cubic-bezier(.23,1,.32,1);
       touch-action:pinch-zoom;
     }
     .lightbox.visible img{ transform:scale(1); }
-    .lightbox.closing img{ transform:scale(.98); }
 
-    .close,
-    .menu-close{
+    .close, .menu-close{
       position:fixed;
       top:calc(12px + env(safe-area-inset-top));
       right:calc(12px + env(safe-area-inset-right));
       width:44px; height:44px;
       border:0; border-radius:999px;
       background:#fff; color:#000;
-      font-size:22px; line-height:1;
-      cursor:pointer;
-      opacity:0; pointer-events:none;
-      transform:scale(.85);
+      font-size:22px; line-height:1; cursor:pointer;
+      opacity:0; pointer-events:none; transform:scale(.85);
       transition:opacity 260ms ease .1s, transform 260ms ease .1s;
-      z-index:45;
     }
-    .lightbox.visible .close{ opacity:1; pointer-events:auto; transform:scale(1); }
+    .close{ z-index:45; }
+    .menu-close{ z-index:34; background:rgba(255,255,255,.92); }
 
-    .menu-close{
-      z-index:34;
-      background:rgba(255,255,255,.92);
-    }
-    body.menu-open .menu-close{
-      opacity:1;
-      pointer-events:auto;
-      transform:scale(1);
-    }
-    body.menu-open .lightbox.visible ~ .menu-close{
-      opacity:0; pointer-events:none;
-    }
+    .lightbox.visible .close{ opacity:1; pointer-events:auto; transform:scale(1); }
+    body.menu-open .menu-close{ opacity:1; pointer-events:auto; transform:scale(1); }
+    body.zoom-open .menu-close{ opacity:0; pointer-events:none; }
 
     .actions{
-      position:fixed;
-      left:50%;
+      position:fixed; left:50%;
       bottom:calc(16px + env(safe-area-inset-bottom));
       transform:translateX(-50%);
       z-index:15;
-      display:flex;
-      gap:8px;
-      flex-wrap:nowrap;
-      overflow-x:auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width:none;
-      max-width:min(92vw, 980px);
-      padding:0 8px;
-      opacity:0;
-      pointer-events:none;
+      display:flex; gap:8px; flex-wrap:nowrap; overflow-x:auto;
+      -webkit-overflow-scrolling: touch; scrollbar-width:none;
+      max-width:min(92vw, 980px); padding:0 8px;
+      opacity:0; pointer-events:none;
       transition:opacity .28s ease, transform .28s ease, bottom .28s ease;
     }
     .actions::-webkit-scrollbar{ display:none; }
 
     .actions.show{
       bottom:calc(84px + env(safe-area-inset-bottom));
-      opacity:1;
-      pointer-events:auto;
+      opacity:1; pointer-events:auto;
       transform:translateX(-50%) translateY(-4px);
       z-index:30;
     }
 
-    /* Zoom contextual actions */
     body.zoom-open .actions{
       bottom:calc(16px + env(safe-area-inset-bottom));
-      opacity:1;
-      pointer-events:auto;
+      opacity:1; pointer-events:auto;
       transform:translateX(-50%) translateY(-4px);
       z-index:30;
     }
@@ -203,36 +155,24 @@
     .btn{
       appearance:none;
       border:1px solid rgba(255,255,255,.6);
-      color:#fff;
-      background:rgba(0,0,0,.45);
-      padding:10px 14px;
-      border-radius:999px;
-      font-size:14px;
-      backdrop-filter:blur(6px);
-      -webkit-backdrop-filter:blur(6px);
+      color:#fff; background:rgba(0,0,0,.45);
+      padding:10px 14px; border-radius:999px;
+      font-size:14px; line-height:1.15;
+      backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
       box-shadow:0 8px 24px rgba(0,0,0,.18);
-      cursor:pointer;
-      flex:0 0 auto;
-      white-space:nowrap;
-      text-decoration:none;
-      line-height:1.15;
+      cursor:pointer; flex:0 0 auto; white-space:nowrap; text-decoration:none;
     }
-    .btn:hover, .btn:focus, .btn:active{ text-decoration:none; }
 
     .calendar-group{ position:relative; flex:0 0 auto; }
     .calendar-main{ width:100%; }
 
     .calendar-options{
-      position:absolute;
-      left:50%;
+      position:absolute; left:50%;
       bottom:calc(100% + 8px);
       transform:translateX(-50%) translateY(6px);
-      display:flex;
-      flex-direction:column;
-      gap:6px;
+      display:flex; flex-direction:column; gap:6px;
       min-width:max-content;
-      opacity:0;
-      pointer-events:none;
+      opacity:0; pointer-events:none;
       transition:opacity .18s ease, transform .18s ease;
       z-index:40;
     }
@@ -247,78 +187,48 @@
     }
 
     .dock{
-      position:fixed;
-      left:12px;
+      position:fixed; left:12px;
       bottom:calc(12px + env(safe-area-inset-bottom));
-      display:flex;
-      align-items:center;
-      gap:8px;
-      z-index:20;
+      display:flex; align-items:center; gap:8px; z-index:20;
       transition:opacity .2s ease, transform .2s ease;
     }
 
     .pill{
       display:inline-flex; align-items:center; gap:8px;
-      padding:10px 12px;
-      border-radius:999px;
+      padding:10px 12px; border-radius:999px;
       border:1px solid rgba(255,255,255,.5);
-      background:rgba(0,0,0,.40);
-      color:#fff;
-      font-size:14px;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      background:rgba(0,0,0,.40); color:#fff; font-size:14px;
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
       box-shadow:0 8px 24px rgba(0,0,0,.18);
-      cursor:pointer;
-      user-select:none;
+      cursor:pointer; user-select:none;
       transition:opacity .25s ease, transform .25s ease, background .25s ease;
     }
-    .pill:hover{ transform:translateY(-1px); background:rgba(0,0,0,.5); }
     .pill .dot{ width:8px; height:8px; border-radius:999px; background:#ff4d4f; }
     .pill.on .dot{ background:#3bd16f; }
-    .pill .label{ letter-spacing:.2px; }
 
-    /* Hide dock whenever zoom is open (all viewports) */
     body.zoom-open .dock{
-      opacity:0;
-      pointer-events:none;
-      transform:translateY(8px);
+      opacity:0; pointer-events:none; transform:translateY(8px);
     }
 
     @media (max-width: 430px){
       .actions{
-        overflow-x: visible;
-        flex-wrap: wrap;
-        justify-content: center;
-        row-gap: 8px;
-        max-width: 92vw;
-        padding: 0 12px;
+        overflow-x: visible; flex-wrap: wrap; justify-content: center;
+        row-gap: 8px; max-width: 92vw; padding: 0 12px;
       }
-      .btn{
-        flex: 1 1 calc(50% - 8px);
-        text-align: center;
-      }
+      .btn{ flex: 1 1 calc(50% - 8px); text-align:center; }
       .calendar-group{ flex: 1 1 calc(50% - 8px); }
-      .calendar-main{ width:100%; }
       .calendar-options{ min-width:100%; }
       .calendar-options .btn{ width:100%; }
     }
-
     @media (max-width: 340px){
-      .btn, .calendar-group{ flex: 1 1 100%; }
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      .bg, .invite, .hint{ animation-duration:.01s; }
+      .btn, .calendar-group{ flex:1 1 100%; }
     }
   </style>
 </head>
 <body>
-  <div class="bg" aria-hidden="true">
-    <img src="assets/bg.jpg?v=37" alt="">
-  </div>
+  <div class="bg" aria-hidden="true"><img src="assets/bg.jpg?v=37" alt=""></div>
 
-  <img id="invite" class="invite" src="assets/weddinginvite.png?v=5" alt="Wedding invitation">
-
+  <img id="invite" class="invite" src="assets/weddinginvite.png?v=6" alt="Wedding invitation">
   <button id="hint" class="hint" type="button" aria-label="Tap to zoom">Tap to zoom</button>
 
   <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
@@ -329,53 +239,34 @@
   <button id="menuCloseBtn" class="menu-close" aria-label="Close menu">×</button>
 
   <div id="actions" class="actions" aria-hidden="true">
-    <a
-      id="rsvpBtn"
-      class="btn"
-      aria-label="RSVP"
+    <a id="rsvpBtn" class="btn" aria-label="RSVP"
       href="mailto:rsvp@luna.wedding?subject=RSVP%3A%20Luna%20Wedding&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AWe%27re%20delighted%20to%20RSVP%20for%20June%206%2C%202026.%0A%0ANames%3A%20%0ANumber%20of%20Guests%3A%20%0ADietary%20notes%3A%20%0A%0AWith%20love%2C%0A"
-      rel="noopener"
-    >RSVP</a>
+      rel="noopener">RSVP</a>
 
     <div id="calendarGroup" class="calendar-group">
-      <button
-        id="calendarToggleBtn"
-        class="btn calendar-main"
-        type="button"
-        aria-label="Add to Calendar"
-        aria-expanded="false"
-        aria-controls="calendarOptions"
-      >Add to Calendar</button>
-
+      <button id="calendarToggleBtn" class="btn calendar-main" type="button" aria-expanded="false">Add to Calendar</button>
       <div id="calendarOptions" class="calendar-options" aria-hidden="true">
-        <button id="appleCalBtn" class="btn" type="button" aria-label="Apple Calendar">Apple Calendar</button>
-        <button id="googleCalBtn" class="btn" type="button" aria-label="Google Calendar">Google Calendar</button>
+        <button id="appleCalBtn" class="btn" type="button">Apple Calendar</button>
+        <button id="googleCalBtn" class="btn" type="button">Google Calendar</button>
       </div>
     </div>
 
-    <a id="registryBtn" class="btn" aria-label="Registry" href="registry.html">Registry</a>
-    <a id="faqBtn" class="btn" aria-label="FAQ" href="faq.html">FAQ</a>
+    <a id="registryBtn" class="btn" href="registry.html">Registry</a>
+    <a id="faqBtn" class="btn" href="faq.html">FAQ</a>
 
-    <a
-      id="askBtn"
-      class="btn"
-      aria-label="Contact the Couple"
+    <a id="askBtn" class="btn"
       href="mailto:hello@luna.wedding?subject=Question%20about%20Luna%20Wedding%20%E2%80%94%20June%206%2C%202026&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AMy%20name%3A%0APhone%20(optional)%3A%0A%0AMy%20question%3A%0A%0AThanks!%0A%E2%80%94%20"
-      rel="noopener"
-    >Contact the Couple</a>
+      rel="noopener">Contact the Couple</a>
   </div>
 
   <div class="dock">
     <button id="music" class="pill" aria-pressed="false" aria-label="Toggle music">
-      <span class="dot" aria-hidden="true"></span>
-      <span class="label">Music</span>
+      <span class="dot" aria-hidden="true"></span><span class="label">Music</span>
     </button>
     <button id="menuBtn" class="pill" aria-pressed="false" aria-label="Toggle menu">
       <span class="label">Menu</span>
     </button>
   </div>
-
-  <noscript><style>.hint{display:none}</style></noscript>
 
   <script>
     (function(){
@@ -384,7 +275,7 @@
       const hint = document.getElementById('hint');
       const lb = document.getElementById('lightbox');
       const lbimg = document.getElementById('lbimg');
-      const closeBtn = lb.querySelector('.close');
+      const zoomCloseBtn = lb.querySelector('.close');
 
       const actionsWrap = document.getElementById('actions');
       const menuBtn = document.getElementById('menuBtn');
@@ -397,12 +288,10 @@
       const appleCalBtn = document.getElementById('appleCalBtn');
       const googleCalBtn = document.getElementById('googleCalBtn');
 
-      /* Event details */
       const EVENT = {
         title: 'Luna Wedding',
         description: 'Dress Code: Formal Attire',
         location: 'Carne Mare – Seaport, 89 South St, New York, NY 10038',
-        // June 6, 2026 7:00 PM–10:00 PM ET = 23:00Z–02:00Z
         startUTC: '20260606T230000Z',
         endUTC:   '20260607T020000Z'
       };
@@ -423,7 +312,7 @@
 
       function buildICS(){
         const CRLF = '\r\n';
-        const lines = [
+        return [
           'BEGIN:VCALENDAR',
           'VERSION:2.0',
           'PRODID:-//luna.wedding//Wedding//EN',
@@ -438,51 +327,27 @@
           fold(`DESCRIPTION:${EVENT.description}`),
           fold(`LOCATION:${EVENT.location}`),
           'END:VEVENT',
-          'END:VCALENDAR'
-        ];
-        return lines.join(CRLF) + CRLF;
+          'END:VCALENDAR',
+          ''
+        ].join(CRLF);
       }
 
-      function downloadICSFile(){
-        const blob = new Blob([buildICS()], { type: 'text/calendar;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'LunaWedding.ics';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 3000);
-      }
-
-      async function openAppleCalendar(e){
+      // Apple note:
+      // There is no reliable public-web deep link that opens Apple Calendar directly to a *prefilled new event*.
+      // The best supported path is an .ics event file import. We avoid webcal:// to prevent "subscription calendar".
+      function openAppleCalendar(e){
         e.preventDefault();
         e.stopPropagation();
         hideCalendarOptions();
 
-        // There isn't a reliable "create new Apple Calendar event" deep link from a public webpage.
-        // Best UX: generate a one-time .ics event file (not webcal subscription) and let iOS/macOS import it.
-        // Try share sheet first on iOS (often cleaner), fallback to direct file open/download.
         const blob = new Blob([buildICS()], { type: 'text/calendar;charset=utf-8' });
-        const file = new File([blob], 'LunaWedding.ics', { type: 'text/calendar' });
-
-        if (isIOS() && navigator.canShare && navigator.share) {
-          try {
-            if (navigator.canShare({ files: [file] })) {
-              await navigator.share({ files: [file], title: EVENT.title });
-              return;
-            }
-          } catch (_) {}
-        }
-
         const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        // no download attr here -> allows OS to handle/import if possible
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 5000);
+
+        // Do NOT use download attr (that forces file download). Let iOS/macOS handle/import the ICS.
+        // This should open the system sheet/import flow directly instead of subscribing.
+        window.location.href = url;
+
+        setTimeout(() => URL.revokeObjectURL(url), 8000);
       }
 
       function openGoogleCalendar(e){
@@ -513,74 +378,79 @@
           return;
         }
 
-        if (isIOS()) {
-          // Universal link typically opens app if installed, otherwise web
-          window.location.href = webUrl;
-          return;
-        }
-
-        window.open(webUrl, '_blank', 'noopener,noreferrer');
+        window.location.href = webUrl; // iOS universal link or desktop web
       }
 
-      /* Menu / actions / zoom states */
       function showCalendarOptions(){
         calendarOptions.classList.add('show');
         calendarOptions.setAttribute('aria-hidden', 'false');
         calendarToggleBtn.setAttribute('aria-expanded', 'true');
       }
-
       function hideCalendarOptions(){
         calendarOptions.classList.remove('show');
         calendarOptions.setAttribute('aria-hidden', 'true');
         calendarToggleBtn.setAttribute('aria-expanded', 'false');
       }
-
       function toggleCalendarOptions(e){
         e.stopPropagation();
-        if (calendarOptions.classList.contains('show')) hideCalendarOptions();
-        else showCalendarOptions();
+        calendarOptions.classList.contains('show') ? hideCalendarOptions() : showCalendarOptions();
       }
 
-      function showActionsMenu(){
+      function syncActionsVisibility(){
+        const visible = body.classList.contains('menu-open') || body.classList.contains('zoom-open');
+        actionsWrap.classList.toggle('show', body.classList.contains('menu-open'));
+        actionsWrap.setAttribute('aria-hidden', visible ? 'false' : 'true');
+      }
+
+      function openMenu(){
         body.classList.add('menu-open');
-        actionsWrap.classList.add('show');
-        actionsWrap.setAttribute('aria-hidden', 'false');
-        menuBtn.setAttribute('aria-pressed', 'true');
+        body.classList.remove('zoom-open');
+        lb.classList.remove('visible', 'closing');
+        document.body.style.overflow = '';
+        syncActionsVisibility();
+        menuBtn.setAttribute('aria-pressed','true');
         menuBtn.classList.add('on');
+        hideCalendarOptions();
       }
 
-      function hideActionsMenu(){
+      function closeMenu(){
         body.classList.remove('menu-open');
-        actionsWrap.classList.remove('show');
-        actionsWrap.setAttribute('aria-hidden', 'true');
-        menuBtn.setAttribute('aria-pressed', 'false');
+        syncActionsVisibility();
+        menuBtn.setAttribute('aria-pressed','false');
         menuBtn.classList.remove('on');
         hideCalendarOptions();
       }
 
-      function showZoomActions(){
-        body.classList.add('zoom-open');
-        actionsWrap.setAttribute('aria-hidden', 'false');
+      function closeZoom(){
+        lb.classList.add('closing');
+        setTimeout(() => {
+          lb.classList.remove('visible');
+          body.classList.remove('zoom-open');
+          syncActionsVisibility();
+          setTimeout(() => {
+            lb.classList.remove('closing');
+            document.body.style.overflow = '';
+          }, 220);
+        }, 120);
       }
 
-      function hideZoomActions(){
-        body.classList.remove('zoom-open');
-        if (!body.classList.contains('menu-open')) {
-          actionsWrap.setAttribute('aria-hidden', 'true');
+      function closeAll(){
+        closeMenu();
+        if (lb.classList.contains('visible')) {
+          closeZoom();
+        } else {
+          body.classList.remove('zoom-open');
+          syncActionsVisibility();
+          document.body.style.overflow = '';
         }
-        hideCalendarOptions();
       }
 
-      function toggleActionsMenu(e){
-        e.stopPropagation();
-        if (body.classList.contains('menu-open')) hideActionsMenu();
-        else showActionsMenu();
-      }
+      function openZoom(){
+        // Per latest behavior: opening zoom should close menu first and show zoom-context actions
+        closeMenu();
 
-      function openLB(){
-        // Force-close menu state, then open zoom state so the action buttons become contextual to zoom
-        hideActionsMenu();
-        showZoomActions();
+        body.classList.add('zoom-open');
+        syncActionsVisibility();
 
         lbimg.src = invite.currentSrc || invite.src;
         lb.classList.add('visible');
@@ -589,61 +459,65 @@
         unlockAudio();
       }
 
-      function closeLB(){
-        lb.classList.add('closing');
-        setTimeout(() => {
-          lb.classList.remove('visible');
-          hideZoomActions();
-          setTimeout(() => {
-            lb.classList.remove('closing');
-            document.body.style.overflow = '';
-          }, 300);
-        }, 120);
+      function toggleMenu(e){
+        e.stopPropagation();
+        if (body.classList.contains('menu-open')) closeMenu();
+        else openMenu();
       }
 
-      invite.addEventListener('click', openLB, { passive:true });
+      invite.addEventListener('click', (e) => {
+        // If menu is open, a click on invite counts as "outside buttons" and closes everything (no zoom)
+        if (body.classList.contains('menu-open')) {
+          e.stopPropagation();
+          closeAll();
+          return;
+        }
+        openZoom();
+      }, { passive:false });
 
       let lastTap = 0;
-      invite.addEventListener('touchend', () => {
+      invite.addEventListener('touchend', (e) => {
+        if (body.classList.contains('menu-open')) return;
         const now = Date.now();
-        if (now - lastTap < 300) openLB();
-        lastTap = now;
-      }, { passive:true });
-
-      lb.addEventListener('click', (e) => { if (e.target === lb) closeLB(); });
-      closeBtn.addEventListener('click', closeLB);
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape'){
-          if (lb.classList.contains('visible')) closeLB();
-          else hideActionsMenu();
+        if (now - lastTap < 300) {
+          e.preventDefault();
+          openZoom();
         }
+        lastTap = now;
+      }, { passive:false });
+
+      hint.addEventListener('click', (e) => {
+        if (body.classList.contains('menu-open')) { closeAll(); return; }
+        openZoom();
       });
 
-      hint.addEventListener('click', openLB, { passive:true });
+      lb.addEventListener('click', (e) => {
+        if (e.target === lb) closeZoom();
+      });
+      zoomCloseBtn.addEventListener('click', (e) => { e.stopPropagation(); closeZoom(); });
 
-      menuBtn.addEventListener('click', toggleActionsMenu);
-      menuCloseBtn.addEventListener('click', (e) => { e.stopPropagation(); hideActionsMenu(); });
+      menuBtn.addEventListener('click', toggleMenu);
+      menuCloseBtn.addEventListener('click', (e) => { e.stopPropagation(); closeMenu(); });
 
       calendarToggleBtn.addEventListener('click', toggleCalendarOptions);
       appleCalBtn.addEventListener('click', openAppleCalendar);
       googleCalBtn.addEventListener('click', openGoogleCalendar);
 
+      // Global outside-click close:
+      // If click is not on ANY interactive controls, close all open windows.
       document.addEventListener('click', (e) => {
-        const withinMenuBtn = e.target.closest('#menuBtn');
-        const withinActions = e.target.closest('#actions');
-        const withinLightbox = e.target.closest('#lightbox');
-        const withinCalendar = e.target.closest('#calendarGroup');
-        const withinMenuClose = e.target.closest('#menuCloseBtn');
-
-        if (!withinMenuBtn && !withinActions && !withinLightbox && !withinMenuClose){
-          hideActionsMenu();
+        const onControl = e.target.closest(
+          '#actions, #menuBtn, #menuCloseBtn, #music, .close'
+        );
+        if (!onControl) {
+          closeAll();
           return;
         }
+        if (!e.target.closest('#calendarGroup')) hideCalendarOptions();
+      });
 
-        if (!withinCalendar){
-          hideCalendarOptions();
-        }
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeAll();
       });
 
       /* Audio */
@@ -683,9 +557,7 @@
           bgm.muted = false;
           await bgm.play();
           if (!fadedIn) fadeTo(TARGET_VOL, 900);
-        } catch {
-          bgm.pause();
-        }
+        } catch { bgm.pause(); }
       }
 
       async function unlockAudio(){
@@ -693,19 +565,13 @@
         try {
           bgm.muted = false;
           if (bgm.paused) await bgm.play();
-          if (!fadedIn) {
-            bgm.volume = 0;
-            fadeTo(TARGET_VOL, 900);
-          }
+          if (!fadedIn) { bgm.volume = 0; fadeTo(TARGET_VOL, 900); }
         } catch {
           setTimeout(async () => {
             try {
               bgm.muted = false;
               if (bgm.paused) await bgm.play();
-              if (!fadedIn) {
-                bgm.volume = 0;
-                fadeTo(TARGET_VOL, 900);
-              }
+              if (!fadedIn) { bgm.volume = 0; fadeTo(TARGET_VOL, 900); }
             } catch {}
           }, 120);
         }
@@ -715,8 +581,7 @@
         createAudio();
         tryAutoPlayNow();
       });
-
-      ['pointerdown', 'touchstart', 'touchend', 'click', 'keydown'].forEach((evt) => {
+      ['pointerdown','touchstart','touchend','click','keydown'].forEach((evt) => {
         window.addEventListener(evt, unlockAudio, { once:true, passive:true });
       });
 
@@ -738,12 +603,8 @@
           try {
             bgm.muted = false;
             if (bgm.paused) await bgm.play();
-            if (!fadedIn) {
-              bgm.volume = 0;
-              fadeTo(TARGET_VOL, 900);
-            } else {
-              bgm.volume = TARGET_VOL;
-            }
+            if (!fadedIn) { bgm.volume = 0; fadeTo(TARGET_VOL, 900); }
+            else { bgm.volume = TARGET_VOL; }
           } catch {}
         } else {
           bgm.muted = true;
@@ -751,8 +612,8 @@
         }
       });
 
-      setTimeout(() => { hint.classList.add('show'); }, 150);
-      setTimeout(() => { hint.classList.add('hide'); }, 5150);
+      setTimeout(() => hint.classList.add('show'), 150);
+      setTimeout(() => hint.classList.add('hide'), 5150);
     })();
   </script>
 </body>
