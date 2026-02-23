@@ -16,14 +16,14 @@
   <meta property="og:title" content="Luna Wedding — June 6, 2026" />
   <meta property="og:description" content="Luna Wedding — RSVP • June 6, 2026" />
   <meta property="og:url" content="https://luna.wedding/" />
-  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=13" />
+  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=14" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:alt" content="Luna Wedding — June 6, 2026" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 6, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 6, 2026" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=13" />
+  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=14" />
 
   <link rel="icon" type="image/svg+xml"
     href='data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?>
@@ -40,7 +40,7 @@
     </svg>' />
 
   <link rel="preload" as="image" href="assets/bg.jpg?v=37" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/weddinginvite.png?v=13" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/weddinginvite.png?v=14" fetchpriority="high">
   <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=37">
 
   <style>
@@ -162,7 +162,6 @@
       cursor:pointer; flex:0 0 auto; white-space:nowrap; text-decoration:none;
     }
 
-    /* Separate fixed popover for calendar buttons */
     .calendar-pop{
       position:fixed;
       left:0; top:0;
@@ -174,7 +173,7 @@
       visibility:hidden;
       pointer-events:none;
 
-      transition: opacity .16s ease; /* fade only */
+      transition: opacity .16s ease;
     }
     .calendar-pop.show{
       opacity:1;
@@ -218,10 +217,7 @@
         row-gap:8px; max-width:92vw; padding:0 12px;
       }
       .btn{ flex:1 1 calc(50% - 8px); text-align:center; }
-
-      .calendar-pop .btn{
-        min-width:160px;
-      }
+      .calendar-pop .btn{ min-width:160px; }
     }
     @media (max-width: 340px){
       .btn{ flex:1 1 100%; }
@@ -231,7 +227,7 @@
 <body>
   <div class="bg" aria-hidden="true"><img src="assets/bg.jpg?v=37" alt=""></div>
 
-  <img id="invite" class="invite" src="assets/weddinginvite.png?v=13" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/weddinginvite.png?v=14" alt="Wedding invitation">
   <button id="hint" class="hint" type="button" aria-label="Tap to zoom">Tap to zoom</button>
 
   <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
@@ -292,9 +288,11 @@
       const googleCalBtn = document.getElementById('googleCalBtn');
 
       const EVENT = {
-        title: 'Luna Wedding',
-        description: 'Dress Code: Formal Attire',
-        location: 'Carne Mare – Seaport, 89 South St, New York, NY 10038',
+        title: "Toby and Michelle's Wedding",
+        description: "Toby and Michelle's wedding. Visit luna.wedding for more details.",
+        venueName: "Carne Mare – Seaport",
+        location: "89 South St, New York, NY 10038",
+        mapsUrl: "https://maps.google.com/?q=89%20South%20St%2C%20New%20York%2C%20NY%2010038",
         startUTC: '20260606T230000Z',
         endUTC:   '20260607T020000Z'
       };
@@ -312,6 +310,14 @@
         return out + line;
       }
 
+      function buildICSDescription(){
+        return [
+          EVENT.description,
+          `Venue: ${EVENT.venueName}`,
+          `Map: ${EVENT.mapsUrl}`
+        ].join('\\n');
+      }
+
       function buildICS(){
         const CRLF = '\r\n';
         return [
@@ -326,7 +332,7 @@
           `DTSTART:${EVENT.startUTC}`,
           `DTEND:${EVENT.endUTC}`,
           fold(`SUMMARY:${EVENT.title}`),
-          fold(`DESCRIPTION:${EVENT.description}`),
+          fold(`DESCRIPTION:${buildICSDescription()}`),
           fold(`LOCATION:${EVENT.location}`),
           'END:VEVENT',
           'END:VCALENDAR',
@@ -387,11 +393,17 @@
         e.stopPropagation();
         hideCalendarPop();
 
+        const fullDetails = [
+          EVENT.description,
+          `Venue: ${EVENT.venueName}`,
+          `Map: ${EVENT.mapsUrl}`
+        ].join('\n');
+
         const webUrl =
           'https://calendar.google.com/calendar/render?action=TEMPLATE'
           + '&text=' + encodeURIComponent(EVENT.title)
           + '&dates=' + encodeURIComponent(EVENT.startUTC + '/' + EVENT.endUTC)
-          + '&details=' + encodeURIComponent(EVENT.description)
+          + '&details=' + encodeURIComponent(fullDetails)
           + '&location=' + encodeURIComponent(EVENT.location)
           + '&sf=true&output=xml';
 
@@ -400,7 +412,7 @@
             'intent://calendar.google.com/calendar/render?action=TEMPLATE'
             + '&text=' + encodeURIComponent(EVENT.title)
             + '&dates=' + encodeURIComponent(EVENT.startUTC + '/' + EVENT.endUTC)
-            + '&details=' + encodeURIComponent(EVENT.description)
+            + '&details=' + encodeURIComponent(fullDetails)
             + '&location=' + encodeURIComponent(EVENT.location)
             + '&sf=true&output=xml'
             + '#Intent;scheme=https;package=com.google.android.calendar;S.browser_fallback_url='
