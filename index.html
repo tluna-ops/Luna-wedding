@@ -17,7 +17,7 @@
   <meta property="og:title" content="Luna Wedding — June 6, 2026" />
   <meta property="og:description" content="Luna Wedding — RSVP • June 6, 2026" />
   <meta property="og:url" content="https://luna.wedding/" />
-  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=4" />
+  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=5" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:alt" content="Luna Wedding — June 6, 2026" />
 
@@ -25,7 +25,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 6, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 6, 2026" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=4" />
+  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=5" />
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml"
@@ -42,9 +42,8 @@
       </g>
     </svg>' />
 
-  <!-- Performance -->
   <link rel="preload" as="image" href="assets/bg.jpg?v=37" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/weddinginvite.png?v=4" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/weddinginvite.png?v=5" fetchpriority="high">
   <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=37">
 
   <style>
@@ -64,31 +63,19 @@
       to   {opacity:1; transform:translate(-50%,-50%) scale(1)}
     }
 
-    .bg {
-      position:fixed;
-      inset:0;
-      opacity:0;
-      animation:fadeBg 900ms ease-out .05s forwards;
-    }
-
+    .bg { position:fixed; inset:0; opacity:0; animation:fadeBg 900ms ease-out .05s forwards; }
     .bg img {
-      width:100vw;
-      height:100vh;
-      object-fit:cover;
-      object-position:center;
-      user-select:none;
-      -webkit-user-drag:none;
+      width:100vw; height:100vh; object-fit:cover; object-position:center;
+      user-select:none; -webkit-user-drag:none;
     }
 
     .invite{
       position:fixed;
-      left:50%;
-      top:50%;
+      left:50%; top:50%;
       transform:translate(-50%,-50%);
       max-width:min(92vw,900px);
       max-height:88vh;
-      width:auto;
-      height:auto;
+      width:auto; height:auto;
       border-radius:12px;
       background:#fff;
       box-shadow:0 20px 48px rgba(0,0,0,.25);
@@ -123,14 +110,10 @@
     .hint.hide{ opacity:0; transform:translate(-50%, 4px); }
 
     .lightbox{
-      position:fixed;
-      inset:0;
+      position:fixed; inset:0;
       background:rgba(0,0,0,.6);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      opacity:0;
-      pointer-events:none;
+      display:flex; align-items:center; justify-content:center;
+      opacity:0; pointer-events:none;
       z-index:10;
       transition:opacity 280ms ease, background-color 180ms ease;
       -webkit-backdrop-filter: blur(8px) saturate(120%);
@@ -140,8 +123,7 @@
     .lightbox.closing{ background:rgba(0,0,0,.95); }
 
     .lightbox img{
-      max-width:94vw;
-      max-height:92vh;
+      max-width:94vw; max-height:92vh;
       border-radius:14px;
       box-shadow:0 24px 64px rgba(0,0,0,.6);
       transform:scale(.96);
@@ -151,24 +133,35 @@
     .lightbox.visible img{ transform:scale(1); }
     .lightbox.closing img{ transform:scale(.98); }
 
-    .close{
+    .close,
+    .menu-close{
       position:fixed;
       top:calc(12px + env(safe-area-inset-top));
       right:calc(12px + env(safe-area-inset-right));
-      width:44px;
-      height:44px;
-      border:0;
-      border-radius:999px;
-      background:#fff;
-      color:#000;
-      font-size:22px;
-      line-height:1;
+      width:44px; height:44px;
+      border:0; border-radius:999px;
+      background:#fff; color:#000;
+      font-size:22px; line-height:1;
       cursor:pointer;
-      opacity:0;
+      opacity:0; pointer-events:none;
       transform:scale(.85);
       transition:opacity 260ms ease .1s, transform 260ms ease .1s;
+      z-index:45;
     }
-    .lightbox.visible .close{ opacity:1; transform:scale(1); }
+    .lightbox.visible .close{ opacity:1; pointer-events:auto; transform:scale(1); }
+
+    .menu-close{
+      z-index:34;
+      background:rgba(255,255,255,.92);
+    }
+    body.menu-open .menu-close{
+      opacity:1;
+      pointer-events:auto;
+      transform:scale(1);
+    }
+    body.menu-open .lightbox.visible ~ .menu-close{
+      opacity:0; pointer-events:none;
+    }
 
     .actions{
       position:fixed;
@@ -198,7 +191,8 @@
       z-index:30;
     }
 
-    .lightbox.visible + .actions{
+    /* Zoom contextual actions */
+    body.zoom-open .actions{
       bottom:calc(16px + env(safe-area-inset-bottom));
       opacity:1;
       pointer-events:auto;
@@ -225,10 +219,7 @@
     }
     .btn:hover, .btn:focus, .btn:active{ text-decoration:none; }
 
-    .calendar-group{
-      position:relative;
-      flex:0 0 auto;
-    }
+    .calendar-group{ position:relative; flex:0 0 auto; }
     .calendar-main{ width:100%; }
 
     .calendar-options{
@@ -246,8 +237,7 @@
       z-index:40;
     }
     .calendar-options.show{
-      opacity:1;
-      pointer-events:auto;
+      opacity:1; pointer-events:auto;
       transform:translateX(-50%) translateY(0);
     }
     .calendar-options .btn{
@@ -268,9 +258,7 @@
     }
 
     .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
+      display:inline-flex; align-items:center; gap:8px;
       padding:10px 12px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,.5);
@@ -289,8 +277,11 @@
     .pill.on .dot{ background:#3bd16f; }
     .pill .label{ letter-spacing:.2px; }
 
-    .lightbox.visible ~ .dock #menuBtn{
-      opacity:0; pointer-events:none; transform:translateY(6px);
+    /* Hide dock whenever zoom is open (all viewports) */
+    body.zoom-open .dock{
+      opacity:0;
+      pointer-events:none;
+      transform:translateY(8px);
     }
 
     @media (max-width: 430px){
@@ -306,26 +297,14 @@
         flex: 1 1 calc(50% - 8px);
         text-align: center;
       }
-      .calendar-group{
-        flex: 1 1 calc(50% - 8px);
-      }
+      .calendar-group{ flex: 1 1 calc(50% - 8px); }
       .calendar-main{ width:100%; }
-      .calendar-options{
-        min-width:100%;
-      }
+      .calendar-options{ min-width:100%; }
       .calendar-options .btn{ width:100%; }
-
-      /* Hide dock buttons while zoomed on mobile so they don't overlap */
-      .lightbox.visible ~ .dock{
-        opacity:0;
-        pointer-events:none;
-        transform:translateY(8px);
-      }
     }
 
     @media (max-width: 340px){
-      .btn{ flex: 1 1 100%; }
-      .calendar-group{ flex: 1 1 100%; }
+      .btn, .calendar-group{ flex: 1 1 100%; }
     }
 
     @media (prefers-reduced-motion: reduce){
@@ -338,14 +317,16 @@
     <img src="assets/bg.jpg?v=37" alt="">
   </div>
 
-  <img id="invite" class="invite" src="assets/weddinginvite.png?v=4" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/weddinginvite.png?v=5" alt="Wedding invitation">
 
   <button id="hint" class="hint" type="button" aria-label="Tap to zoom">Tap to zoom</button>
 
   <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
     <img id="lbimg" alt="Wedding invitation (zoomed)">
-    <button class="close" aria-label="Close">×</button>
+    <button class="close" aria-label="Close zoom">×</button>
   </div>
+
+  <button id="menuCloseBtn" class="menu-close" aria-label="Close menu">×</button>
 
   <div id="actions" class="actions" aria-hidden="true">
     <a
@@ -398,14 +379,17 @@
 
   <script>
     (function(){
+      const body = document.body;
       const invite = document.getElementById('invite');
       const hint = document.getElementById('hint');
       const lb = document.getElementById('lightbox');
       const lbimg = document.getElementById('lbimg');
       const closeBtn = lb.querySelector('.close');
+
       const actionsWrap = document.getElementById('actions');
-      const musicBtn = document.getElementById('music');
       const menuBtn = document.getElementById('menuBtn');
+      const menuCloseBtn = document.getElementById('menuCloseBtn');
+      const musicBtn = document.getElementById('music');
 
       const calendarGroup = document.getElementById('calendarGroup');
       const calendarToggleBtn = document.getElementById('calendarToggleBtn');
@@ -413,34 +397,132 @@
       const appleCalBtn = document.getElementById('appleCalBtn');
       const googleCalBtn = document.getElementById('googleCalBtn');
 
-      const ICS_PATH = 'assets/wedding.ics';
-      const ICS_ABS_HTTPS = window.location.origin + '/assets/wedding.ics';
-      const ICS_ABS_WEBCAL = 'webcal://' + window.location.host + '/assets/wedding.ics';
+      /* Event details */
+      const EVENT = {
+        title: 'Luna Wedding',
+        description: 'Dress Code: Formal Attire',
+        location: 'Carne Mare – Seaport, 89 South St, New York, NY 10038',
+        // June 6, 2026 7:00 PM–10:00 PM ET = 23:00Z–02:00Z
+        startUTC: '20260606T230000Z',
+        endUTC:   '20260607T020000Z'
+      };
 
-      // Google Calendar event details (June 6, 2026 7–10 PM ET)
-      const gTitle = 'Luna Wedding';
-      const gDetails = 'Dress Code: Formal Attire';
-      const gLocation = 'Carne Mare – Seaport, 89 South St, New York, NY 10038';
-      const gStartUTC = '20260606T230000Z';
-      const gEndUTC = '20260607T020000Z';
+      function isIOS(){ return /iPhone|iPad|iPod/i.test(navigator.userAgent); }
+      function isAndroid(){ return /Android/i.test(navigator.userAgent); }
 
-      function googleWebUrl(){
-        return 'https://calendar.google.com/calendar/render?action=TEMPLATE'
-          + '&text=' + encodeURIComponent(gTitle)
-          + '&dates=' + encodeURIComponent(gStartUTC + '/' + gEndUTC)
-          + '&details=' + encodeURIComponent(gDetails)
-          + '&location=' + encodeURIComponent(gLocation)
+      function fold(line){
+        const CRLF = '\r\n';
+        if (line.length <= 74) return line;
+        let out = '';
+        while (line.length > 74){
+          out += line.slice(0,74) + CRLF + ' ';
+          line = line.slice(74);
+        }
+        return out + line;
+      }
+
+      function buildICS(){
+        const CRLF = '\r\n';
+        const lines = [
+          'BEGIN:VCALENDAR',
+          'VERSION:2.0',
+          'PRODID:-//luna.wedding//Wedding//EN',
+          'CALSCALE:GREGORIAN',
+          'METHOD:PUBLISH',
+          'BEGIN:VEVENT',
+          `UID:${(crypto.randomUUID ? crypto.randomUUID() : ('luna-' + Date.now()))}@luna.wedding`,
+          `DTSTAMP:${new Date().toISOString().replace(/[-:]/g,'').split('.')[0]}Z`,
+          `DTSTART:${EVENT.startUTC}`,
+          `DTEND:${EVENT.endUTC}`,
+          fold(`SUMMARY:${EVENT.title}`),
+          fold(`DESCRIPTION:${EVENT.description}`),
+          fold(`LOCATION:${EVENT.location}`),
+          'END:VEVENT',
+          'END:VCALENDAR'
+        ];
+        return lines.join(CRLF) + CRLF;
+      }
+
+      function downloadICSFile(){
+        const blob = new Blob([buildICS()], { type: 'text/calendar;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'LunaWedding.ics';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 3000);
+      }
+
+      async function openAppleCalendar(e){
+        e.preventDefault();
+        e.stopPropagation();
+        hideCalendarOptions();
+
+        // There isn't a reliable "create new Apple Calendar event" deep link from a public webpage.
+        // Best UX: generate a one-time .ics event file (not webcal subscription) and let iOS/macOS import it.
+        // Try share sheet first on iOS (often cleaner), fallback to direct file open/download.
+        const blob = new Blob([buildICS()], { type: 'text/calendar;charset=utf-8' });
+        const file = new File([blob], 'LunaWedding.ics', { type: 'text/calendar' });
+
+        if (isIOS() && navigator.canShare && navigator.share) {
+          try {
+            if (navigator.canShare({ files: [file] })) {
+              await navigator.share({ files: [file], title: EVENT.title });
+              return;
+            }
+          } catch (_) {}
+        }
+
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        // no download attr here -> allows OS to handle/import if possible
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 5000);
+      }
+
+      function openGoogleCalendar(e){
+        e.preventDefault();
+        e.stopPropagation();
+        hideCalendarOptions();
+
+        const webUrl =
+          'https://calendar.google.com/calendar/render?action=TEMPLATE'
+          + '&text=' + encodeURIComponent(EVENT.title)
+          + '&dates=' + encodeURIComponent(EVENT.startUTC + '/' + EVENT.endUTC)
+          + '&details=' + encodeURIComponent(EVENT.description)
+          + '&location=' + encodeURIComponent(EVENT.location)
           + '&sf=true&output=xml';
+
+        if (isAndroid()) {
+          const intentUrl =
+            'intent://calendar.google.com/calendar/render?action=TEMPLATE'
+            + '&text=' + encodeURIComponent(EVENT.title)
+            + '&dates=' + encodeURIComponent(EVENT.startUTC + '/' + EVENT.endUTC)
+            + '&details=' + encodeURIComponent(EVENT.description)
+            + '&location=' + encodeURIComponent(EVENT.location)
+            + '&sf=true&output=xml'
+            + '#Intent;scheme=https;package=com.google.android.calendar;S.browser_fallback_url='
+            + encodeURIComponent(webUrl)
+            + ';end';
+          window.location.href = intentUrl;
+          return;
+        }
+
+        if (isIOS()) {
+          // Universal link typically opens app if installed, otherwise web
+          window.location.href = webUrl;
+          return;
+        }
+
+        window.open(webUrl, '_blank', 'noopener,noreferrer');
       }
 
-      function isIOS(){
-        return /iPhone|iPad|iPod/i.test(navigator.userAgent);
-      }
-
-      function isAndroid(){
-        return /Android/i.test(navigator.userAgent);
-      }
-
+      /* Menu / actions / zoom states */
       function showCalendarOptions(){
         calendarOptions.classList.add('show');
         calendarOptions.setAttribute('aria-hidden', 'false');
@@ -459,29 +541,47 @@
         else showCalendarOptions();
       }
 
-      function showActions(){
+      function showActionsMenu(){
+        body.classList.add('menu-open');
         actionsWrap.classList.add('show');
-        actionsWrap.setAttribute('aria-hidden','false');
-        menuBtn.setAttribute('aria-pressed','true');
+        actionsWrap.setAttribute('aria-hidden', 'false');
+        menuBtn.setAttribute('aria-pressed', 'true');
         menuBtn.classList.add('on');
       }
 
-      function hideActions(){
+      function hideActionsMenu(){
+        body.classList.remove('menu-open');
         actionsWrap.classList.remove('show');
-        actionsWrap.setAttribute('aria-hidden','true');
-        menuBtn.setAttribute('aria-pressed','false');
+        actionsWrap.setAttribute('aria-hidden', 'true');
+        menuBtn.setAttribute('aria-pressed', 'false');
         menuBtn.classList.remove('on');
         hideCalendarOptions();
       }
 
-      function toggleActions(e){
+      function showZoomActions(){
+        body.classList.add('zoom-open');
+        actionsWrap.setAttribute('aria-hidden', 'false');
+      }
+
+      function hideZoomActions(){
+        body.classList.remove('zoom-open');
+        if (!body.classList.contains('menu-open')) {
+          actionsWrap.setAttribute('aria-hidden', 'true');
+        }
+        hideCalendarOptions();
+      }
+
+      function toggleActionsMenu(e){
         e.stopPropagation();
-        if (actionsWrap.classList.contains('show')) hideActions();
-        else showActions();
+        if (body.classList.contains('menu-open')) hideActionsMenu();
+        else showActionsMenu();
       }
 
       function openLB(){
-        hideActions();
+        // Force-close menu state, then open zoom state so the action buttons become contextual to zoom
+        hideActionsMenu();
+        showZoomActions();
+
         lbimg.src = invite.currentSrc || invite.src;
         lb.classList.add('visible');
         document.body.style.overflow = 'hidden';
@@ -493,6 +593,7 @@
         lb.classList.add('closing');
         setTimeout(() => {
           lb.classList.remove('visible');
+          hideZoomActions();
           setTimeout(() => {
             lb.classList.remove('closing');
             document.body.style.overflow = '';
@@ -500,82 +601,8 @@
         }, 120);
       }
 
-      function downloadICS(){
-        const a = document.createElement('a');
-        a.href = ICS_PATH;
-        a.download = 'LunaWedding.ics';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-      }
-
-      function openAppleCalendar(e){
-        e.preventDefault();
-        e.stopPropagation();
-        hideCalendarOptions();
-
-        // iOS/macOS: try Calendar app via webcal:// first
-        if (isIOS() || /Macintosh/i.test(navigator.userAgent)) {
-          let fallbackFired = false;
-          const t = setTimeout(() => {
-            if (!fallbackFired) {
-              fallbackFired = true;
-              downloadICS(); // fallback only if app handoff didn't happen
-            }
-          }, 1200);
-
-          // If page becomes hidden, assume handoff succeeded and cancel fallback
-          const onVisibility = () => {
-            if (document.visibilityState === 'hidden') {
-              fallbackFired = true;
-              clearTimeout(t);
-              document.removeEventListener('visibilitychange', onVisibility);
-            }
-          };
-          document.addEventListener('visibilitychange', onVisibility);
-
-          window.location.href = ICS_ABS_WEBCAL;
-          return;
-        }
-
-        // Non-Apple devices: direct ICS download fallback
-        downloadICS();
-      }
-
-      function openGoogleCalendar(e){
-        e.preventDefault();
-        e.stopPropagation();
-        hideCalendarOptions();
-
-        const webUrl = googleWebUrl();
-
-        // iOS: universal link usually opens Google Calendar app if installed, web fallback otherwise
-        if (isIOS()) {
-          window.location.href = webUrl;
-          return;
-        }
-
-        // Android: intent opens app if installed, browser fallback if not
-        if (isAndroid()) {
-          const intentUrl =
-            'intent://calendar.google.com/calendar/render?action=TEMPLATE'
-            + '&text=' + encodeURIComponent(gTitle)
-            + '&dates=' + encodeURIComponent(gStartUTC + '/' + gEndUTC)
-            + '&details=' + encodeURIComponent(gDetails)
-            + '&location=' + encodeURIComponent(gLocation)
-            + '&sf=true&output=xml'
-            + '#Intent;scheme=https;package=com.google.android.calendar;S.browser_fallback_url='
-            + encodeURIComponent(webUrl)
-            + ';end';
-          window.location.href = intentUrl;
-          return;
-        }
-
-        // Desktop fallback: open web
-        window.open(webUrl, '_blank', 'noopener,noreferrer');
-      }
-
       invite.addEventListener('click', openLB, { passive:true });
+
       let lastTap = 0;
       invite.addEventListener('touchend', () => {
         const now = Date.now();
@@ -589,29 +616,32 @@
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape'){
           if (lb.classList.contains('visible')) closeLB();
-          hideCalendarOptions();
+          else hideActionsMenu();
         }
       });
 
       hint.addEventListener('click', openLB, { passive:true });
-      menuBtn.addEventListener('click', toggleActions);
+
+      menuBtn.addEventListener('click', toggleActionsMenu);
+      menuCloseBtn.addEventListener('click', (e) => { e.stopPropagation(); hideActionsMenu(); });
 
       calendarToggleBtn.addEventListener('click', toggleCalendarOptions);
       appleCalBtn.addEventListener('click', openAppleCalendar);
       googleCalBtn.addEventListener('click', openGoogleCalendar);
 
-      // Click-away handlers (fixed so calendar tree keeps working repeatedly)
       document.addEventListener('click', (e) => {
-        const withinMenu = e.target.closest('#menuBtn');
+        const withinMenuBtn = e.target.closest('#menuBtn');
         const withinActions = e.target.closest('#actions');
         const withinLightbox = e.target.closest('#lightbox');
         const withinCalendar = e.target.closest('#calendarGroup');
+        const withinMenuClose = e.target.closest('#menuCloseBtn');
 
-        if (!withinMenu && !withinActions && !withinLightbox) {
-          hideActions();
+        if (!withinMenuBtn && !withinActions && !withinLightbox && !withinMenuClose){
+          hideActionsMenu();
           return;
         }
-        if (!withinCalendar) {
+
+        if (!withinCalendar){
           hideCalendarOptions();
         }
       });
