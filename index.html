@@ -82,7 +82,6 @@
       -webkit-user-drag:none;
     }
 
-    /* Fixed image sizing: preserve aspect ratio and fit within viewport */
     .invite{
       position:fixed;
       left:50%;
@@ -226,8 +225,43 @@
       flex:0 0 auto;
       white-space:nowrap;
       text-decoration:none;
+      line-height:1.15;
     }
     .btn:hover, .btn:focus, .btn:active{ text-decoration:none; }
+
+    /* Calendar menu */
+    .calendar-group{
+      position:relative;
+      flex:0 0 auto;
+    }
+    .calendar-main{
+      width:100%;
+    }
+    .calendar-options{
+      position:absolute;
+      left:50%;
+      bottom:calc(100% + 8px);
+      transform:translateX(-50%) translateY(6px);
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:max-content;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .18s ease, transform .18s ease;
+      z-index:35;
+    }
+    .calendar-options.show{
+      opacity:1;
+      pointer-events:auto;
+      transform:translateX(-50%) translateY(0);
+    }
+    .calendar-options .btn{
+      text-align:center;
+      background:rgba(0,0,0,.68);
+      border-color:rgba(255,255,255,.72);
+      white-space:nowrap;
+    }
 
     .dock{
       position:fixed;
@@ -280,10 +314,25 @@
         flex: 1 1 calc(50% - 8px);
         text-align: center;
       }
+      .calendar-group{
+        flex: 1 1 calc(50% - 8px);
+      }
+      .calendar-main{
+        width:100%;
+      }
+      .calendar-options{
+        left:50%;
+        right:auto;
+        min-width:100%;
+      }
+      .calendar-options .btn{
+        width:100%;
+      }
     }
 
     @media (max-width: 340px){
       .btn{ flex: 1 1 100%; }
+      .calendar-group{ flex: 1 1 100%; }
     }
 
     @media (prefers-reduced-motion: reduce){
@@ -297,7 +346,6 @@
     <img src="assets/bg.jpg?v=37" alt="">
   </div>
 
-  <!-- Updated invite image path -->
   <img id="invite" class="invite" src="assets/weddinginvite.png?v=3" alt="Wedding invitation">
 
   <button id="hint" class="hint" type="button" aria-label="Tap to zoom">Tap to zoom</button>
@@ -316,14 +364,35 @@
       rel="noopener"
     >RSVP</a>
 
-    <a
-      id="calendarBtn"
-      class="btn"
-      aria-label="Add to Calendar"
-      href="assets/wedding.ics"
-      download
-      rel="noopener"
-    >Add to Calendar</a>
+    <!-- Add to Calendar -> reveals Apple / Google buttons -->
+    <div id="calendarGroup" class="calendar-group">
+      <button
+        id="calendarToggleBtn"
+        class="btn calendar-main"
+        type="button"
+        aria-label="Add to Calendar"
+        aria-expanded="false"
+        aria-controls="calendarOptions"
+      >Add to Calendar</button>
+
+      <div id="calendarOptions" class="calendar-options" aria-hidden="true">
+        <a
+          id="appleCalBtn"
+          class="btn"
+          aria-label="Apple Calendar"
+          href="assets/wedding.ics"
+          download
+          rel="noopener"
+        >Apple Calendar</a>
+
+        <button
+          id="googleCalBtn"
+          class="btn"
+          type="button"
+          aria-label="Google Calendar"
+        >Google Calendar</button>
+      </div>
+    </div>
 
     <a id="registryBtn" class="btn" aria-label="Registry" href="registry.html">Registry</a>
     <a id="faqBtn" class="btn" aria-label="FAQ" href="faq.html">FAQ</a>
@@ -360,6 +429,48 @@
       const musicBtn = document.getElementById('music');
       const menuBtn = document.getElementById('menuBtn');
 
+      const calendarGroup = document.getElementById('calendarGroup');
+      const calendarToggleBtn = document.getElementById('calendarToggleBtn');
+      const calendarOptions = document.getElementById('calendarOptions');
+      const googleCalBtn = document.getElementById('googleCalBtn');
+
+      /* Google Calendar event details (ET converted to UTC in dates param) */
+      const gcalTitle = 'Luna Wedding';
+      const gcalDetails = 'Dress Code: Formal Attire';
+      const gcalLocation = 'Carne Mare – Seaport, 89 South St, New York, NY 10038';
+      // June 6, 2026 7:00 PM–10:00 PM ET = 23:00Z–02:00Z
+      const gcalStart = '20260606T230000Z';
+      const gcalEnd = '20260607T020000Z';
+
+      function openGoogleCalendar(){
+        const href =
+          'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+          '&text=' + encodeURIComponent(gcalTitle) +
+          '&dates=' + encodeURIComponent(gcalStart + '/' + gcalEnd) +
+          '&details=' + encodeURIComponent(gcalDetails) +
+          '&location=' + encodeURIComponent(gcalLocation) +
+          '&sf=true&output=xml';
+        window.open(href, '_blank', 'noopener,noreferrer');
+      }
+
+      function showCalendarOptions(){
+        calendarOptions.classList.add('show');
+        calendarOptions.setAttribute('aria-hidden', 'false');
+        calendarToggleBtn.setAttribute('aria-expanded', 'true');
+      }
+
+      function hideCalendarOptions(){
+        calendarOptions.classList.remove('show');
+        calendarOptions.setAttribute('aria-hidden', 'true');
+        calendarToggleBtn.setAttribute('aria-expanded', 'false');
+      }
+
+      function toggleCalendarOptions(e){
+        e?.stopPropagation();
+        if (calendarOptions.classList.contains('show')) hideCalendarOptions();
+        else showCalendarOptions();
+      }
+
       function showActions(){
         actionsWrap.classList.add('show');
         actionsWrap.setAttribute('aria-hidden','false');
@@ -372,6 +483,7 @@
         actionsWrap.setAttribute('aria-hidden','true');
         menuBtn.setAttribute('aria-pressed','false');
         menuBtn.classList.remove('on');
+        hideCalendarOptions();
       }
 
       function toggleActions(e){
@@ -416,7 +528,10 @@
       closeBtn.addEventListener('click', closeLB);
 
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeLB();
+        if (e.key === 'Escape'){
+          if (lb.classList.contains('visible')) closeLB();
+          hideCalendarOptions();
+        }
       });
 
       hint.addEventListener('click', openLB, { passive:true });
@@ -425,12 +540,21 @@
         const withinMenu = e.target.closest('#menuBtn');
         const withinActions = e.target.closest('#actions');
         const withinLB = e.target.closest('#lightbox');
+        const withinCalendar = e.target.closest('#calendarGroup');
+
         if (!withinMenu && !withinActions && !withinLB){
           hideActions();
+          return;
+        }
+
+        if (!withinCalendar){
+          hideCalendarOptions();
         }
       });
 
       menuBtn.addEventListener('click', toggleActions);
+      calendarToggleBtn.addEventListener('click', toggleCalendarOptions);
+      googleCalBtn.addEventListener('click', openGoogleCalendar);
 
       /* Audio: start fetching early; unlock on first gesture */
       let bgm = null;
