@@ -25,24 +25,22 @@
 
   <style>
     :root{
-      --bg:#000;
-      --card:rgba(255,255,255,.08);
-      --card-border:rgba(255,255,255,.18);
-      --text:#fff;
-      --muted:rgba(255,255,255,.80);
-      --pill:rgba(0,0,0,.45);
-      --pill-border:rgba(255,255,255,.45);
-      --shadow:0 20px 48px rgba(0,0,0,.28);
+      --text:#111;
+      --muted:#2f2f2f;
+      --card-bg:rgba(255,255,255,.78);
+      --card-border:rgba(0,0,0,.10);
+      --pill-bg:rgba(255,255,255,.82);
+      --pill-border:rgba(0,0,0,.14);
+      --shadow:0 20px 48px rgba(0,0,0,.14);
     }
 
     * { box-sizing:border-box; }
 
-    /* Match home page font stack */
     html, body{
       margin:0;
       min-height:100%;
       color:var(--text);
-      background:var(--bg);
+      background:#000;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
     }
 
@@ -51,7 +49,7 @@
       inset:0;
       z-index:0;
       background:
-        linear-gradient(rgba(0,0,0,.42), rgba(0,0,0,.68)),
+        linear-gradient(rgba(255,255,255,.18), rgba(255,255,255,.30)),
         url("assets/bg.jpg?v=37") center / cover no-repeat;
     }
 
@@ -65,47 +63,17 @@
 
     .topbar{
       display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom:12px;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      color:#fff;
-      text-decoration:none;
-      font-weight:600;
-      letter-spacing:.2px;
-    }
-
-    .monogram{
-      width:34px; height:34px;
-      border-radius:999px;
-      background:#fff;
-      color:#000;
-      display:grid;
-      place-items:center;
-      font-family:Georgia, "Times New Roman", serif;
-      font-style:italic;
-      font-weight:700;
-      box-shadow:0 4px 18px rgba(0,0,0,.25);
-    }
-
-    .nav{
-      display:flex;
+      justify-content:flex-end;
       gap:8px;
       flex-wrap:wrap;
+      margin-bottom:12px;
     }
 
     .btn{
       appearance:none;
       border:1px solid var(--pill-border);
-      color:#fff;
-      background:var(--pill);
+      color:#111;
+      background:var(--pill-bg);
       padding:10px 14px;
       border-radius:999px;
       font-size:14px;
@@ -114,12 +82,12 @@
       cursor:pointer;
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
-      box-shadow:0 8px 24px rgba(0,0,0,.18);
+      box-shadow:0 8px 24px rgba(0,0,0,.10);
       white-space:nowrap;
     }
 
     .hero{
-      background:var(--card);
+      background:var(--card-bg);
       border:1px solid var(--card-border);
       border-radius:18px;
       padding:18px;
@@ -134,6 +102,7 @@
       font-size:clamp(24px, 4vw, 34px);
       line-height:1.05;
       letter-spacing:.2px;
+      color:#111;
     }
 
     .hero p{
@@ -149,7 +118,7 @@
     }
 
     details.faq{
-      background:var(--card);
+      background:var(--card-bg);
       border:1px solid var(--card-border);
       border-radius:14px;
       box-shadow:var(--shadow);
@@ -168,6 +137,7 @@
       align-items:center;
       justify-content:space-between;
       gap:12px;
+      color:#111;
     }
     details.faq summary::-webkit-details-marker{ display:none; }
 
@@ -175,17 +145,17 @@
       flex:0 0 auto;
       width:24px; height:24px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,.25);
+      border:1px solid rgba(0,0,0,.14);
       display:grid;
       place-items:center;
       font-size:13px;
-      color:rgba(255,255,255,.92);
-      background:rgba(255,255,255,.04);
+      color:#111;
+      background:rgba(255,255,255,.65);
       transition:transform .18s ease, background .18s ease;
     }
     details.faq[open] .chev{
       transform:rotate(180deg);
-      background:rgba(255,255,255,.10);
+      background:rgba(255,255,255,.95);
     }
 
     .answer{
@@ -193,7 +163,7 @@
       color:var(--muted);
       font-size:14px;
       line-height:1.55;
-      border-top:1px solid rgba(255,255,255,.09);
+      border-top:1px solid rgba(0,0,0,.06);
     }
 
     .answer p{ margin:10px 0 0; }
@@ -202,7 +172,7 @@
     .answer li{ margin:6px 0; }
 
     .answer a{
-      color:#fff;
+      color:#111;
       text-decoration:underline;
       text-underline-offset:2px;
     }
@@ -210,14 +180,19 @@
     .footer-note{
       margin-top:14px;
       text-align:center;
-      color:rgba(255,255,255,.66);
+      color:rgba(0,0,0,.70);
       font-size:12px;
+      background:rgba(255,255,255,.55);
+      border:1px solid rgba(0,0,0,.08);
+      border-radius:12px;
+      padding:10px 12px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
     }
 
     @media (max-width: 520px){
-      .topbar{ align-items:stretch; }
-      .nav{ width:100%; }
-      .nav .btn{ flex:1 1 auto; text-align:center; }
+      .topbar{ justify-content:stretch; }
+      .topbar .btn{ flex:1 1 auto; text-align:center; }
     }
   </style>
 </head>
@@ -226,15 +201,8 @@
 
   <main class="wrap">
     <div class="topbar">
-      <a class="brand" href="index.html" aria-label="Back to home">
-        <span class="monogram">LM</span>
-        <span>Luna Wedding</span>
-      </a>
-
-      <div class="nav">
-        <a class="btn" href="index.html">Home</a>
-        <a class="btn" href="registry.html">Registry</a>
-      </div>
+      <a class="btn" href="index.html">Home</a>
+      <a class="btn" href="registry.html">Registry</a>
     </div>
 
     <section class="hero">
@@ -293,7 +261,7 @@
         <div class="answer">
           <p>
             There is no on-site parking, and street parking is limited.
-            We recommend the <strong>SpotHero</strong> app to book nearby parking garages at low rates.
+            We recommend the <a href="https://spothero.com/" target="_blank" rel="noopener noreferrer">SpotHero</a> app to book nearby parking garages at low rates.
           </p>
         </div>
       </details>
@@ -333,9 +301,7 @@
           <span class="chev" aria-hidden="true">⌄</span>
         </summary>
         <div class="answer">
-          <p>
-            We request <strong>formal, cocktail attire</strong> for the reception dinner.
-          </p>
+          <p>We request <strong>formal, cocktail attire</strong> for the reception dinner.</p>
         </div>
       </details>
 
@@ -362,9 +328,7 @@
           <p>
             A special 5-course menu that includes oysters, shrimp, caviar, lobster pasta, and tomahawk steak will be served.
             You can review Carne Mare's full menu on this page:
-            <a href="https://www.carnemare.com/menus/#dinner" target="_blank" rel="noopener noreferrer">
-              Carne Mare Dinner Menu
-            </a>.
+            <a href="https://www.carnemare.com/menus/#dinner" target="_blank" rel="noopener noreferrer">Carne Mare Dinner Menu</a>.
             Come hungry!
           </p>
           <p>
@@ -380,14 +344,12 @@
         </summary>
         <div class="answer">
           <p>
-            Yes we are! Please visit our
-            <a href="registry.html">registry page</a>
-            for more information. Thank you in advance for your generosity!
+            Yes we are! Please visit our <a href="registry.html">registry page</a> for more information.
+            Thank you in advance for your generosity!
           </p>
         </div>
       </details>
 
-      <!-- Additional helpful items -->
       <details class="faq">
         <summary>
           <span>What time should I arrive?</span>
