@@ -16,14 +16,14 @@
   <meta property="og:title" content="Luna Wedding — June 6, 2026" />
   <meta property="og:description" content="Luna Wedding — RSVP • June 6, 2026" />
   <meta property="og:url" content="https://luna.wedding/" />
-  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=10" />
+  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=11" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:alt" content="Luna Wedding — June 6, 2026" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 6, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 6, 2026" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=10" />
+  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=11" />
 
   <link rel="icon" type="image/svg+xml"
     href='data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?>
@@ -40,7 +40,7 @@
     </svg>' />
 
   <link rel="preload" as="image" href="assets/bg.jpg?v=37" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/weddinginvite.png?v=10" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/weddinginvite.png?v=11" fetchpriority="high">
   <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=37">
 
   <style>
@@ -227,7 +227,7 @@
 <body>
   <div class="bg" aria-hidden="true"><img src="assets/bg.jpg?v=37" alt=""></div>
 
-  <img id="invite" class="invite" src="assets/weddinginvite.png?v=10" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/weddinginvite.png?v=11" alt="Wedding invitation">
   <button id="hint" class="hint" type="button" aria-label="Tap to zoom">Tap to zoom</button>
 
   <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
@@ -344,7 +344,6 @@
         calendarToggleBtn.setAttribute('aria-expanded', 'false');
       }
 
-      // SIMPLE + RELIABLE: click only (no pointerup double-fire)
       function toggleCalendarOptions(e){
         e.preventDefault();
         e.stopPropagation();
@@ -501,7 +500,7 @@
         openZoom();
       });
 
-      // FIX: clicking the zoomed invite itself closes lightbox
+      // clicking the zoomed invite closes lightbox
       lbimg.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -525,9 +524,8 @@
         closeMenu();
       });
 
-      // FIX: bind directly and also via onclick fallback for Safari oddities
+      // Calendar submenu toggle (single binding only)
       calendarToggleBtn.addEventListener('click', toggleCalendarOptions);
-      calendarToggleBtn.onclick = toggleCalendarOptions;
 
       appleCalBtn.addEventListener('click', openAppleCalendar);
       googleCalBtn.addEventListener('click', openGoogleCalendar);
