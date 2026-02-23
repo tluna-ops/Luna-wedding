@@ -16,14 +16,14 @@
   <meta property="og:title" content="Luna Wedding — June 6, 2026" />
   <meta property="og:description" content="Luna Wedding — RSVP • June 6, 2026" />
   <meta property="og:url" content="https://luna.wedding/" />
-  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=8" />
+  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=9" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:alt" content="Luna Wedding — June 6, 2026" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 6, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 6, 2026" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=8" />
+  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=9" />
 
   <link rel="icon" type="image/svg+xml"
     href='data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?>
@@ -40,7 +40,7 @@
     </svg>' />
 
   <link rel="preload" as="image" href="assets/bg.jpg?v=37" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/weddinginvite.png?v=8" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/weddinginvite.png?v=9" fetchpriority="high">
   <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=37">
 
   <style>
@@ -129,7 +129,7 @@
       position:fixed; left:50%;
       bottom:calc(16px + env(safe-area-inset-bottom));
       transform:translateX(-50%);
-      z-index:15;
+      z-index:30;
       display:flex; gap:8px; flex-wrap:nowrap; overflow-x:auto;
       -webkit-overflow-scrolling: touch; scrollbar-width:none;
       max-width:min(92vw,980px); padding:0 8px;
@@ -142,14 +142,12 @@
       bottom:calc(84px + env(safe-area-inset-bottom));
       opacity:1; pointer-events:auto;
       transform:translateX(-50%) translateY(-4px);
-      z-index:30;
     }
 
     body.zoom-open .actions{
       bottom:calc(16px + env(safe-area-inset-bottom));
       opacity:1; pointer-events:auto;
       transform:translateX(-50%) translateY(-4px);
-      z-index:30;
     }
 
     .btn{
@@ -174,7 +172,7 @@
       min-width:max-content;
       opacity:0; pointer-events:none;
       transition:opacity .18s ease, transform .18s ease;
-      z-index:40;
+      z-index:60;
     }
     .calendar-options.show{
       opacity:1; pointer-events:auto;
@@ -228,7 +226,7 @@
 <body>
   <div class="bg" aria-hidden="true"><img src="assets/bg.jpg?v=37" alt=""></div>
 
-  <img id="invite" class="invite" src="assets/weddinginvite.png?v=8" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/weddinginvite.png?v=9" alt="Wedding invitation">
   <button id="hint" class="hint" type="button" aria-label="Tap to zoom">Tap to zoom</button>
 
   <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
@@ -298,6 +296,8 @@
         endUTC:   '20260607T020000Z'
       };
 
+      let calendarToggleLock = false;
+
       function isAndroid(){ return /Android/i.test(navigator.userAgent); }
 
       function fold(line){
@@ -333,7 +333,33 @@
         ].join(CRLF);
       }
 
-      // Apple Calendar (best available public-web behavior = ICS import)
+      function showCalendarOptions(){
+        calendarOptions.classList.add('show');
+        calendarOptions.setAttribute('aria-hidden', 'false');
+        calendarToggleBtn.setAttribute('aria-expanded', 'true');
+      }
+
+      function hideCalendarOptions(){
+        calendarOptions.classList.remove('show');
+        calendarOptions.setAttribute('aria-hidden', 'true');
+        calendarToggleBtn.setAttribute('aria-expanded', 'false');
+      }
+
+      function toggleCalendarOptions(e){
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+
+        // prevent double-fire when both pointerup + click happen
+        if (calendarToggleLock) return;
+        calendarToggleLock = true;
+        setTimeout(() => { calendarToggleLock = false; }, 120);
+
+        if (calendarOptions.classList.contains('show')) hideCalendarOptions();
+        else showCalendarOptions();
+      }
+
       function openAppleCalendar(e){
         e.preventDefault();
         e.stopPropagation();
@@ -374,25 +400,6 @@
         }
 
         window.location.href = webUrl;
-      }
-
-      function showCalendarOptions(){
-        calendarOptions.classList.add('show');
-        calendarOptions.setAttribute('aria-hidden', 'false');
-        calendarToggleBtn.setAttribute('aria-expanded', 'true');
-      }
-
-      function hideCalendarOptions(){
-        calendarOptions.classList.remove('show');
-        calendarOptions.setAttribute('aria-hidden', 'true');
-        calendarToggleBtn.setAttribute('aria-expanded', 'false');
-      }
-
-      function toggleCalendarOptions(e){
-        e.preventDefault();
-        e.stopPropagation();
-        if (calendarOptions.classList.contains('show')) hideCalendarOptions();
-        else showCalendarOptions();
       }
 
       function syncActionsVisibility(){
@@ -446,7 +453,7 @@
       }
 
       function openZoom(){
-        closeMenu(); // menu closes before zoom-context actions
+        closeMenu();
         body.classList.add('zoom-open');
         syncActionsVisibility();
         lbimg.src = invite.currentSrc || invite.src;
@@ -463,9 +470,11 @@
         else openMenu();
       }
 
-      // Prevent actions clicks from bubbling to outside-close logic
-      actionsWrap.addEventListener('pointerdown', (e) => e.stopPropagation());
-      actionsWrap.addEventListener('click', (e) => e.stopPropagation());
+      // Isolate action bar + calendar group from outside-close handlers
+      ['pointerdown','pointerup','click'].forEach(type => {
+        actionsWrap.addEventListener(type, (e) => e.stopPropagation());
+        calendarGroup.addEventListener(type, (e) => e.stopPropagation());
+      });
 
       // Invite / zoom
       invite.addEventListener('click', (e) => {
@@ -503,14 +512,23 @@
       lb.addEventListener('click', (e) => {
         if (e.target === lb) closeZoom();
       });
-      zoomCloseBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); closeZoom(); });
+      zoomCloseBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeZoom();
+      });
 
-      // Menu
       menuBtn.addEventListener('click', toggleMenu);
-      menuCloseBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); closeMenu(); });
+      menuCloseBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeMenu();
+      });
 
-      // Calendar submenu
+      // Calendar submenu — bind both for Safari consistency
       calendarToggleBtn.addEventListener('click', toggleCalendarOptions);
+      calendarToggleBtn.addEventListener('pointerup', toggleCalendarOptions);
+
       appleCalBtn.addEventListener('click', openAppleCalendar);
       googleCalBtn.addEventListener('click', openGoogleCalendar);
 
@@ -521,12 +539,10 @@
         }
       });
 
-      // Global outside-close (pointerdown is more reliable across touch + mouse)
+      // Global outside-close
       document.addEventListener('pointerdown', (e) => {
         const clickedInsideControls = e.target.closest('#actions, #menuBtn, #menuCloseBtn, #music, .close, #hint');
-        if (!clickedInsideControls) {
-          closeAll();
-        }
+        if (!clickedInsideControls) closeAll();
       });
 
       document.addEventListener('keydown', (e) => {
@@ -594,6 +610,7 @@
         createAudio();
         tryAutoPlayNow();
       });
+
       ['pointerdown','touchstart','touchend','click','keydown'].forEach((evt) => {
         window.addEventListener(evt, unlockAudio, { once:true, passive:true });
       });
