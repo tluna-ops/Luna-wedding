@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Registry — Luna Wedding</title>
+  <link rel="canonical" href="https://luna.wedding/registry.html" />
+
+  <meta name="title" content="Registry — Luna Wedding" />
+  <meta name="description" content="Wedding registry and gift options for Toby and Michelle." />
+
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Luna Wedding" />
+  <meta property="og:title" content="Registry — Luna Wedding" />
+  <meta property="og:description" content="Wedding registry and gift options for Toby and Michelle." />
+  <meta property="og:url" content="https://luna.wedding/registry.html" />
+  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=15" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Registry — Luna Wedding" />
+  <meta name="twitter:description" content="Wedding registry and gift options for Toby and Michelle." />
+  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=15" />
+
+  <style>
+    :root{
+      --text:#111;
+      --muted:#2f2f2f;
+      --card-bg:rgba(255,255,255,.78);
+      --card-border:rgba(0,0,0,.10);
+      --shadow:0 20px 48px rgba(0,0,0,.14);
+    }
+
+    *{ box-sizing:border-box; }
+
+    html, body{
+      margin:0;
+      min-height:100%;
+      color:var(--text);
+      background:#000;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    }
+
+    .bg{
+      position:fixed;
+      inset:0;
+      z-index:0;
+    }
+    .bg img{
+      width:100vw;
+      height:100vh;
+      object-fit:cover;
+      object-position:center;
+      display:block;
+      filter:brightness(1.03);
+    }
+    .bg::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:rgba(255,255,255,.14);
+      pointer-events:none;
+    }
+
+    .wrap{
+      position:relative;
+      z-index:1;
+      width:min(940px, 94vw);
+      margin:18px auto 36px;
+      padding:8px 0 24px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:flex-end;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+
+    /* Home-page style buttons */
+    .btn{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.6);
+      color:#fff;
+      background:rgba(0,0,0,.45);
+      padding:10px 14px;
+      border-radius:999px;
+      font-size:14px;
+      line-height:1.15;
+      text-decoration:none;
+      cursor:pointer;
+      white-space:nowrap;
+      backdrop-filter:blur(6px);
+      -webkit-backdrop-filter:blur(6px);
+      box-shadow:0 8px 24px rgba(0,0,0,.18);
+      transition:transform .15s ease, background .15s ease, opacity .15s ease;
+    }
+    .btn:hover{
+      transform:translateY(-1px);
+      background:rgba(0,0,0,.52);
+    }
+    .btn:disabled{
+      opacity:.6;
+      cursor:default;
+    }
+
+    .hero{
+      background:var(--card-bg);
+      border:1px solid var(--card-border);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      margin-bottom:12px;
+    }
+    .hero h1{
+      margin:0 0 6px;
+      font-size:clamp(24px, 4vw, 34px);
+      line-height:1.05;
+      letter-spacing:.2px;
+      color:#111;
+    }
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.5;
+    }
+
+    .grid{
+      display:grid;
+      gap:12px;
+    }
+
+    .card{
+      background:var(--card-bg);
+      border:1px solid var(--card-border);
+      border-radius:14px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding:14px;
+    }
+
+    .card h2{
+      margin:0 0 6px;
+      font-size:18px;
+      line-height:1.15;
+      color:#111;
+    }
+
+    .card p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.5;
+    }
+
+    .button-row{
+      margin-top:12px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .button-row .btn{
+      flex:0 0 auto;
+    }
+
+    .helper{
+      margin-top:10px;
+      font-size:12px;
+      color:rgba(0,0,0,.68);
+    }
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:calc(14px + env(safe-area-inset-bottom));
+      transform:translateX(-50%) translateY(12px);
+      z-index:70;
+      background:rgba(0,0,0,.82);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.35);
+      border-radius:999px;
+      padding:10px 14px;
+      font-size:13px;
+      box-shadow:0 8px 24px rgba(0,0,0,.24);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .18s ease, transform .18s ease;
+      white-space:nowrap;
+    }
+    .toast.show{
+      opacity:1;
+      transform:translateX(-50%) translateY(0);
+    }
+
+    .overlay{
+      position:fixed;
+      inset:0;
+      z-index:80;
+      background:rgba(0,0,0,.38);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .18s ease;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+    }
+    .overlay.show{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .modal{
+      width:min(520px, 100%);
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(0,0,0,.12);
+      border-radius:16px;
+      box-shadow:0 20px 48px rgba(0,0,0,.20);
+      padding:14px;
+      color:#111;
+    }
+
+    .modal-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      margin-bottom:6px;
+    }
+    .modal-title{
+      margin:0;
+      font-size:16px;
+      font-weight:700;
+      line-height:1.15;
+    }
+
+    .xbtn{
+      appearance:none;
+      border:1px solid rgba(0,0,0,.12);
+      background:#fff;
+      color:#111;
+      width:36px;
+      height:36px;
+      border-radius:999px;
+      font-size:18px;
+      line-height:1;
+      cursor:pointer;
+    }
+
+    .modal p{
+      margin:8px 0 0;
+      color:#333;
+      font-size:14px;
+      line-height:1.45;
+    }
+
+    .modal-actions{
+      margin-top:12px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .light-btn{
+      appearance:none;
+      border:1px solid rgba(0,0,0,.12);
+      background:#fff;
+      color:#111;
+      padding:10px 12px;
+      border-radius:999px;
+      font-size:14px;
+      line-height:1;
+      text-decoration:none;
+      cursor:pointer;
+      box-shadow:0 6px 16px rgba(0,0,0,.08);
+    }
+
+    .light-btn.primary{
+      background:rgba(0,0,0,.88);
+      color:#fff;
+      border-color:rgba(0,0,0,.88);
+    }
+
+    .footer-note{
+      margin-top:14px;
+      text-align:center;
+      color:rgba(0,0,0,.70);
+      font-size:12px;
+      background:rgba(255,255,255,.55);
+      border:1px solid rgba(0,0,0,.08);
+      border-radius:12px;
+      padding:10px 12px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    @media (max-width: 520px){
+      .topbar{ justify-content:stretch; }
+      .topbar .btn{ flex:1 1 auto; text-align:center; }
+      .button-row .btn{ flex:1 1 calc(50% - 8px); text-align:center; }
+      .modal-actions .light-btn{ flex:1 1 100%; text-align:center; }
+      .toast{ max-width:92vw; text-align:center; white-space:normal; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true">
+    <img src="assets/bg.jpg?v=37" alt="">
+  </div>
+
+  <main class="wrap">
+    <div class="topbar">
+      <a class="btn" href="index.html">Home</a>
+      <a class="btn" href="faq.html">FAQ</a>
+    </div>
+
+    <section class="hero">
+      <h1>Registry</h1>
+      <p>
+        Your presence is the best gift. If you’d like to celebrate with a gift, we’re grateful for anything from our registries or digital gift options below.
+      </p>
+    </section>
+
+    <section class="grid" aria-label="Registry options">
+      <div class="card">
+        <h2>Wedding Registries</h2>
+        <p>Shop directly from our registries.</p>
+        <div class="button-row">
+          <a class="btn" href="https://www.crateandbarrel.com/gift-registry/Michelle-Toby-Iraheta-Luna/r7505503" target="_blank" rel="noopener noreferrer">Crate and Barrel</a>
+          <a class="btn" href="https://www.amazon.com/wedding/share/Luna-wedding" target="_blank" rel="noopener noreferrer">Amazon</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Digital Gift Options</h2>
+        <p>
+          We’ve included a few options for guests who prefer to send a digital gift. Venmo and Zelle details are kept behind the buttons for privacy.
+        </p>
+        <div class="button-row">
+          <button id="venmoBtn" class="btn" type="button">Venmo</button>
+          <button id="zelleBtn" class="btn" type="button">Zelle</button>
+          <a class="btn" href="https://donate.stripe.com/6oUdRaeb13tNdc92DRfjG00" target="_blank" rel="noopener noreferrer">Other Digital Payment Options (Apple Pay / Google Pay / Card)</a>
+        </div>
+        <p class="helper">
+          Tip: The Stripe option works well for Apple Pay / Google Pay depending on device support.
+        </p>
+      </div>
+    </section>
+
+    <p class="footer-note">Thank you so much for celebrating with us. We appreciate your love and support.</p>
+  </main>
+
+  <div id="overlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal" role="document">
+      <div class="modal-head">
+        <h3 id="modalTitle" class="modal-title">Digital Gift</h3>
+        <button id="closeModalBtn" class="xbtn" type="button" aria-label="Close">×</button>
+      </div>
+      <p id="modalText"></p>
+      <div class="modal-actions" id="modalActions"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
+
+  <script>
+    (function(){
+      const VENMO_HANDLE = 'PayToby';
+      const ZELLE_VALUE = '347-636-5211';
+      const VENMO_URL = 'https://venmo.com/' + encodeURIComponent(VENMO_HANDLE);
+
+      const venmoBtn = document.getElementById('venmoBtn');
+      const zelleBtn = document.getElementById('zelleBtn');
+      const overlay = document.getElementById('overlay');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalText = document.getElementById('modalText');
+      const modalActions = document.getElementById('modalActions');
+      const closeModalBtn = document.getElementById('closeModalBtn');
+      const toast = document.getElementById('toast');
+
+      let toastTimer = null;
+
+      function showToast(msg){
+        toast.textContent = msg;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+      }
+
+      async function copyText(value, successMessage){
+        try {
+          await navigator.clipboard.writeText(value);
+          showToast(successMessage);
+          return true;
+        } catch {
+          // Fallback
+          const ta = document.createElement('textarea');
+          ta.value = value;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          let ok = false;
+          try { ok = document.execCommand('copy'); } catch {}
+          ta.remove();
+          showToast(ok ? successMessage : 'Copy failed. Please try again.');
+          return ok;
+        }
+      }
+
+      function clearModalActions(){
+        modalActions.innerHTML = '';
+      }
+
+      function makeActionButton(opts){
+        const el = opts.href ? document.createElement('a') : document.createElement('button');
+        el.className = 'light-btn' + (opts.primary ? ' primary' : '');
+        if (opts.href){
+          el.href = opts.href;
+          el.target = '_blank';
+          el.rel = 'noopener noreferrer';
+        } else {
+          el.type = 'button';
+          el.addEventListener('click', opts.onClick);
+        }
+        el.textContent = opts.label;
+        return el;
+      }
+
+      function openModal(kind){
+        clearModalActions();
+
+        if (kind === 'venmo'){
+          modalTitle.textContent = 'Venmo';
+          modalText.textContent = 'Use the buttons below to open Venmo or copy our Venmo handle.';
+          modalActions.appendChild(makeActionButton({
+            label: 'Open Venmo',
+            href: VENMO_URL,
+            primary: true
+          }));
+          modalActions.appendChild(makeActionButton({
+            label: 'Copy Venmo Handle',
+            onClick: () => copyText(VENMO_HANDLE, 'Venmo handle copied')
+          }));
+        }
+
+        if (kind === 'zelle'){
+          modalTitle.textContent = 'Zelle';
+          modalText.textContent = 'Use the button below to copy our Zelle number, then paste it into your banking app.';
+          modalActions.appendChild(makeActionButton({
+            label: 'Copy Zelle Number',
+            onClick: () => copyText(ZELLE_VALUE, 'Zelle number copied'),
+            primary: true
+          }));
+        }
+
+        overlay.classList.add('show');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal(){
+        overlay.classList.remove('show');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+
+      venmoBtn.addEventListener('click', () => openModal('venmo'));
+      zelleBtn.addEventListener('click', () => openModal('zelle'));
+
+      closeModalBtn.addEventListener('click', closeModal);
+
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeModal();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+      });
+    })();
+  </script>
+</body>
+</html>
