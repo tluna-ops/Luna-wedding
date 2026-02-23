@@ -16,14 +16,14 @@
   <meta property="og:title" content="Luna Wedding — June 6, 2026" />
   <meta property="og:description" content="Luna Wedding — RSVP • June 6, 2026" />
   <meta property="og:url" content="https://luna.wedding/" />
-  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=12" />
+  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=13" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:alt" content="Luna Wedding — June 6, 2026" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 6, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 6, 2026" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=12" />
+  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=13" />
 
   <link rel="icon" type="image/svg+xml"
     href='data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?>
@@ -40,7 +40,7 @@
     </svg>' />
 
   <link rel="preload" as="image" href="assets/bg.jpg?v=37" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/weddinginvite.png?v=12" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/weddinginvite.png?v=13" fetchpriority="high">
   <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=37">
 
   <style>
@@ -162,18 +162,24 @@
       cursor:pointer; flex:0 0 auto; white-space:nowrap; text-decoration:none;
     }
 
-    /* Separate fixed popover for calendar buttons (bulletproof vs nested/flex quirks) */
+    /* Separate fixed popover for calendar buttons */
     .calendar-pop{
       position:fixed;
       left:0; top:0;
       transform:translate(-9999px,-9999px);
       display:flex; flex-direction:column; gap:6px;
       z-index:80;
-      opacity:0; pointer-events:none;
-      transition:opacity .16s ease, transform .16s ease;
+
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+
+      transition: opacity .16s ease; /* fade only */
     }
     .calendar-pop.show{
-      opacity:1; pointer-events:auto;
+      opacity:1;
+      visibility:visible;
+      pointer-events:auto;
     }
     .calendar-pop .btn{
       text-align:center;
@@ -225,7 +231,7 @@
 <body>
   <div class="bg" aria-hidden="true"><img src="assets/bg.jpg?v=37" alt=""></div>
 
-  <img id="invite" class="invite" src="assets/weddinginvite.png?v=12" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/weddinginvite.png?v=13" alt="Wedding invitation">
   <button id="hint" class="hint" type="button" aria-label="Tap to zoom">Tap to zoom</button>
 
   <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
@@ -252,7 +258,6 @@
       rel="noopener">Contact the Couple</a>
   </div>
 
-  <!-- Separate popover (NOT nested inside actions) -->
   <div id="calendarPop" class="calendar-pop" aria-hidden="true">
     <button id="appleCalBtn" class="btn" type="button">Apple Calendar</button>
     <button id="googleCalBtn" class="btn" type="button">Google Calendar</button>
@@ -331,13 +336,12 @@
 
       function positionCalendarPop(){
         const r = calendarToggleBtn.getBoundingClientRect();
-        const popW = 190;
+        const popW = (window.innerWidth <= 430) ? 170 : 190;
         const gap = 8;
 
         let left = r.left + (r.width / 2) - (popW / 2);
         left = Math.max(12, Math.min(left, window.innerWidth - popW - 12));
 
-        // place above button
         const top = Math.max(12, r.top - 92 - gap);
 
         calendarPop.style.left = left + 'px';
@@ -347,6 +351,7 @@
 
       function showCalendarPop(){
         positionCalendarPop();
+        calendarPop.style.willChange = 'opacity';
         calendarPop.classList.add('show');
         calendarPop.setAttribute('aria-hidden', 'false');
         calendarToggleBtn.setAttribute('aria-expanded', 'true');
@@ -356,6 +361,7 @@
         calendarPop.classList.remove('show');
         calendarPop.setAttribute('aria-hidden', 'true');
         calendarToggleBtn.setAttribute('aria-expanded', 'false');
+        calendarPop.style.willChange = '';
       }
 
       function toggleCalendarPop(e){
@@ -370,7 +376,6 @@
         e.stopPropagation();
         hideCalendarPop();
 
-        // Public-web limitation: Apple Calendar event creation relies on .ics import
         const blob = new Blob([buildICS()], { type: 'text/calendar;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         window.location.href = url;
@@ -476,7 +481,6 @@
         else openMenu();
       }
 
-      // isolate internal controls from outside-close
       ['pointerdown', 'click'].forEach(type => {
         actionsWrap.addEventListener(type, (e) => e.stopPropagation());
         calendarPop.addEventListener(type, (e) => e.stopPropagation());
@@ -514,7 +518,6 @@
         openZoom();
       });
 
-      // clicking zoomed invite closes lightbox
       lbimg.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -538,19 +541,16 @@
         closeMenu();
       });
 
-      // Calendar popover trigger
       calendarToggleBtn.addEventListener('click', toggleCalendarPop);
       appleCalBtn.addEventListener('click', openAppleCalendar);
       googleCalBtn.addEventListener('click', openGoogleCalendar);
 
-      // Hide calendar popover when other action buttons are clicked
       actionsWrap.querySelectorAll('.btn').forEach((btn) => {
         if (btn !== calendarToggleBtn) {
           btn.addEventListener('click', () => hideCalendarPop());
         }
       });
 
-      // Keep popover aligned on resize/orientation
       window.addEventListener('resize', () => {
         if (calendarPop.classList.contains('show')) positionCalendarPop();
       });
@@ -560,7 +560,6 @@
         }, 50);
       });
 
-      // Outside-close
       document.addEventListener('pointerdown', (e) => {
         const inside = e.target.closest('#actions, #calendarPop, #menuBtn, #menuCloseBtn, #music, .close, #hint');
         if (!inside) closeAll();
@@ -570,7 +569,6 @@
         if (e.key === 'Escape') closeAll();
       });
 
-      /* Audio */
       let bgm = null;
       let fadedIn = false;
       const TARGET_VOL = 0.35;
