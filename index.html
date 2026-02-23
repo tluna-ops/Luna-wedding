@@ -16,14 +16,14 @@
   <meta property="og:title" content="Luna Wedding — June 6, 2026" />
   <meta property="og:description" content="Luna Wedding — RSVP • June 6, 2026" />
   <meta property="og:url" content="https://luna.wedding/" />
-  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=11" />
+  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=12" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:alt" content="Luna Wedding — June 6, 2026" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 6, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 6, 2026" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=11" />
+  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=12" />
 
   <link rel="icon" type="image/svg+xml"
     href='data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?>
@@ -40,7 +40,7 @@
     </svg>' />
 
   <link rel="preload" as="image" href="assets/bg.jpg?v=37" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/weddinginvite.png?v=11" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/weddinginvite.png?v=12" fetchpriority="high">
   <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=37">
 
   <style>
@@ -162,27 +162,24 @@
       cursor:pointer; flex:0 0 auto; white-space:nowrap; text-decoration:none;
     }
 
-    .calendar-group{ position:relative; flex:0 0 auto; }
-    .calendar-main{ width:100%; }
-
-    .calendar-options{
-      position:absolute; left:50%;
-      bottom:calc(100% + 8px);
-      transform:translateX(-50%) translateY(6px);
+    /* Separate fixed popover for calendar buttons (bulletproof vs nested/flex quirks) */
+    .calendar-pop{
+      position:fixed;
+      left:0; top:0;
+      transform:translate(-9999px,-9999px);
       display:flex; flex-direction:column; gap:6px;
-      min-width:max-content;
+      z-index:80;
       opacity:0; pointer-events:none;
-      transition:opacity .18s ease, transform .18s ease;
-      z-index:60;
+      transition:opacity .16s ease, transform .16s ease;
     }
-    .calendar-options.show{
+    .calendar-pop.show{
       opacity:1; pointer-events:auto;
-      transform:translateX(-50%) translateY(0);
     }
-    .calendar-options .btn{
+    .calendar-pop .btn{
       text-align:center;
-      background:rgba(0,0,0,.72);
-      border-color:rgba(255,255,255,.75);
+      background:rgba(0,0,0,.78);
+      border-color:rgba(255,255,255,.8);
+      min-width:180px;
     }
 
     .dock{
@@ -215,19 +212,20 @@
         row-gap:8px; max-width:92vw; padding:0 12px;
       }
       .btn{ flex:1 1 calc(50% - 8px); text-align:center; }
-      .calendar-group{ flex:1 1 calc(50% - 8px); }
-      .calendar-options{ min-width:100%; }
-      .calendar-options .btn{ width:100%; }
+
+      .calendar-pop .btn{
+        min-width:160px;
+      }
     }
     @media (max-width: 340px){
-      .btn, .calendar-group{ flex:1 1 100%; }
+      .btn{ flex:1 1 100%; }
     }
   </style>
 </head>
 <body>
   <div class="bg" aria-hidden="true"><img src="assets/bg.jpg?v=37" alt=""></div>
 
-  <img id="invite" class="invite" src="assets/weddinginvite.png?v=11" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/weddinginvite.png?v=12" alt="Wedding invitation">
   <button id="hint" class="hint" type="button" aria-label="Tap to zoom">Tap to zoom</button>
 
   <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
@@ -242,15 +240,9 @@
       href="mailto:rsvp@luna.wedding?subject=RSVP%3A%20Luna%20Wedding&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AWe%27re%20delighted%20to%20RSVP%20for%20June%206%2C%202026.%0A%0ANames%3A%20%0ANumber%20of%20Guests%3A%20%0ADietary%20notes%3A%20%0A%0AWith%20love%2C%0A"
       rel="noopener">RSVP</a>
 
-    <div id="calendarGroup" class="calendar-group">
-      <button id="calendarToggleBtn" class="btn calendar-main" type="button" aria-expanded="false" aria-controls="calendarOptions">
-        Add to Calendar
-      </button>
-      <div id="calendarOptions" class="calendar-options" aria-hidden="true">
-        <button id="appleCalBtn" class="btn" type="button">Apple Calendar</button>
-        <button id="googleCalBtn" class="btn" type="button">Google Calendar</button>
-      </div>
-    </div>
+    <button id="calendarToggleBtn" class="btn" type="button" aria-expanded="false" aria-controls="calendarPop">
+      Add to Calendar
+    </button>
 
     <a id="registryBtn" class="btn" href="registry.html">Registry</a>
     <a id="faqBtn" class="btn" href="faq.html">FAQ</a>
@@ -258,6 +250,12 @@
     <a id="askBtn" class="btn"
       href="mailto:hello@luna.wedding?subject=Question%20about%20Luna%20Wedding%20%E2%80%94%20June%206%2C%202026&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AMy%20name%3A%0APhone%20(optional)%3A%0A%0AMy%20question%3A%0A%0AThanks!%0A%E2%80%94%20"
       rel="noopener">Contact the Couple</a>
+  </div>
+
+  <!-- Separate popover (NOT nested inside actions) -->
+  <div id="calendarPop" class="calendar-pop" aria-hidden="true">
+    <button id="appleCalBtn" class="btn" type="button">Apple Calendar</button>
+    <button id="googleCalBtn" class="btn" type="button">Google Calendar</button>
   </div>
 
   <div class="dock">
@@ -283,9 +281,8 @@
       const menuCloseBtn = document.getElementById('menuCloseBtn');
       const musicBtn = document.getElementById('music');
 
-      const calendarGroup = document.getElementById('calendarGroup');
       const calendarToggleBtn = document.getElementById('calendarToggleBtn');
-      const calendarOptions = document.getElementById('calendarOptions');
+      const calendarPop = document.getElementById('calendarPop');
       const appleCalBtn = document.getElementById('appleCalBtn');
       const googleCalBtn = document.getElementById('googleCalBtn');
 
@@ -332,30 +329,48 @@
         ].join(CRLF);
       }
 
-      function showCalendarOptions(){
-        calendarOptions.classList.add('show');
-        calendarOptions.setAttribute('aria-hidden', 'false');
+      function positionCalendarPop(){
+        const r = calendarToggleBtn.getBoundingClientRect();
+        const popW = 190;
+        const gap = 8;
+
+        let left = r.left + (r.width / 2) - (popW / 2);
+        left = Math.max(12, Math.min(left, window.innerWidth - popW - 12));
+
+        // place above button
+        const top = Math.max(12, r.top - 92 - gap);
+
+        calendarPop.style.left = left + 'px';
+        calendarPop.style.top = top + 'px';
+        calendarPop.style.transform = 'translate(0,0)';
+      }
+
+      function showCalendarPop(){
+        positionCalendarPop();
+        calendarPop.classList.add('show');
+        calendarPop.setAttribute('aria-hidden', 'false');
         calendarToggleBtn.setAttribute('aria-expanded', 'true');
       }
 
-      function hideCalendarOptions(){
-        calendarOptions.classList.remove('show');
-        calendarOptions.setAttribute('aria-hidden', 'true');
+      function hideCalendarPop(){
+        calendarPop.classList.remove('show');
+        calendarPop.setAttribute('aria-hidden', 'true');
         calendarToggleBtn.setAttribute('aria-expanded', 'false');
       }
 
-      function toggleCalendarOptions(e){
+      function toggleCalendarPop(e){
         e.preventDefault();
         e.stopPropagation();
-        if (calendarOptions.classList.contains('show')) hideCalendarOptions();
-        else showCalendarOptions();
+        if (calendarPop.classList.contains('show')) hideCalendarPop();
+        else showCalendarPop();
       }
 
       function openAppleCalendar(e){
         e.preventDefault();
         e.stopPropagation();
-        hideCalendarOptions();
+        hideCalendarPop();
 
+        // Public-web limitation: Apple Calendar event creation relies on .ics import
         const blob = new Blob([buildICS()], { type: 'text/calendar;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         window.location.href = url;
@@ -365,7 +380,7 @@
       function openGoogleCalendar(e){
         e.preventDefault();
         e.stopPropagation();
-        hideCalendarOptions();
+        hideCalendarPop();
 
         const webUrl =
           'https://calendar.google.com/calendar/render?action=TEMPLATE'
@@ -397,6 +412,7 @@
         const visible = body.classList.contains('menu-open') || body.classList.contains('zoom-open');
         actionsWrap.classList.toggle('show', body.classList.contains('menu-open'));
         actionsWrap.setAttribute('aria-hidden', visible ? 'false' : 'true');
+        if (!visible) hideCalendarPop();
       }
 
       function openMenu(){
@@ -407,7 +423,6 @@
         syncActionsVisibility();
         menuBtn.setAttribute('aria-pressed','true');
         menuBtn.classList.add('on');
-        hideCalendarOptions();
       }
 
       function closeMenu(){
@@ -415,7 +430,6 @@
         syncActionsVisibility();
         menuBtn.setAttribute('aria-pressed','false');
         menuBtn.classList.remove('on');
-        hideCalendarOptions();
       }
 
       function closeZoom(){
@@ -424,6 +438,7 @@
           syncActionsVisibility();
           return;
         }
+        hideCalendarPop();
         lb.classList.add('closing');
         setTimeout(() => {
           lb.classList.remove('visible');
@@ -437,9 +452,9 @@
       }
 
       function closeAll(){
+        hideCalendarPop();
         closeMenu();
         closeZoom();
-        hideCalendarOptions();
         document.body.style.overflow = '';
       }
 
@@ -461,13 +476,12 @@
         else openMenu();
       }
 
-      // isolate actions/calendar from document outside-close
-      actionsWrap.addEventListener('pointerdown', (e) => e.stopPropagation());
-      actionsWrap.addEventListener('click', (e) => e.stopPropagation());
-      calendarGroup.addEventListener('pointerdown', (e) => e.stopPropagation());
-      calendarGroup.addEventListener('click', (e) => e.stopPropagation());
+      // isolate internal controls from outside-close
+      ['pointerdown', 'click'].forEach(type => {
+        actionsWrap.addEventListener(type, (e) => e.stopPropagation());
+        calendarPop.addEventListener(type, (e) => e.stopPropagation());
+      });
 
-      // Invite / zoom
       invite.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -500,7 +514,7 @@
         openZoom();
       });
 
-      // clicking the zoomed invite closes lightbox
+      // clicking zoomed invite closes lightbox
       lbimg.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -524,23 +538,32 @@
         closeMenu();
       });
 
-      // Calendar submenu toggle (single binding only)
-      calendarToggleBtn.addEventListener('click', toggleCalendarOptions);
-
+      // Calendar popover trigger
+      calendarToggleBtn.addEventListener('click', toggleCalendarPop);
       appleCalBtn.addEventListener('click', openAppleCalendar);
       googleCalBtn.addEventListener('click', openGoogleCalendar);
 
-      // Close calendar submenu when clicking other action buttons
+      // Hide calendar popover when other action buttons are clicked
       actionsWrap.querySelectorAll('.btn').forEach((btn) => {
-        if (btn !== calendarToggleBtn && btn !== appleCalBtn && btn !== googleCalBtn) {
-          btn.addEventListener('click', () => hideCalendarOptions());
+        if (btn !== calendarToggleBtn) {
+          btn.addEventListener('click', () => hideCalendarPop());
         }
+      });
+
+      // Keep popover aligned on resize/orientation
+      window.addEventListener('resize', () => {
+        if (calendarPop.classList.contains('show')) positionCalendarPop();
+      });
+      window.addEventListener('orientationchange', () => {
+        setTimeout(() => {
+          if (calendarPop.classList.contains('show')) positionCalendarPop();
+        }, 50);
       });
 
       // Outside-close
       document.addEventListener('pointerdown', (e) => {
-        const clickedInsideControls = e.target.closest('#actions, #menuBtn, #menuCloseBtn, #music, .close, #hint');
-        if (!clickedInsideControls) closeAll();
+        const inside = e.target.closest('#actions, #calendarPop, #menuBtn, #menuCloseBtn, #music, .close, #hint');
+        if (!inside) closeAll();
       });
 
       document.addEventListener('keydown', (e) => {
