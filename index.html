@@ -16,14 +16,14 @@
   <meta property="og:title" content="Luna Wedding — June 6, 2026" />
   <meta property="og:description" content="Luna Wedding — RSVP • June 6, 2026" />
   <meta property="og:url" content="https://luna.wedding/" />
-  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=6" />
+  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=8" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:alt" content="Luna Wedding — June 6, 2026" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 6, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 6, 2026" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=6" />
+  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=8" />
 
   <link rel="icon" type="image/svg+xml"
     href='data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?>
@@ -40,7 +40,7 @@
     </svg>' />
 
   <link rel="preload" as="image" href="assets/bg.jpg?v=37" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/weddinginvite.png?v=6" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/weddinginvite.png?v=8" fetchpriority="high">
   <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=37">
 
   <style>
@@ -132,7 +132,7 @@
       z-index:15;
       display:flex; gap:8px; flex-wrap:nowrap; overflow-x:auto;
       -webkit-overflow-scrolling: touch; scrollbar-width:none;
-      max-width:min(92vw, 980px); padding:0 8px;
+      max-width:min(92vw,980px); padding:0 8px;
       opacity:0; pointer-events:none;
       transition:opacity .28s ease, transform .28s ease, bottom .28s ease;
     }
@@ -198,7 +198,7 @@
       padding:10px 12px; border-radius:999px;
       border:1px solid rgba(255,255,255,.5);
       background:rgba(0,0,0,.40); color:#fff; font-size:14px;
-      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
       box-shadow:0 8px 24px rgba(0,0,0,.18);
       cursor:pointer; user-select:none;
       transition:opacity .25s ease, transform .25s ease, background .25s ease;
@@ -212,11 +212,11 @@
 
     @media (max-width: 430px){
       .actions{
-        overflow-x: visible; flex-wrap: wrap; justify-content: center;
-        row-gap: 8px; max-width: 92vw; padding: 0 12px;
+        overflow-x:visible; flex-wrap:wrap; justify-content:center;
+        row-gap:8px; max-width:92vw; padding:0 12px;
       }
-      .btn{ flex: 1 1 calc(50% - 8px); text-align:center; }
-      .calendar-group{ flex: 1 1 calc(50% - 8px); }
+      .btn{ flex:1 1 calc(50% - 8px); text-align:center; }
+      .calendar-group{ flex:1 1 calc(50% - 8px); }
       .calendar-options{ min-width:100%; }
       .calendar-options .btn{ width:100%; }
     }
@@ -228,7 +228,7 @@
 <body>
   <div class="bg" aria-hidden="true"><img src="assets/bg.jpg?v=37" alt=""></div>
 
-  <img id="invite" class="invite" src="assets/weddinginvite.png?v=6" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/weddinginvite.png?v=8" alt="Wedding invitation">
   <button id="hint" class="hint" type="button" aria-label="Tap to zoom">Tap to zoom</button>
 
   <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
@@ -239,12 +239,14 @@
   <button id="menuCloseBtn" class="menu-close" aria-label="Close menu">×</button>
 
   <div id="actions" class="actions" aria-hidden="true">
-    <a id="rsvpBtn" class="btn" aria-label="RSVP"
+    <a id="rsvpBtn" class="btn"
       href="mailto:rsvp@luna.wedding?subject=RSVP%3A%20Luna%20Wedding&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AWe%27re%20delighted%20to%20RSVP%20for%20June%206%2C%202026.%0A%0ANames%3A%20%0ANumber%20of%20Guests%3A%20%0ADietary%20notes%3A%20%0A%0AWith%20love%2C%0A"
       rel="noopener">RSVP</a>
 
     <div id="calendarGroup" class="calendar-group">
-      <button id="calendarToggleBtn" class="btn calendar-main" type="button" aria-expanded="false">Add to Calendar</button>
+      <button id="calendarToggleBtn" class="btn calendar-main" type="button" aria-expanded="false" aria-controls="calendarOptions">
+        Add to Calendar
+      </button>
       <div id="calendarOptions" class="calendar-options" aria-hidden="true">
         <button id="appleCalBtn" class="btn" type="button">Apple Calendar</button>
         <button id="googleCalBtn" class="btn" type="button">Google Calendar</button>
@@ -296,7 +298,6 @@
         endUTC:   '20260607T020000Z'
       };
 
-      function isIOS(){ return /iPhone|iPad|iPod/i.test(navigator.userAgent); }
       function isAndroid(){ return /Android/i.test(navigator.userAgent); }
 
       function fold(line){
@@ -332,9 +333,6 @@
         ].join(CRLF);
       }
 
-      // Apple note:
-      // There is no reliable public-web deep link that opens Apple Calendar directly to a *prefilled new event*.
-      // The best supported path is an .ics event file import. We avoid webcal:// to prevent "subscription calendar".
       function openAppleCalendar(e){
         e.preventDefault();
         e.stopPropagation();
@@ -342,11 +340,7 @@
 
         const blob = new Blob([buildICS()], { type: 'text/calendar;charset=utf-8' });
         const url = URL.createObjectURL(blob);
-
-        // Do NOT use download attr (that forces file download). Let iOS/macOS handle/import the ICS.
-        // This should open the system sheet/import flow directly instead of subscribing.
-        window.location.href = url;
-
+        window.location.href = url; // Apple import path (non-subscription)
         setTimeout(() => URL.revokeObjectURL(url), 8000);
       }
 
@@ -378,7 +372,7 @@
           return;
         }
 
-        window.location.href = webUrl; // iOS universal link or desktop web
+        window.location.href = webUrl;
       }
 
       function showCalendarOptions(){
@@ -392,8 +386,10 @@
         calendarToggleBtn.setAttribute('aria-expanded', 'false');
       }
       function toggleCalendarOptions(e){
+        e.preventDefault();
         e.stopPropagation();
-        calendarOptions.classList.contains('show') ? hideCalendarOptions() : showCalendarOptions();
+        if (calendarOptions.classList.contains('show')) hideCalendarOptions();
+        else showCalendarOptions();
       }
 
       function syncActionsVisibility(){
@@ -422,6 +418,11 @@
       }
 
       function closeZoom(){
+        if (!lb.classList.contains('visible')) {
+          body.classList.remove('zoom-open');
+          syncActionsVisibility();
+          return;
+        }
         lb.classList.add('closing');
         setTimeout(() => {
           lb.classList.remove('visible');
@@ -436,22 +437,15 @@
 
       function closeAll(){
         closeMenu();
-        if (lb.classList.contains('visible')) {
-          closeZoom();
-        } else {
-          body.classList.remove('zoom-open');
-          syncActionsVisibility();
-          document.body.style.overflow = '';
-        }
+        closeZoom();
+        hideCalendarOptions();
+        document.body.style.overflow = '';
       }
 
       function openZoom(){
-        // Per latest behavior: opening zoom should close menu first and show zoom-context actions
-        closeMenu();
-
+        closeMenu(); // zoom is contextual; menu closes first
         body.classList.add('zoom-open');
         syncActionsVisibility();
-
         lbimg.src = invite.currentSrc || invite.src;
         lb.classList.add('visible');
         document.body.style.overflow = 'hidden';
@@ -460,20 +454,21 @@
       }
 
       function toggleMenu(e){
+        e.preventDefault();
         e.stopPropagation();
         if (body.classList.contains('menu-open')) closeMenu();
         else openMenu();
       }
 
       invite.addEventListener('click', (e) => {
-        // If menu is open, a click on invite counts as "outside buttons" and closes everything (no zoom)
+        e.preventDefault();
+        e.stopPropagation(); // <-- fixes immediate close on zoom open
         if (body.classList.contains('menu-open')) {
-          e.stopPropagation();
-          closeAll();
+          closeAll();        // menu-open + outside click closes all
           return;
         }
         openZoom();
-      }, { passive:false });
+      });
 
       let lastTap = 0;
       invite.addEventListener('touchend', (e) => {
@@ -481,39 +476,50 @@
         const now = Date.now();
         if (now - lastTap < 300) {
           e.preventDefault();
+          e.stopPropagation(); // <-- fixes immediate close on double-tap zoom
           openZoom();
         }
         lastTap = now;
       }, { passive:false });
 
       hint.addEventListener('click', (e) => {
-        if (body.classList.contains('menu-open')) { closeAll(); return; }
+        e.preventDefault();
+        e.stopPropagation();
+        if (body.classList.contains('menu-open')) {
+          closeAll();
+          return;
+        }
         openZoom();
       });
 
       lb.addEventListener('click', (e) => {
         if (e.target === lb) closeZoom();
       });
-      zoomCloseBtn.addEventListener('click', (e) => { e.stopPropagation(); closeZoom(); });
+      zoomCloseBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); closeZoom(); });
 
       menuBtn.addEventListener('click', toggleMenu);
-      menuCloseBtn.addEventListener('click', (e) => { e.stopPropagation(); closeMenu(); });
+      menuCloseBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); closeMenu(); });
 
       calendarToggleBtn.addEventListener('click', toggleCalendarOptions);
       appleCalBtn.addEventListener('click', openAppleCalendar);
       googleCalBtn.addEventListener('click', openGoogleCalendar);
 
-      // Global outside-click close:
-      // If click is not on ANY interactive controls, close all open windows.
+      // Outside-click behavior:
+      // - If click is outside all buttons/menus/lightbox controls, close all.
+      // - If click is inside actions but outside calendar group, close only calendar submenu.
       document.addEventListener('click', (e) => {
-        const onControl = e.target.closest(
-          '#actions, #menuBtn, #menuCloseBtn, #music, .close'
+        const onControls = e.target.closest(
+          '#actions, #menuBtn, #menuCloseBtn, #music, .close, #hint'
         );
-        if (!onControl) {
+
+        if (!onControls) {
           closeAll();
           return;
         }
-        if (!e.target.closest('#calendarGroup')) hideCalendarOptions();
+
+        if (!e.target.closest('#calendarGroup')) {
+          hideCalendarOptions();
+        }
       });
 
       document.addEventListener('keydown', (e) => {
@@ -593,6 +599,7 @@
       setMusicBtn(pref);
 
       musicBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
         e.stopPropagation();
         createAudio();
         pref = (pref === 'on') ? 'off' : 'on';
