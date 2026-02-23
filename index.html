@@ -1,14 +1,12 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <!-- Charset & viewport FIRST for parsers -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>Luna Wedding — June 6, 2026</title>
   <link rel="canonical" href="https://luna.wedding/" />
 
-  <!-- Basic meta -->
   <meta name="title" content="Luna Wedding — June 6, 2026" />
   <meta name="description" content="Luna Wedding — RSVP • June 6, 2026" />
 
@@ -19,7 +17,7 @@
   <meta property="og:title" content="Luna Wedding — June 6, 2026" />
   <meta property="og:description" content="Luna Wedding — RSVP • June 6, 2026" />
   <meta property="og:url" content="https://luna.wedding/" />
-  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=3" />
+  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=4" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:alt" content="Luna Wedding — June 6, 2026" />
 
@@ -27,7 +25,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 6, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 6, 2026" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=3" />
+  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=4" />
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml"
@@ -46,7 +44,7 @@
 
   <!-- Performance -->
   <link rel="preload" as="image" href="assets/bg.jpg?v=37" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/weddinginvite.png?v=3" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/weddinginvite.png?v=4" fetchpriority="high">
   <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=37">
 
   <style>
@@ -115,9 +113,7 @@
       font-size:13px;
       box-shadow:0 8px 24px rgba(0,0,0,.12);
       z-index:30;
-      will-change: opacity, transform;
       border:0;
-      appearance:none;
       cursor:pointer;
       opacity:0;
       transition: opacity 600ms ease, transform 600ms ease;
@@ -229,14 +225,12 @@
     }
     .btn:hover, .btn:focus, .btn:active{ text-decoration:none; }
 
-    /* Calendar menu */
     .calendar-group{
       position:relative;
       flex:0 0 auto;
     }
-    .calendar-main{
-      width:100%;
-    }
+    .calendar-main{ width:100%; }
+
     .calendar-options{
       position:absolute;
       left:50%;
@@ -249,7 +243,7 @@
       opacity:0;
       pointer-events:none;
       transition:opacity .18s ease, transform .18s ease;
-      z-index:35;
+      z-index:40;
     }
     .calendar-options.show{
       opacity:1;
@@ -258,9 +252,8 @@
     }
     .calendar-options .btn{
       text-align:center;
-      background:rgba(0,0,0,.68);
-      border-color:rgba(255,255,255,.72);
-      white-space:nowrap;
+      background:rgba(0,0,0,.72);
+      border-color:rgba(255,255,255,.75);
     }
 
     .dock{
@@ -271,6 +264,7 @@
       align-items:center;
       gap:8px;
       z-index:20;
+      transition:opacity .2s ease, transform .2s ease;
     }
 
     .pill{
@@ -296,9 +290,7 @@
     .pill .label{ letter-spacing:.2px; }
 
     .lightbox.visible ~ .dock #menuBtn{
-      opacity:0;
-      pointer-events:none;
-      transform:translateY(6px);
+      opacity:0; pointer-events:none; transform:translateY(6px);
     }
 
     @media (max-width: 430px){
@@ -317,16 +309,17 @@
       .calendar-group{
         flex: 1 1 calc(50% - 8px);
       }
-      .calendar-main{
-        width:100%;
-      }
+      .calendar-main{ width:100%; }
       .calendar-options{
-        left:50%;
-        right:auto;
         min-width:100%;
       }
-      .calendar-options .btn{
-        width:100%;
+      .calendar-options .btn{ width:100%; }
+
+      /* Hide dock buttons while zoomed on mobile so they don't overlap */
+      .lightbox.visible ~ .dock{
+        opacity:0;
+        pointer-events:none;
+        transform:translateY(8px);
       }
     }
 
@@ -340,13 +333,12 @@
     }
   </style>
 </head>
-
 <body>
   <div class="bg" aria-hidden="true">
     <img src="assets/bg.jpg?v=37" alt="">
   </div>
 
-  <img id="invite" class="invite" src="assets/weddinginvite.png?v=3" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/weddinginvite.png?v=4" alt="Wedding invitation">
 
   <button id="hint" class="hint" type="button" aria-label="Tap to zoom">Tap to zoom</button>
 
@@ -364,7 +356,6 @@
       rel="noopener"
     >RSVP</a>
 
-    <!-- Add to Calendar -> reveals Apple / Google buttons -->
     <div id="calendarGroup" class="calendar-group">
       <button
         id="calendarToggleBtn"
@@ -376,21 +367,8 @@
       >Add to Calendar</button>
 
       <div id="calendarOptions" class="calendar-options" aria-hidden="true">
-        <a
-          id="appleCalBtn"
-          class="btn"
-          aria-label="Apple Calendar"
-          href="assets/wedding.ics"
-          download
-          rel="noopener"
-        >Apple Calendar</a>
-
-        <button
-          id="googleCalBtn"
-          class="btn"
-          type="button"
-          aria-label="Google Calendar"
-        >Google Calendar</button>
+        <button id="appleCalBtn" class="btn" type="button" aria-label="Apple Calendar">Apple Calendar</button>
+        <button id="googleCalBtn" class="btn" type="button" aria-label="Google Calendar">Google Calendar</button>
       </div>
     </div>
 
@@ -432,25 +410,35 @@
       const calendarGroup = document.getElementById('calendarGroup');
       const calendarToggleBtn = document.getElementById('calendarToggleBtn');
       const calendarOptions = document.getElementById('calendarOptions');
+      const appleCalBtn = document.getElementById('appleCalBtn');
       const googleCalBtn = document.getElementById('googleCalBtn');
 
-      /* Google Calendar event details (ET converted to UTC in dates param) */
-      const gcalTitle = 'Luna Wedding';
-      const gcalDetails = 'Dress Code: Formal Attire';
-      const gcalLocation = 'Carne Mare – Seaport, 89 South St, New York, NY 10038';
-      // June 6, 2026 7:00 PM–10:00 PM ET = 23:00Z–02:00Z
-      const gcalStart = '20260606T230000Z';
-      const gcalEnd = '20260607T020000Z';
+      const ICS_PATH = 'assets/wedding.ics';
+      const ICS_ABS_HTTPS = window.location.origin + '/assets/wedding.ics';
+      const ICS_ABS_WEBCAL = 'webcal://' + window.location.host + '/assets/wedding.ics';
 
-      function openGoogleCalendar(){
-        const href =
-          'https://calendar.google.com/calendar/render?action=TEMPLATE' +
-          '&text=' + encodeURIComponent(gcalTitle) +
-          '&dates=' + encodeURIComponent(gcalStart + '/' + gcalEnd) +
-          '&details=' + encodeURIComponent(gcalDetails) +
-          '&location=' + encodeURIComponent(gcalLocation) +
-          '&sf=true&output=xml';
-        window.open(href, '_blank', 'noopener,noreferrer');
+      // Google Calendar event details (June 6, 2026 7–10 PM ET)
+      const gTitle = 'Luna Wedding';
+      const gDetails = 'Dress Code: Formal Attire';
+      const gLocation = 'Carne Mare – Seaport, 89 South St, New York, NY 10038';
+      const gStartUTC = '20260606T230000Z';
+      const gEndUTC = '20260607T020000Z';
+
+      function googleWebUrl(){
+        return 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+          + '&text=' + encodeURIComponent(gTitle)
+          + '&dates=' + encodeURIComponent(gStartUTC + '/' + gEndUTC)
+          + '&details=' + encodeURIComponent(gDetails)
+          + '&location=' + encodeURIComponent(gLocation)
+          + '&sf=true&output=xml';
+      }
+
+      function isIOS(){
+        return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      }
+
+      function isAndroid(){
+        return /Android/i.test(navigator.userAgent);
       }
 
       function showCalendarOptions(){
@@ -466,7 +454,7 @@
       }
 
       function toggleCalendarOptions(e){
-        e?.stopPropagation();
+        e.stopPropagation();
         if (calendarOptions.classList.contains('show')) hideCalendarOptions();
         else showCalendarOptions();
       }
@@ -487,7 +475,7 @@
       }
 
       function toggleActions(e){
-        e?.stopPropagation();
+        e.stopPropagation();
         if (actionsWrap.classList.contains('show')) hideActions();
         else showActions();
       }
@@ -497,7 +485,7 @@
         lbimg.src = invite.currentSrc || invite.src;
         lb.classList.add('visible');
         document.body.style.overflow = 'hidden';
-        if (hint) hint.classList.add('hide');
+        hint.classList.add('hide');
         unlockAudio();
       }
 
@@ -512,8 +500,82 @@
         }, 120);
       }
 
-      invite.addEventListener('click', openLB, { passive:true });
+      function downloadICS(){
+        const a = document.createElement('a');
+        a.href = ICS_PATH;
+        a.download = 'LunaWedding.ics';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      }
 
+      function openAppleCalendar(e){
+        e.preventDefault();
+        e.stopPropagation();
+        hideCalendarOptions();
+
+        // iOS/macOS: try Calendar app via webcal:// first
+        if (isIOS() || /Macintosh/i.test(navigator.userAgent)) {
+          let fallbackFired = false;
+          const t = setTimeout(() => {
+            if (!fallbackFired) {
+              fallbackFired = true;
+              downloadICS(); // fallback only if app handoff didn't happen
+            }
+          }, 1200);
+
+          // If page becomes hidden, assume handoff succeeded and cancel fallback
+          const onVisibility = () => {
+            if (document.visibilityState === 'hidden') {
+              fallbackFired = true;
+              clearTimeout(t);
+              document.removeEventListener('visibilitychange', onVisibility);
+            }
+          };
+          document.addEventListener('visibilitychange', onVisibility);
+
+          window.location.href = ICS_ABS_WEBCAL;
+          return;
+        }
+
+        // Non-Apple devices: direct ICS download fallback
+        downloadICS();
+      }
+
+      function openGoogleCalendar(e){
+        e.preventDefault();
+        e.stopPropagation();
+        hideCalendarOptions();
+
+        const webUrl = googleWebUrl();
+
+        // iOS: universal link usually opens Google Calendar app if installed, web fallback otherwise
+        if (isIOS()) {
+          window.location.href = webUrl;
+          return;
+        }
+
+        // Android: intent opens app if installed, browser fallback if not
+        if (isAndroid()) {
+          const intentUrl =
+            'intent://calendar.google.com/calendar/render?action=TEMPLATE'
+            + '&text=' + encodeURIComponent(gTitle)
+            + '&dates=' + encodeURIComponent(gStartUTC + '/' + gEndUTC)
+            + '&details=' + encodeURIComponent(gDetails)
+            + '&location=' + encodeURIComponent(gLocation)
+            + '&sf=true&output=xml'
+            + '#Intent;scheme=https;package=com.google.android.calendar;S.browser_fallback_url='
+            + encodeURIComponent(webUrl)
+            + ';end';
+          window.location.href = intentUrl;
+          return;
+        }
+
+        // Desktop fallback: open web
+        window.open(webUrl, '_blank', 'noopener,noreferrer');
+      }
+
+      invite.addEventListener('click', openLB, { passive:true });
       let lastTap = 0;
       invite.addEventListener('touchend', () => {
         const now = Date.now();
@@ -521,10 +583,7 @@
         lastTap = now;
       }, { passive:true });
 
-      lb.addEventListener('click', (e) => {
-        if (e.target === lb) closeLB();
-      });
-
+      lb.addEventListener('click', (e) => { if (e.target === lb) closeLB(); });
       closeBtn.addEventListener('click', closeLB);
 
       document.addEventListener('keydown', (e) => {
@@ -535,28 +594,29 @@
       });
 
       hint.addEventListener('click', openLB, { passive:true });
+      menuBtn.addEventListener('click', toggleActions);
 
+      calendarToggleBtn.addEventListener('click', toggleCalendarOptions);
+      appleCalBtn.addEventListener('click', openAppleCalendar);
+      googleCalBtn.addEventListener('click', openGoogleCalendar);
+
+      // Click-away handlers (fixed so calendar tree keeps working repeatedly)
       document.addEventListener('click', (e) => {
         const withinMenu = e.target.closest('#menuBtn');
         const withinActions = e.target.closest('#actions');
-        const withinLB = e.target.closest('#lightbox');
+        const withinLightbox = e.target.closest('#lightbox');
         const withinCalendar = e.target.closest('#calendarGroup');
 
-        if (!withinMenu && !withinActions && !withinLB){
+        if (!withinMenu && !withinActions && !withinLightbox) {
           hideActions();
           return;
         }
-
-        if (!withinCalendar){
+        if (!withinCalendar) {
           hideCalendarOptions();
         }
       });
 
-      menuBtn.addEventListener('click', toggleActions);
-      calendarToggleBtn.addEventListener('click', toggleCalendarOptions);
-      googleCalBtn.addEventListener('click', openGoogleCalendar);
-
-      /* Audio: start fetching early; unlock on first gesture */
+      /* Audio */
       let bgm = null;
       let fadedIn = false;
       const TARGET_VOL = 0.35;
@@ -631,14 +691,14 @@
       });
 
       let pref = localStorage.getItem('music') || 'on';
-
       function setMusicBtn(state){
         musicBtn.classList.toggle('on', state === 'on');
         musicBtn.setAttribute('aria-pressed', state === 'on' ? 'true' : 'false');
       }
       setMusicBtn(pref);
 
-      musicBtn.addEventListener('click', async () => {
+      musicBtn.addEventListener('click', async (e) => {
+        e.stopPropagation();
         createAudio();
         pref = (pref === 'on') ? 'off' : 'on';
         localStorage.setItem('music', pref);
@@ -661,8 +721,8 @@
         }
       });
 
-      setTimeout(() => { if (hint) hint.classList.add('show'); }, 150);
-      setTimeout(() => { if (hint) hint.classList.add('hide'); }, 5150);
+      setTimeout(() => { hint.classList.add('show'); }, 150);
+      setTimeout(() => { hint.classList.add('hide'); }, 5150);
     })();
   </script>
 </body>
