@@ -288,7 +288,6 @@
       const EVENT = {
         title: "Toby and Michelle's Wedding",
         description: "Toby and Michelle's wedding. Visit https://luna.wedding for more details.",
-        </div>
         venueName: "Carne Mare – Seaport",
         location: "89 South St, New York, NY 10038",
         mapsUrl: "https://maps.app.goo.gl/vTsV19gqAxjDsSb88?g_st=ic",
@@ -312,6 +311,7 @@
       function buildEventDetailsText(){
         return [
           EVENT.description,
+          '',
           `Venue: ${EVENT.venueName}`,
           `Map (Google): ${EVENT.mapsUrl}`
         ].join('\n');
@@ -320,6 +320,7 @@
       function buildICSDescription(){
         return [
           EVENT.description,
+          '',
           `Venue: ${EVENT.venueName}`,
           `Map (Google): ${EVENT.mapsUrl}`
         ].join('\\n');
