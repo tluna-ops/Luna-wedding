@@ -333,6 +333,7 @@
         ].join(CRLF);
       }
 
+      // Apple Calendar (best available public-web behavior = ICS import)
       function openAppleCalendar(e){
         e.preventDefault();
         e.stopPropagation();
@@ -340,7 +341,7 @@
 
         const blob = new Blob([buildICS()], { type: 'text/calendar;charset=utf-8' });
         const url = URL.createObjectURL(blob);
-        window.location.href = url; // Apple import path (non-subscription)
+        window.location.href = url;
         setTimeout(() => URL.revokeObjectURL(url), 8000);
       }
 
@@ -380,11 +381,13 @@
         calendarOptions.setAttribute('aria-hidden', 'false');
         calendarToggleBtn.setAttribute('aria-expanded', 'true');
       }
+
       function hideCalendarOptions(){
         calendarOptions.classList.remove('show');
         calendarOptions.setAttribute('aria-hidden', 'true');
         calendarToggleBtn.setAttribute('aria-expanded', 'false');
       }
+
       function toggleCalendarOptions(e){
         e.preventDefault();
         e.stopPropagation();
@@ -443,7 +446,7 @@
       }
 
       function openZoom(){
-        closeMenu(); // zoom is contextual; menu closes first
+        closeMenu(); // menu closes before zoom-context actions
         body.classList.add('zoom-open');
         syncActionsVisibility();
         lbimg.src = invite.currentSrc || invite.src;
@@ -460,11 +463,16 @@
         else openMenu();
       }
 
+      // Prevent actions clicks from bubbling to outside-close logic
+      actionsWrap.addEventListener('pointerdown', (e) => e.stopPropagation());
+      actionsWrap.addEventListener('click', (e) => e.stopPropagation());
+
+      // Invite / zoom
       invite.addEventListener('click', (e) => {
         e.preventDefault();
-        e.stopPropagation(); // <-- fixes immediate close on zoom open
+        e.stopPropagation();
         if (body.classList.contains('menu-open')) {
-          closeAll();        // menu-open + outside click closes all
+          closeAll();
           return;
         }
         openZoom();
@@ -476,7 +484,7 @@
         const now = Date.now();
         if (now - lastTap < 300) {
           e.preventDefault();
-          e.stopPropagation(); // <-- fixes immediate close on double-tap zoom
+          e.stopPropagation();
           openZoom();
         }
         lastTap = now;
@@ -497,28 +505,27 @@
       });
       zoomCloseBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); closeZoom(); });
 
+      // Menu
       menuBtn.addEventListener('click', toggleMenu);
       menuCloseBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); closeMenu(); });
 
+      // Calendar submenu
       calendarToggleBtn.addEventListener('click', toggleCalendarOptions);
       appleCalBtn.addEventListener('click', openAppleCalendar);
       googleCalBtn.addEventListener('click', openGoogleCalendar);
 
-      // Outside-click behavior:
-      // - If click is outside all buttons/menus/lightbox controls, close all.
-      // - If click is inside actions but outside calendar group, close only calendar submenu.
-      document.addEventListener('click', (e) => {
-        const onControls = e.target.closest(
-          '#actions, #menuBtn, #menuCloseBtn, #music, .close, #hint'
-        );
-
-        if (!onControls) {
-          closeAll();
-          return;
+      // Close calendar submenu when clicking other action buttons
+      actionsWrap.querySelectorAll('.btn').forEach((btn) => {
+        if (btn !== calendarToggleBtn && btn !== appleCalBtn && btn !== googleCalBtn) {
+          btn.addEventListener('click', () => hideCalendarOptions());
         }
+      });
 
-        if (!e.target.closest('#calendarGroup')) {
-          hideCalendarOptions();
+      // Global outside-close (pointerdown is more reliable across touch + mouse)
+      document.addEventListener('pointerdown', (e) => {
+        const clickedInsideControls = e.target.closest('#actions, #menuBtn, #menuCloseBtn, #music, .close, #hint');
+        if (!clickedInsideControls) {
+          closeAll();
         }
       });
 
