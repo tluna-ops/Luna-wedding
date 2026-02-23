@@ -16,14 +16,14 @@
   <meta property="og:title" content="Luna Wedding — June 6, 2026" />
   <meta property="og:description" content="Luna Wedding — RSVP • June 6, 2026" />
   <meta property="og:url" content="https://luna.wedding/" />
-  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=9" />
+  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=10" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:alt" content="Luna Wedding — June 6, 2026" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 6, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 6, 2026" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=9" />
+  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=10" />
 
   <link rel="icon" type="image/svg+xml"
     href='data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?>
@@ -40,7 +40,7 @@
     </svg>' />
 
   <link rel="preload" as="image" href="assets/bg.jpg?v=37" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/weddinginvite.png?v=9" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/weddinginvite.png?v=10" fetchpriority="high">
   <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=37">
 
   <style>
@@ -104,6 +104,7 @@
       transform:scale(.96);
       transition:transform 280ms cubic-bezier(.23,1,.32,1);
       touch-action:pinch-zoom;
+      cursor:zoom-out;
     }
     .lightbox.visible img{ transform:scale(1); }
 
@@ -226,7 +227,7 @@
 <body>
   <div class="bg" aria-hidden="true"><img src="assets/bg.jpg?v=37" alt=""></div>
 
-  <img id="invite" class="invite" src="assets/weddinginvite.png?v=9" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/weddinginvite.png?v=10" alt="Wedding invitation">
   <button id="hint" class="hint" type="button" aria-label="Tap to zoom">Tap to zoom</button>
 
   <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
@@ -296,8 +297,6 @@
         endUTC:   '20260607T020000Z'
       };
 
-      let calendarToggleLock = false;
-
       function isAndroid(){ return /Android/i.test(navigator.userAgent); }
 
       function fold(line){
@@ -345,17 +344,10 @@
         calendarToggleBtn.setAttribute('aria-expanded', 'false');
       }
 
+      // SIMPLE + RELIABLE: click only (no pointerup double-fire)
       function toggleCalendarOptions(e){
-        if (e) {
-          e.preventDefault();
-          e.stopPropagation();
-        }
-
-        // prevent double-fire when both pointerup + click happen
-        if (calendarToggleLock) return;
-        calendarToggleLock = true;
-        setTimeout(() => { calendarToggleLock = false; }, 120);
-
+        e.preventDefault();
+        e.stopPropagation();
         if (calendarOptions.classList.contains('show')) hideCalendarOptions();
         else showCalendarOptions();
       }
@@ -470,11 +462,11 @@
         else openMenu();
       }
 
-      // Isolate action bar + calendar group from outside-close handlers
-      ['pointerdown','pointerup','click'].forEach(type => {
-        actionsWrap.addEventListener(type, (e) => e.stopPropagation());
-        calendarGroup.addEventListener(type, (e) => e.stopPropagation());
-      });
+      // isolate actions/calendar from document outside-close
+      actionsWrap.addEventListener('pointerdown', (e) => e.stopPropagation());
+      actionsWrap.addEventListener('click', (e) => e.stopPropagation());
+      calendarGroup.addEventListener('pointerdown', (e) => e.stopPropagation());
+      calendarGroup.addEventListener('click', (e) => e.stopPropagation());
 
       // Invite / zoom
       invite.addEventListener('click', (e) => {
@@ -509,9 +501,17 @@
         openZoom();
       });
 
+      // FIX: clicking the zoomed invite itself closes lightbox
+      lbimg.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeZoom();
+      });
+
       lb.addEventListener('click', (e) => {
         if (e.target === lb) closeZoom();
       });
+
       zoomCloseBtn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -525,9 +525,9 @@
         closeMenu();
       });
 
-      // Calendar submenu — bind both for Safari consistency
+      // FIX: bind directly and also via onclick fallback for Safari oddities
       calendarToggleBtn.addEventListener('click', toggleCalendarOptions);
-      calendarToggleBtn.addEventListener('pointerup', toggleCalendarOptions);
+      calendarToggleBtn.onclick = toggleCalendarOptions;
 
       appleCalBtn.addEventListener('click', openAppleCalendar);
       googleCalBtn.addEventListener('click', openGoogleCalendar);
@@ -539,7 +539,7 @@
         }
       });
 
-      // Global outside-close
+      // Outside-close
       document.addEventListener('pointerdown', (e) => {
         const clickedInsideControls = e.target.closest('#actions, #menuBtn, #menuCloseBtn, #music, .close, #hint');
         if (!clickedInsideControls) closeAll();
