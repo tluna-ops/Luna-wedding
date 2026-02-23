@@ -16,14 +16,14 @@
   <meta property="og:title" content="Luna Wedding — June 6, 2026" />
   <meta property="og:description" content="Luna Wedding — RSVP • June 6, 2026" />
   <meta property="og:url" content="https://luna.wedding/" />
-  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=14" />
+  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=15" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:alt" content="Luna Wedding — June 6, 2026" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Luna Wedding — June 6, 2026" />
   <meta name="twitter:description" content="Luna Wedding — RSVP • June 6, 2026" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=14" />
+  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=15" />
 
   <link rel="icon" type="image/svg+xml"
     href='data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?>
@@ -40,7 +40,7 @@
     </svg>' />
 
   <link rel="preload" as="image" href="assets/bg.jpg?v=37" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/weddinginvite.png?v=14" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/weddinginvite.png?v=15" fetchpriority="high">
   <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=37">
 
   <style>
@@ -168,11 +168,9 @@
       transform:translate(-9999px,-9999px);
       display:flex; flex-direction:column; gap:6px;
       z-index:80;
-
       opacity:0;
       visibility:hidden;
       pointer-events:none;
-
       transition: opacity .16s ease;
     }
     .calendar-pop.show{
@@ -227,7 +225,7 @@
 <body>
   <div class="bg" aria-hidden="true"><img src="assets/bg.jpg?v=37" alt=""></div>
 
-  <img id="invite" class="invite" src="assets/weddinginvite.png?v=14" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/weddinginvite.png?v=15" alt="Wedding invitation">
   <button id="hint" class="hint" type="button" aria-label="Tap to zoom">Tap to zoom</button>
 
   <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
@@ -292,7 +290,7 @@
         description: "Toby and Michelle's wedding. Visit luna.wedding for more details.",
         venueName: "Carne Mare – Seaport",
         location: "89 South St, New York, NY 10038",
-        mapsUrl: "https://maps.google.com/?q=89%20South%20St%2C%20New%20York%2C%20NY%2010038",
+        mapsUrl: "https://maps.app.goo.gl/vTsV19gqAxjDsSb88?g_st=ic",
         startUTC: '20260606T230000Z',
         endUTC:   '20260607T020000Z'
       };
@@ -310,11 +308,19 @@
         return out + line;
       }
 
+      function buildEventDetailsText(){
+        return [
+          EVENT.description,
+          `Venue: ${EVENT.venueName}`,
+          `Map (Google): ${EVENT.mapsUrl}`
+        ].join('\n');
+      }
+
       function buildICSDescription(){
         return [
           EVENT.description,
           `Venue: ${EVENT.venueName}`,
-          `Map: ${EVENT.mapsUrl}`
+          `Map (Google): ${EVENT.mapsUrl}`
         ].join('\\n');
       }
 
@@ -393,11 +399,7 @@
         e.stopPropagation();
         hideCalendarPop();
 
-        const fullDetails = [
-          EVENT.description,
-          `Venue: ${EVENT.venueName}`,
-          `Map: ${EVENT.mapsUrl}`
-        ].join('\n');
+        const fullDetails = buildEventDetailsText();
 
         const webUrl =
           'https://calendar.google.com/calendar/render?action=TEMPLATE'
