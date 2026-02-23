@@ -5,31 +5,29 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Luna Wedding — June 5, 2026</title>
+  <title>Luna Wedding — June 6, 2026</title>
   <link rel="canonical" href="https://luna.wedding/" />
 
   <!-- Basic meta -->
-  <meta name="title" content="Luna Wedding — June 5, 2026" />
-  <meta name="description" content="Luna Wedding — RSVP • June 5, 2026" />
+  <meta name="title" content="Luna Wedding — June 6, 2026" />
+  <meta name="description" content="Luna Wedding — RSVP • June 6, 2026" />
 
   <!-- Open Graph (absolute URLs for iMessage/FB) -->
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Luna Wedding" />
-  <meta property="og:title" content="Luna Wedding — June 5, 2026" />
-  <meta property="og:description" content="Luna Wedding — RSVP • June 5, 2026" />
+  <meta property="og:title" content="Luna Wedding — June 6, 2026" />
+  <meta property="og:description" content="Luna Wedding — RSVP • June 6, 2026" />
   <meta property="og:url" content="https://luna.wedding/" />
-  <meta property="og:image" content="https://luna.wedding/assets/og.jpg?v=37" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Luna Wedding — June 5, 2026" />
+  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=1" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:alt" content="Luna Wedding — June 6, 2026" />
 
   <!-- Twitter fallback -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Luna Wedding — June 5, 2026" />
-  <meta name="twitter:description" content="Luna Wedding — RSVP • June 5, 2026" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/og.jpg?v=37" />
+  <meta name="twitter:title" content="Luna Wedding — June 6, 2026" />
+  <meta name="twitter:description" content="Luna Wedding — RSVP • June 6, 2026" />
+  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=1" />
 
   <!-- Favicon (inline SVG monogram) -->
   <link rel="icon" type="image/svg+xml"
@@ -48,142 +46,224 @@
 
   <!-- Performance: preload hero assets -->
   <link rel="preload" as="image" href="assets/bg.jpg?v=37" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/image.jpg?v=37">
+  <link rel="preload" as="image" href="assets/weddinginvite.png?v=1">
   <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=37" />
 
   <style>
     :root { --fallback:#000; --hint-bg: rgba(255,255,255,.74); --hint-fg:#111; }
-    html,body{
-      height:100%; margin:0; background:var(--fallback); overflow:hidden;
+
+    html, body{
+      height:100%;
+      margin:0;
+      background:var(--fallback);
+      overflow:hidden;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
     }
 
-    /* Page animations (bg/invite) */
     @keyframes fadeBg { from {opacity:0} to {opacity:1} }
-    @keyframes fadeCard { from {opacity:0; transform:translate(-50%,-48%) scale(.985)} to {opacity:1; transform:translate(-50%,-50%) scale(1)} }
-
-    .bg { position:fixed; inset:0; opacity:0; animation:fadeBg 900ms ease-out .05s forwards; }
-    .bg img { width:100vw; height:100vh; object-fit:cover; object-position:center; user-select:none; -webkit-user-drag:none; }
-
-    .invite{
-      position:fixed; left:50%; top:50%; transform:translate(-50%,-50%);
-      width:min(92vw,900px); max-height:88vh; height:auto; border-radius:12px; background:#fff;
-      box-shadow:0 20px 48px rgba(0,0,0,.25);
-      opacity:0; animation:fadeCard .75s cubic-bezier(.21,.98,.25,.99) .2s forwards;
-      cursor:zoom-in; user-select:none; -webkit-user-drag:none; z-index:1;
+    @keyframes fadeCard {
+      from {opacity:0; transform:translate(-50%,-48%) scale(.985)}
+      to   {opacity:1; transform:translate(-50%,-50%) scale(1)}
     }
 
-    /* Hint button: anchored to bottom so it stays visible on iPhone */
+    .bg {
+      position:fixed;
+      inset:0;
+      opacity:0;
+      animation:fadeBg 900ms ease-out .05s forwards;
+    }
+
+    .bg img {
+      width:100vw;
+      height:100vh;
+      object-fit:cover;
+      object-position:center;
+      user-select:none;
+      -webkit-user-drag:none;
+    }
+
+    .invite{
+      position:fixed;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      width:min(92vw,900px);
+      max-height:88vh;
+      height:auto;
+      border-radius:12px;
+      background:#fff;
+      box-shadow:0 20px 48px rgba(0,0,0,.25);
+      opacity:0;
+      animation:fadeCard .75s cubic-bezier(.21,.98,.25,.99) .2s forwards;
+      cursor:zoom-in;
+      user-select:none;
+      -webkit-user-drag:none;
+      z-index:1;
+    }
+
     .hint{
       position:fixed;
       left:50%;
-      bottom:calc(84px + env(safe-area-inset-bottom)); /* above dock + safe area */
+      bottom:calc(84px + env(safe-area-inset-bottom));
       transform:translateX(-50%);
-      padding:8px 12px; border-radius:999px;
-      background:var(--hint-bg); color:var(--hint-fg); font-size:13px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:var(--hint-bg);
+      color:var(--hint-fg);
+      font-size:13px;
       box-shadow:0 8px 24px rgba(0,0,0,.12);
-      z-index:30; will-change: opacity, transform;
-
-      border:0; appearance:none; cursor:pointer;  /* make it a proper button */
-      opacity:0; transition: opacity 600ms ease, transform 600ms ease;
+      z-index:30;
+      will-change: opacity, transform;
+      border:0;
+      appearance:none;
+      cursor:pointer;
+      opacity:0;
+      transition: opacity 600ms ease, transform 600ms ease;
     }
     .hint:focus{ outline:2px solid rgba(0,0,0,.25); outline-offset:2px; }
-    .hint.show{  opacity:1; transform:translate(-50%, -4px); }
-    .hint.hide{  opacity:0; transform:translate(-50%, 4px); }
+    .hint.show{ opacity:1; transform:translate(-50%, -4px); }
+    .hint.hide{ opacity:0; transform:translate(-50%, 4px); }
 
     .lightbox{
-      position:fixed; inset:0; background:rgba(0,0,0,.6);
-      display:flex; align-items:center; justify-content:center;
-      opacity:0; pointer-events:none; z-index:10;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.6);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      opacity:0;
+      pointer-events:none;
+      z-index:10;
       transition:opacity 280ms ease, background-color 180ms ease;
-      -webkit-backdrop-filter: blur(8px) saturate(120%); backdrop-filter: blur(8px) saturate(120%);
+      -webkit-backdrop-filter: blur(8px) saturate(120%);
+      backdrop-filter: blur(8px) saturate(120%);
     }
     .lightbox.visible{ opacity:1; pointer-events:auto; }
     .lightbox.closing{ background:rgba(0,0,0,.95); }
-    .lightbox img{
-      max-width:94vw; max-height:92vh; border-radius:14px; box-shadow:0 24px 64px rgba(0,0,0,.6);
-      transform:scale(.96); transition:transform 280ms cubic-bezier(.23,1,.32,1); touch-action:pinch-zoom;
-    }
-    .lightbox.visible img{ transform:scale(1) }
-    .lightbox.closing img{ transform:scale(.98) }
-    .close{
-      position:fixed; top:calc(12px + env(safe-area-inset-top)); right:calc(12px + env(safe-area-inset-right));
-      width:44px; height:44px; border:0; border-radius:999px; background:#fff; color:#000; font-size:22px; line-height:1; cursor:pointer;
-      opacity:0; transform:scale(.85); transition:opacity 260ms ease .1s, transform 260ms ease .1s;
-    }
-    .lightbox.visible .close{ opacity:1; transform:scale(1) }
 
-    /* Horizontal action bar */
+    .lightbox img{
+      max-width:94vw;
+      max-height:92vh;
+      border-radius:14px;
+      box-shadow:0 24px 64px rgba(0,0,0,.6);
+      transform:scale(.96);
+      transition:transform 280ms cubic-bezier(.23,1,.32,1);
+      touch-action:pinch-zoom;
+    }
+    .lightbox.visible img{ transform:scale(1); }
+    .lightbox.closing img{ transform:scale(.98); }
+
+    .close{
+      position:fixed;
+      top:calc(12px + env(safe-area-inset-top));
+      right:calc(12px + env(safe-area-inset-right));
+      width:44px;
+      height:44px;
+      border:0;
+      border-radius:999px;
+      background:#fff;
+      color:#000;
+      font-size:22px;
+      line-height:1;
+      cursor:pointer;
+      opacity:0;
+      transform:scale(.85);
+      transition:opacity 260ms ease .1s, transform 260ms ease .1s;
+    }
+    .lightbox.visible .close{ opacity:1; transform:scale(1); }
+
     .actions{
       position:fixed;
       left:50%;
-      bottom:calc(16px + env(safe-area-inset-bottom));   /* default low */
+      bottom:calc(16px + env(safe-area-inset-bottom));
       transform:translateX(-50%);
       z-index:15;
-
       display:flex;
       gap:8px;
       flex-wrap:nowrap;
       overflow-x:auto;
       -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      max-width: min(92vw, 980px);
-      padding: 0 8px;
-
+      scrollbar-width:none;
+      max-width:min(92vw, 980px);
+      padding:0 8px;
       opacity:0;
       pointer-events:none;
       transition:opacity .28s ease, transform .28s ease, bottom .28s ease;
     }
     .actions::-webkit-scrollbar{ display:none; }
 
-    /* When menu is opened (no lightbox), raise the bar above the dock */
     .actions.show{
-      bottom:calc(84px + env(safe-area-inset-bottom));   /* clear Menu pill */
-      opacity:1; pointer-events:auto; transform:translateX(-50%) translateY(-4px);
-      z-index:30; /* ensure above dock */
+      bottom:calc(84px + env(safe-area-inset-bottom));
+      opacity:1;
+      pointer-events:auto;
+      transform:translateX(-50%) translateY(-4px);
+      z-index:30;
     }
 
-    /* When lightbox opens, show bar at the lower position (menu is hidden then) */
     .lightbox.visible + .actions{
       bottom:calc(16px + env(safe-area-inset-bottom));
-      opacity:1; pointer-events:auto; transform:translateX(-50%) translateY(-4px);
+      opacity:1;
+      pointer-events:auto;
+      transform:translateX(-50%) translateY(-4px);
       z-index:30;
     }
 
     .btn{
-      appearance:none; border:1px solid rgba(255,255,255,.6); color:#fff; background:rgba(0,0,0,.45);
-      padding:10px 14px; border-radius:999px; font-size:14px; backdrop-filter:blur(6px);
-      -webkit-backdrop-filter:blur(6px); box-shadow:0 8px 24px rgba(0,0,0,.18); cursor:pointer;
-      flex:0 0 auto; white-space:nowrap; text-decoration:none; /* remove underline */
+      appearance:none;
+      border:1px solid rgba(255,255,255,.6);
+      color:#fff;
+      background:rgba(0,0,0,.45);
+      padding:10px 14px;
+      border-radius:999px;
+      font-size:14px;
+      backdrop-filter:blur(6px);
+      -webkit-backdrop-filter:blur(6px);
+      box-shadow:0 8px 24px rgba(0,0,0,.18);
+      cursor:pointer;
+      flex:0 0 auto;
+      white-space:nowrap;
+      text-decoration:none;
     }
-    .btn:hover,
-    .btn:focus,
-    .btn:active{ text-decoration:none; }
+    .btn:hover, .btn:focus, .btn:active{ text-decoration:none; }
 
-    /* Dock for Music + Menu buttons (bottom-left) */
     .dock{
-      position:fixed; left:12px; bottom:calc(12px + env(safe-area-inset-bottom));
-      display:flex; align-items:center; gap:8px; z-index:20;
+      position:fixed;
+      left:12px;
+      bottom:calc(12px + env(safe-area-inset-bottom));
+      display:flex;
+      align-items:center;
+      gap:8px;
+      z-index:20;
     }
+
     .pill{
-      display:inline-flex; align-items:center; gap:8px; padding:10px 12px;
-      border-radius:999px; border:1px solid rgba(255,255,255,.5);
-      background:rgba(0,0,0,.40); color:#fff; font-size:14px;
-      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-      box-shadow:0 8px 24px rgba(0,0,0,.18); cursor:pointer; user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.5);
+      background:rgba(0,0,0,.40);
+      color:#fff;
+      font-size:14px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow:0 8px 24px rgba(0,0,0,.18);
+      cursor:pointer;
+      user-select:none;
       transition:opacity .25s ease, transform .25s ease, background .25s ease;
     }
-    .pill:hover{ transform:translateY(-1px); background:rgba(0,0,0,.5) }
-    .pill .dot{ width:8px; height:8px; border-radius:999px; background:#ff4d4f }
-    .pill.on .dot{ background:#3bd16f }
-    .pill .label{ letter-spacing:.2px }
+    .pill:hover{ transform:translateY(-1px); background:rgba(0,0,0,.5); }
+    .pill .dot{ width:8px; height:8px; border-radius:999px; background:#ff4d4f; }
+    .pill.on .dot{ background:#3bd16f; }
+    .pill .label{ letter-spacing:.2px; }
 
-    /* Hide the Menu button while zoomed (lightbox open) */
     .lightbox.visible ~ .dock #menuBtn{
-      opacity:0; pointer-events:none; transform:translateY(6px);
+      opacity:0;
+      pointer-events:none;
+      transform:translateY(6px);
     }
 
-    /* Phones: wrap into two rows (2x2) instead of hidden scroll */
     @media (max-width: 430px){
       .actions{
         overflow-x: visible;
@@ -198,51 +278,67 @@
         text-align: center;
       }
     }
-    /* Extra-narrow phones: stack 1 per row */
+
     @media (max-width: 340px){
-      .btn{
-        flex: 1 1 100%;
-      }
+      .btn{ flex: 1 1 100%; }
     }
 
-    @media (prefers-reduced-motion: reduce){ .bg, .invite, .hint{ animation-duration:.01s } }
+    @media (prefers-reduced-motion: reduce){
+      .bg, .invite, .hint{ animation-duration:.01s; }
+    }
   </style>
 </head>
+
 <body>
-  <!-- Background -->
   <div class="bg" aria-hidden="true">
     <img src="assets/bg.jpg?v=37" alt="">
   </div>
 
-  <!-- Invitation -->
-  <img id="invite" class="invite" src="assets/image.jpg?v=37" alt="Wedding invitation">
+  <img id="invite" class="invite" src="assets/weddinginvite.png?v=1" alt="Wedding invitation">
 
-  <!-- Hint button -->
   <button id="hint" class="hint" type="button" aria-label="Tap to zoom">Tap to zoom</button>
 
-  <!-- Lightbox -->
   <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
     <img id="lbimg" alt="Wedding invitation (zoomed)">
     <button class="close" aria-label="Close">×</button>
   </div>
 
-  <!-- Actions (can appear after zoom OR via Menu) -->
+  <!-- Main action buttons -->
   <div id="actions" class="actions" aria-hidden="true">
-    <!-- RSVP FIRST -->
-    <a id="rsvpBtn" class="btn" aria-label="RSVP"
-       href="mailto:rsvp@luna.wedding?subject=RSVP%3A%20Luna%20Wedding&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AWe%27re%20delighted%20to%20RSVP%20for%20June%205%2C%202026.%0A%0ANames%3A%20%0ANumber%20of%20Guests%3A%20%0ADietary%20notes%3A%20%0A%0AWith%20love%2C%0A"
-       rel="noopener">RSVP</a>
-    <button id="icsBtn" class="btn" aria-label="Apple Calendar">Apple Calendar</button>
-    <button id="gcalBtn" class="btn" aria-label="Google Calendar">Google Calendar</button>
-    <a id="askBtn" class="btn" aria-label="Contact the Couple"
-       href="mailto:hello@luna.wedding?subject=Question%20about%20Luna%20Wedding%20%E2%80%94%20June%205%2C%202026&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AMy%20name%3A%0APhone%20(optional)%3A%0A%0AMy%20question%3A%0A%0AThanks!%0A%E2%80%94%20"
-       rel="noopener">Contact the Couple</a>
+    <a
+      id="rsvpBtn"
+      class="btn"
+      aria-label="RSVP"
+      href="mailto:rsvp@luna.wedding?subject=RSVP%3A%20Luna%20Wedding&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AWe%27re%20delighted%20to%20RSVP%20for%20June%206%2C%202026.%0A%0ANames%3A%20%0ANumber%20of%20Guests%3A%20%0ADietary%20notes%3A%20%0A%0AWith%20love%2C%0A"
+      rel="noopener"
+    >RSVP</a>
+
+    <a
+      id="calendarBtn"
+      class="btn"
+      aria-label="Add to Calendar"
+      href="assets/wedding.ics"
+      download
+      rel="noopener"
+    >Add to Calendar</a>
+
+    <!-- Buttons to other pages -->
+    <a id="registryBtn" class="btn" aria-label="Registry" href="registry.html">Registry</a>
+    <a id="faqBtn" class="btn" aria-label="FAQ" href="faq.html">FAQ</a>
+
+    <a
+      id="askBtn"
+      class="btn"
+      aria-label="Contact the Couple"
+      href="mailto:hello@luna.wedding?subject=Question%20about%20Luna%20Wedding%20%E2%80%94%20June%206%2C%202026&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AMy%20name%3A%0APhone%20(optional)%3A%0A%0AMy%20question%3A%0A%0AThanks!%0A%E2%80%94%20"
+      rel="noopener"
+    >Contact the Couple</a>
   </div>
 
-  <!-- Dock: Music + Menu -->
   <div class="dock">
     <button id="music" class="pill" aria-pressed="false" aria-label="Toggle music">
-      <span class="dot" aria-hidden="true"></span><span class="label">Music</span>
+      <span class="dot" aria-hidden="true"></span>
+      <span class="label">Music</span>
     </button>
     <button id="menuBtn" class="pill" aria-pressed="false" aria-label="Toggle menu">
       <span class="label">Menu</span>
@@ -259,58 +355,71 @@
       const lbimg = document.getElementById('lbimg');
       const closeBtn = lb.querySelector('.close');
       const actionsWrap = document.getElementById('actions');
-      const icsBtn = document.getElementById('icsBtn');
-      const gcalBtn = document.getElementById('gcalBtn');
       const musicBtn = document.getElementById('music');
       const menuBtn = document.getElementById('menuBtn');
 
-      /* ---------- Helpers for actions visibility ---------- */
       function showActions(){
         actionsWrap.classList.add('show');
         actionsWrap.setAttribute('aria-hidden','false');
         menuBtn.setAttribute('aria-pressed','true');
         menuBtn.classList.add('on');
       }
+
       function hideActions(){
         actionsWrap.classList.remove('show');
         actionsWrap.setAttribute('aria-hidden','true');
         menuBtn.setAttribute('aria-pressed','false');
         menuBtn.classList.remove('on');
       }
+
       function toggleActions(e){
         e?.stopPropagation();
-        if (actionsWrap.classList.contains('show')) hideActions(); else showActions();
+        if (actionsWrap.classList.contains('show')) hideActions();
+        else showActions();
       }
 
-      /* ---------- Lightbox ---------- */
       function openLB(){
-        hideActions(); // keep UI clean
+        hideActions();
         lbimg.src = invite.src;
         lb.classList.add('visible');
         document.body.style.overflow = 'hidden';
         if (hint) hint.classList.add('hide');
-        unlockAudio(); // gesture counts on iOS/iPadOS
+        unlockAudio();
       }
+
       function closeLB(){
         lb.classList.add('closing');
-        setTimeout(()=>{ lb.classList.remove('visible');
-          setTimeout(()=>{ lb.classList.remove('closing'); document.body.style.overflow=''; }, 300);
-        },120);
+        setTimeout(() => {
+          lb.classList.remove('visible');
+          setTimeout(() => {
+            lb.classList.remove('closing');
+            document.body.style.overflow = '';
+          }, 300);
+        }, 120);
       }
-      invite.addEventListener('click', openLB, {passive:true});
-      let lastTap=0;
-      invite.addEventListener('touchend', e=>{
-        const now=Date.now(); if(now-lastTap<300) openLB(); lastTap=now;
-      }, {passive:true});
-      lb.addEventListener('click', e=>{ if(e.target===lb) closeLB(); });
+
+      invite.addEventListener('click', openLB, { passive:true });
+
+      let lastTap = 0;
+      invite.addEventListener('touchend', () => {
+        const now = Date.now();
+        if (now - lastTap < 300) openLB();
+        lastTap = now;
+      }, { passive:true });
+
+      lb.addEventListener('click', (e) => {
+        if (e.target === lb) closeLB();
+      });
+
       closeBtn.addEventListener('click', closeLB);
-      document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeLB(); });
 
-      // NEW: Hint button opens the lightbox
-      hint.addEventListener('click', openLB, {passive:true});
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeLB();
+      });
 
-      /* ---------- Click-away to close menu actions ---------- */
-      document.addEventListener('click', (e)=>{
+      hint.addEventListener('click', openLB, { passive:true });
+
+      document.addEventListener('click', (e) => {
         const withinMenu = e.target.closest('#menuBtn');
         const withinActions = e.target.closest('#actions');
         const withinLB = e.target.closest('#lightbox');
@@ -321,75 +430,7 @@
 
       menuBtn.addEventListener('click', toggleActions);
 
-      /* ---------- Calendar ---------- */
-      const title   = 'Luna Wedding';
-      const desc    = 'Dress Code: Formal Attire';
-      const venue   = 'Carne Mare – Seaport';
-      const address = '89 South St, New York, NY 10038';
-
-      // Apple Maps deep link via structured location (Apple Calendar)
-      const geoLat = 40.7061, geoLng = -74.0032;
-
-      // June 5, 2026 — 7:00 PM to 10:00 PM ET (UTC times in ICS)
-      const dtStartUTC = '20260605T230000Z';
-      const dtEndUTC   = '20260606T020000Z';
-
-      function fold(line){
-        const CRLF = '\r\n';
-        if (line.length <= 74) return line;
-        let out = '';
-        while (line.length > 74){
-          out += line.slice(0,74) + CRLF + ' ';
-          line = line.slice(74);
-        }
-        return out + line;
-      }
-
-      function downloadICSForApple(){
-        const CRLF = '\r\n';
-        const xApple = `X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-APPLE-RADIUS=72;X-TITLE=${venue.replace(/[,;]/g,'')}:geo:${geoLat},${geoLng}`;
-
-        const lines = [
-          'BEGIN:VCALENDAR',
-          'VERSION:2.0',
-          'PRODID:-//luna.wedding//SaveTheDate//EN',
-          'CALSCALE:GREGORIAN',
-          'METHOD:PUBLISH',
-          'BEGIN:VEVENT',
-          `UID:${crypto.randomUUID()}@luna.wedding`,
-          `DTSTAMP:${new Date().toISOString().replace(/[-:]/g,'').split('.')[0]}Z`,
-          `DTSTART:${dtStartUTC}`,
-          `DTEND:${dtEndUTC}`,
-          fold(`SUMMARY:${title}`),
-          fold(`DESCRIPTION:${desc}`),
-          fold(`LOCATION:${venue}, ${address}`),
-          fold(xApple),
-          'END:VEVENT',
-          'END:VCALENDAR'
-        ];
-        const ics = lines.join(CRLF) + CRLF;
-        const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download = 'LunaWedding.ics';
-        document.body.appendChild(a);
-        a.click(); a.remove();
-        setTimeout(()=>URL.revokeObjectURL(url), 3000);
-      }
-
-      function openGCal(){
-        const details = encodeURIComponent(desc);
-        const text = encodeURIComponent(title);
-        const location = encodeURIComponent(`${venue}, ${address}`);
-        const href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${dtStartUTC}/${dtEndUTC}&details=${details}&location=${location}&sf=true&output=xml`;
-        window.open(href, '_blank', 'noopener,noreferrer');
-      }
-
-      icsBtn.addEventListener('click', downloadICSForApple);
-      gcalBtn.addEventListener('click', openGCal);
-
-      /* ---------- Audio: robust iPad/iPhone handling + 1s fade-in ---------- */
-      let bgm = null, started = false, fadedIn = false;
+      let bgm = null, fadedIn = false;
       const TARGET_VOL = 0.35;
       const SRC = 'assets/bgm_small.mp3?v=37';
 
@@ -400,19 +441,19 @@
         bgm.loop = true;
         bgm.preload = 'auto';
         bgm.playsInline = true;
-        bgm.volume = 0; // fade-in
-        started = true;
+        bgm.volume = 0;
         return bgm;
       }
 
-      function fadeTo(target=TARGET_VOL, ms=1000){
+      function fadeTo(target = TARGET_VOL, ms = 1000){
         if (!bgm) return;
         const start = performance.now();
         const v0 = bgm.volume;
         function step(t){
           const k = Math.min(1, (t - start) / ms);
           bgm.volume = v0 + (target - v0) * k;
-          if (k < 1) requestAnimationFrame(step); else fadedIn = true;
+          if (k < 1) requestAnimationFrame(step);
+          else fadedIn = true;
         }
         requestAnimationFrame(step);
       }
@@ -425,7 +466,7 @@
           if (bgm.volume === 0) fadeTo(TARGET_VOL, 1000);
         } catch {
           bgm.muted = true;
-          bgm.play().catch(()=>{});
+          bgm.play().catch(() => {});
         }
       }
 
@@ -434,24 +475,29 @@
         try {
           bgm.muted = false;
           if (bgm.paused) await bgm.play();
-          if (!fadedIn) { bgm.volume = 0; fadeTo(TARGET_VOL, 1000); }
+          if (!fadedIn) {
+            bgm.volume = 0;
+            fadeTo(TARGET_VOL, 1000);
+          }
         } catch {
-          setTimeout(async ()=>{
+          setTimeout(async () => {
             try {
               bgm.muted = false;
               if (bgm.paused) await bgm.play();
-              if (!fadedIn) { bgm.volume = 0; fadeTo(TARGET_VOL, 1000); }
+              if (!fadedIn) {
+                bgm.volume = 0;
+                fadeTo(TARGET_VOL, 1000);
+              }
             } catch(e){}
           }, 150);
         }
       }
 
       window.addEventListener('load', tryAutoPlayNow);
-      ['pointerdown','click','touchend','keydown'].forEach(evt=>{
+      ['pointerdown','click','touchend','keydown'].forEach((evt) => {
         window.addEventListener(evt, unlockAudio, { once:true, passive:true });
       });
 
-      /* ---------- Music toggle ---------- */
       let pref = localStorage.getItem('music') || 'on';
       function setMusicBtn(state){
         musicBtn.classList.toggle('on', state === 'on');
@@ -459,25 +505,31 @@
       }
       setMusicBtn(pref);
 
-      musicBtn.addEventListener('click', ()=>{
+      musicBtn.addEventListener('click', () => {
         createAudio();
         pref = (pref === 'on') ? 'off' : 'on';
         localStorage.setItem('music', pref);
         setMusicBtn(pref);
+
         if (pref === 'on'){
           bgm.muted = false;
-          if (bgm.paused) bgm.play().catch(()=>{});
-          if (!fadedIn) { bgm.volume = 0; fadeTo(TARGET_VOL, 1000); }
-          else { bgm.volume = TARGET_VOL; }
+          if (bgm.paused) bgm.play().catch(() => {});
+          if (!fadedIn) {
+            bgm.volume = 0;
+            fadeTo(TARGET_VOL, 1000);
+          } else {
+            bgm.volume = TARGET_VOL;
+          }
         } else {
           bgm.muted = true;
         }
       });
 
-      /* ---------- Hint show + smooth fade-away (still hides after 5s) ---------- */
-      setTimeout(()=>{ if (hint) hint.classList.add('show'); }, 150);
-      setTimeout(()=>{ if (hint) hint.classList.add('hide'); }, 5150);
+      setTimeout(() => { if (hint) hint.classList.add('show'); }, 150);
+      setTimeout(() => { if (hint) hint.classList.add('hide'); }, 5150);
     })();
   </script>
 </body>
 </html>
+
+You’re set on the page links — this includes buttons to both registry.html and faq.html.
