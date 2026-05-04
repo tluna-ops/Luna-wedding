@@ -1,1 +1,606 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <title>Venue — Luna Wedding</title>
+  <link rel="canonical" href="https://luna.wedding/venue.html" />
+
+  <meta name="title" content="Venue — Luna Wedding" />
+  <meta name="description" content="Venue details, directions, parking, and arrival information for the Luna Wedding." />
+
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Luna Wedding" />
+  <meta property="og:title" content="Venue — Luna Wedding" />
+  <meta property="og:description" content="Venue details, directions, parking, and arrival information." />
+  <meta property="og:url" content="https://luna.wedding/venue.html" />
+  <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=15" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:alt" content="Luna Wedding — June 6, 2026" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Venue — Luna Wedding" />
+  <meta name="twitter:description" content="Venue details, directions, parking, and arrival information." />
+  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=15" />
+
+  <link rel="icon" type="image/svg+xml"
+    href='data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <rect width="512" height="512" rx="128" fill="%23ffffff"/>
+      <g transform="translate(0,20)">
+        <text x="50%" y="55%" text-anchor="middle"
+          font-family="Georgia, Times New Roman, serif" font-style="italic"
+          font-size="280" fill="%23000000">L</text>
+        <text x="60%" y="72%" text-anchor="middle"
+          font-family="Georgia, Times New Roman, serif" font-style="italic"
+          font-size="220" fill="%23000000">M</text>
+      </g>
+    </svg>' />
+
+  <link rel="preload" as="image" href="assets/bg.jpg?v=37" fetchpriority="high">
+
+  <style>
+    :root {
+      --fallback:#000;
+      --glass:rgba(0,0,0,.48);
+      --glass-strong:rgba(0,0,0,.62);
+      --line:rgba(255,255,255,.42);
+      --line-soft:rgba(255,255,255,.22);
+      --text:#fff;
+      --muted:rgba(255,255,255,.78);
+      --faint:rgba(255,255,255,.62);
+    }
+
+    html, body{
+      min-height:100%;
+      margin:0;
+      background:var(--fallback);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      color:var(--text);
+    }
+
+    body{
+      overflow-x:hidden;
+    }
+
+    @keyframes fadeBg { from {opacity:0} to {opacity:1} }
+    @keyframes riseIn {
+      from {opacity:0; transform:translateY(10px) scale(.992)}
+      to   {opacity:1; transform:translateY(0) scale(1)}
+    }
+
+    .bg {
+      position:fixed;
+      inset:0;
+      opacity:0;
+      animation:fadeBg 900ms ease-out .05s forwards;
+      z-index:-2;
+    }
+
+    .bg img {
+      width:100vw;
+      height:100vh;
+      object-fit:cover;
+      object-position:center;
+      user-select:none;
+      -webkit-user-drag:none;
+    }
+
+    .shade{
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(circle at 50% 12%, rgba(255,255,255,.08), transparent 34%),
+        linear-gradient(to bottom, rgba(0,0,0,.36), rgba(0,0,0,.72));
+      z-index:-1;
+    }
+
+    .wrap{
+      width:min(920px, calc(100% - 28px));
+      margin:0 auto;
+      padding:calc(22px + env(safe-area-inset-top)) 0 calc(92px + env(safe-area-inset-bottom));
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:14px;
+    }
+
+    .brand,
+    .toplink{
+      display:inline-flex;
+      align-items:center;
+      min-height:40px;
+      padding:9px 13px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.5);
+      background:rgba(0,0,0,.40);
+      color:#fff;
+      font-size:14px;
+      line-height:1.15;
+      text-decoration:none;
+      backdrop-filter:blur(6px);
+      -webkit-backdrop-filter:blur(6px);
+      box-shadow:0 8px 24px rgba(0,0,0,.18);
+    }
+
+    .brand{
+      gap:8px;
+      font-weight:600;
+      letter-spacing:.01em;
+    }
+
+    .brand-mark{
+      width:22px;
+      height:22px;
+      display:inline-grid;
+      place-items:center;
+      border-radius:999px;
+      background:rgba(255,255,255,.92);
+      color:#000;
+      font-family:Georgia, "Times New Roman", serif;
+      font-style:italic;
+      font-size:15px;
+      line-height:1;
+    }
+
+    .hero{
+      margin-top:10px;
+      padding:24px;
+      border:1px solid var(--line);
+      border-radius:28px;
+      background:var(--glass);
+      backdrop-filter:blur(10px) saturate(115%);
+      -webkit-backdrop-filter:blur(10px) saturate(115%);
+      box-shadow:0 20px 48px rgba(0,0,0,.25);
+      animation:riseIn .65s cubic-bezier(.21,.98,.25,.99) .08s both;
+    }
+
+    .eyebrow{
+      margin:0 0 8px;
+      color:var(--muted);
+      font-size:13px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    h1{
+      margin:0;
+      font-family:Georgia, "Times New Roman", serif;
+      font-weight:400;
+      font-size:clamp(52px, 11vw, 104px);
+      line-height:.92;
+      letter-spacing:-.055em;
+    }
+
+    .dek{
+      max-width:680px;
+      margin:18px 0 0;
+      color:var(--muted);
+      font-size:18px;
+      line-height:1.45;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1.08fr .92fr;
+      gap:12px;
+      margin-top:12px;
+    }
+
+    .card{
+      border:1px solid var(--line-soft);
+      border-radius:24px;
+      background:rgba(0,0,0,.43);
+      backdrop-filter:blur(10px) saturate(115%);
+      -webkit-backdrop-filter:blur(10px) saturate(115%);
+      box-shadow:0 12px 34px rgba(0,0,0,.18);
+      padding:18px;
+      animation:riseIn .65s cubic-bezier(.21,.98,.25,.99) .14s both;
+    }
+
+    .card.full{
+      grid-column:1 / -1;
+    }
+
+    h2{
+      margin:0 0 12px;
+      font-size:18px;
+      font-weight:650;
+      letter-spacing:-.01em;
+    }
+
+    h3{
+      margin:18px 0 7px;
+      font-size:14px;
+      font-weight:700;
+      color:#fff;
+    }
+
+    p{
+      margin:0 0 12px;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.5;
+    }
+
+    p:last-child{
+      margin-bottom:0;
+    }
+
+    .address{
+      margin:0 0 14px;
+      font-style:normal;
+      color:var(--muted);
+      line-height:1.45;
+      font-size:16px;
+    }
+
+    .address strong{
+      display:block;
+      color:#fff;
+      font-size:20px;
+      margin-bottom:2px;
+    }
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:14px;
+    }
+
+    .btn{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.6);
+      color:#fff;
+      background:rgba(0,0,0,.45);
+      padding:10px 14px;
+      border-radius:999px;
+      font-size:14px;
+      line-height:1.15;
+      backdrop-filter:blur(6px);
+      -webkit-backdrop-filter:blur(6px);
+      box-shadow:0 8px 24px rgba(0,0,0,.18);
+      cursor:pointer;
+      flex:0 0 auto;
+      white-space:nowrap;
+      text-decoration:none;
+    }
+
+    .btn.primary{
+      background:rgba(255,255,255,.92);
+      color:#000;
+      border-color:rgba(255,255,255,.88);
+    }
+
+    .info-list{
+      display:grid;
+      gap:11px;
+    }
+
+    .info-item{
+      padding-top:11px;
+      border-top:1px solid var(--line-soft);
+    }
+
+    .info-item:first-child{
+      padding-top:0;
+      border-top:0;
+    }
+
+    .label{
+      display:block;
+      margin-bottom:3px;
+      color:var(--faint);
+      font-size:11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    .value{
+      margin:0;
+      color:#fff;
+      font-size:15px;
+      line-height:1.45;
+    }
+
+    .map{
+      width:100%;
+      height:340px;
+      border:0;
+      border-radius:18px;
+      background:rgba(255,255,255,.12);
+      box-shadow:0 8px 24px rgba(0,0,0,.18);
+      filter:saturate(.85) contrast(.96);
+    }
+
+    .small{
+      font-size:13px;
+      color:var(--faint);
+    }
+
+    .dock{
+      position:fixed;
+      left:12px;
+      bottom:calc(12px + env(safe-area-inset-bottom));
+      display:flex;
+      align-items:center;
+      gap:8px;
+      z-index:20;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.5);
+      background:rgba(0,0,0,.40);
+      color:#fff;
+      font-size:14px;
+      backdrop-filter:blur(6px);
+      -webkit-backdrop-filter:blur(6px);
+      box-shadow:0 8px 24px rgba(0,0,0,.18);
+      text-decoration:none;
+      cursor:pointer;
+      user-select:none;
+    }
+
+    footer{
+      margin-top:18px;
+      text-align:center;
+      color:rgba(255,255,255,.58);
+      font-size:12px;
+    }
+
+    @media (max-width: 740px){
+      .wrap{
+        width:min(100% - 24px, 920px);
+      }
+
+      .grid{
+        grid-template-columns:1fr;
+      }
+
+      .hero{
+        padding:20px;
+      }
+
+      .card{
+        padding:16px;
+      }
+
+      .topbar{
+        align-items:flex-start;
+      }
+
+      .toplink{
+        white-space:nowrap;
+      }
+
+      .map{
+        height:300px;
+      }
+    }
+
+    @media (max-width: 430px){
+      .btn-row{
+        display:grid;
+        grid-template-columns:1fr;
+      }
+
+      .btn{
+        text-align:center;
+      }
+
+      .brand span:last-child{
+        display:none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg" aria-hidden="true">
+    <img src="assets/bg.jpg?v=37" alt="">
+  </div>
+  <div class="shade" aria-hidden="true"></div>
+
+  <main class="wrap">
+    <div class="topbar">
+      <a class="brand" href="index.html" aria-label="Back to Luna Wedding home">
+        <span class="brand-mark">L</span>
+        <span>Luna Wedding</span>
+      </a>
+
+      <a class="toplink" href="index.html">Back to Invite</a>
+    </div>
+
+    <section class="hero">
+      <p class="eyebrow">Venue</p>
+      <h1>Carne Mare</h1>
+      <p class="dek">
+        We’re celebrating in Manhattan’s Seaport at Carne Mare. Here’s everything you’ll need for arrival,
+        directions, parking, and getting around the area.
+      </p>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Location</h2>
+
+        <address class="address">
+          <strong>Carne Mare – Seaport</strong>
+          89 South St<br>
+          New York, NY 10038
+        </address>
+
+        <p>
+          The venue is located by Pier 17 in the Seaport, near the East River.
+          Please leave a little extra time for weekend traffic, rideshare drop-offs, and walking through the area.
+        </p>
+
+        <div class="btn-row">
+          <a class="btn primary" href="https://maps.app.goo.gl/vTsV19gqAxjDsSb88?g_st=ic" target="_blank" rel="noopener">
+            Open Map
+          </a>
+          <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Carne%20Mare%2089%20South%20St%20New%20York%20NY%2010038" target="_blank" rel="noopener">
+            Google Maps
+          </a>
+          <a class="btn" href="https://maps.apple.com/?address=89%20South%20St,%20New%20York,%20NY%2010038&q=Carne%20Mare" target="_blank" rel="noopener">
+            Apple Maps
+          </a>
+        </div>
+      </article>
+
+      <aside class="card">
+        <h2>At a Glance</h2>
+
+        <div class="info-list">
+          <div class="info-item">
+            <span class="label">Date</span>
+            <p class="value">Saturday, June 6, 2026</p>
+          </div>
+
+          <div class="info-item">
+            <span class="label">Time</span>
+            <p class="value">7:00 PM</p>
+          </div>
+
+          <div class="info-item">
+            <span class="label">Venue</span>
+            <p class="value">Carne Mare – Seaport</p>
+          </div>
+
+          <div class="info-item">
+            <span class="label">Dress Code</span>
+            <p class="value">Festive evening attire</p>
+          </div>
+        </div>
+      </aside>
+
+      <article class="card full">
+        <h2>Map</h2>
+
+        <iframe
+          class="map"
+          loading="lazy"
+          allowfullscreen
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=Carne%20Mare%2089%20South%20St%20New%20York%20NY%2010038&output=embed">
+        </iframe>
+
+        <p class="small" style="margin-top:12px;">
+          For rideshare or taxi, use “Carne Mare” or “89 South Street” as the destination.
+        </p>
+      </article>
+
+      <article class="card">
+        <h2>Getting There</h2>
+
+        <h3>Subway</h3>
+        <p>
+          The closest major subway area is Fulton Street, with additional options around Wall Street.
+          From there, it’s a short walk toward the Seaport.
+        </p>
+
+        <h3>Taxi or Rideshare</h3>
+        <p>
+          Traffic near the waterfront can move slowly on weekends. Please give yourself a buffer,
+          especially if you’re arriving close to the start time.
+        </p>
+
+        <h3>Ferry</h3>
+        <p>
+          Depending on where you’re coming from, the ferry may be a scenic and convenient way to get nearby.
+        </p>
+      </article>
+
+      <article class="card">
+        <h2>Parking</h2>
+
+        <p>
+          Street parking in the Seaport is limited. If you’re driving, we recommend using a nearby garage
+          and reserving ahead when possible.
+        </p>
+
+        <div class="btn-row">
+          <a class="btn" href="https://www.google.com/maps/search/parking+near+89+South+Street+New+York+NY+10038" target="_blank" rel="noopener">
+            Find Parking Nearby
+          </a>
+        </div>
+
+        <p class="small" style="margin-top:12px;">
+          Garage availability and pricing can change, so guests should confirm directly before arrival.
+        </p>
+      </article>
+
+      <article class="card">
+        <h2>Accessibility</h2>
+
+        <p>
+          If you need step-free access, elevator details, seating help, or any other accommodation,
+          please reach out ahead of time so we can help coordinate.
+        </p>
+
+        <div class="btn-row">
+          <a class="btn" href="mailto:hello@luna.wedding?subject=Venue%20Accessibility%20Question">
+            Ask About Accessibility
+          </a>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Nearby</h2>
+
+        <p>
+          The Seaport has waterfront views, cobblestone streets, shops, and places to grab a drink nearby.
+          If you arrive early, it’s a nice area to walk around before heading inside.
+        </p>
+
+        <p>
+          It can feel cooler by the water, so consider bringing a light layer if you plan to spend time outside.
+        </p>
+      </article>
+
+      <article class="card full">
+        <h2>Questions?</h2>
+
+        <p>
+          If you have any questions about getting there, timing, accessibility, or anything else,
+          send us a note and we’ll help.
+        </p>
+
+        <div class="btn-row">
+          <a class="btn primary" href="mailto:hello@luna.wedding?subject=Question%20about%20the%20venue">
+            Contact the Couple
+          </a>
+          <a class="btn" href="faq.html">
+            FAQ
+          </a>
+          <a class="btn" href="index.html">
+            Back to Invite
+          </a>
+        </div>
+      </article>
+    </section>
+
+    <footer>
+      Toby & Michelle · June 6, 2026 · New York City
+    </footer>
+  </main>
+
+  <nav class="dock" aria-label="Wedding site quick links">
+    <a class="pill" href="index.html">Invite</a>
+    <a class="pill" href="registry.html">Registry</a>
+    <a class="pill" href="faq.html">FAQ</a>
+  </nav>
+</body>
+</html>
