@@ -45,27 +45,29 @@
     :root{
       --fallback:#000;
 
-      /* clear-glass scheme to match FAQ/main pages */
-      --glass:rgba(255,255,255,.11);
-      --glass-2:rgba(255,255,255,.145);
-      --glass-3:rgba(255,255,255,.18);
-      --line:rgba(255,255,255,.28);
-      --line-2:rgba(255,255,255,.18);
+      /* light / clear glass scheme */
+      --glass:rgba(255,255,255,.68);
+      --glass-soft:rgba(255,255,255,.46);
+      --glass-lighter:rgba(255,255,255,.32);
+      --line:rgba(255,255,255,.74);
+      --line-soft:rgba(255,255,255,.48);
 
-      --text:#fff;
-      --muted:rgba(255,255,255,.78);
-      --faint:rgba(255,255,255,.58);
+      --ink:#171717;
+      --muted:rgba(23,23,23,.72);
+      --faint:rgba(23,23,23,.52);
 
-      --button-bg:rgba(0,0,0,.34);
-      --button-border:rgba(255,255,255,.50);
-      --shadow:0 20px 48px rgba(0,0,0,.25);
+      --button-bg:rgba(255,255,255,.42);
+      --button-bg-hover:rgba(255,255,255,.58);
+      --button-border:rgba(255,255,255,.72);
+
+      --shadow:0 20px 48px rgba(0,0,0,.22);
     }
 
     html, body{
       min-height:100%;
       margin:0;
       background:var(--fallback);
-      color:var(--text);
+      color:var(--ink);
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
     }
 
@@ -104,8 +106,8 @@
       position:fixed;
       inset:0;
       background:
-        radial-gradient(circle at 50% 8%, rgba(255,255,255,.08), transparent 34%),
-        linear-gradient(to bottom, rgba(0,0,0,.20), rgba(0,0,0,.55));
+        radial-gradient(circle at 50% 8%, rgba(255,255,255,.22), transparent 38%),
+        linear-gradient(to bottom, rgba(255,255,255,.08), rgba(255,255,255,.02));
       z-index:-1;
       pointer-events:none;
     }
@@ -129,31 +131,35 @@
     .btn{
       appearance:none;
       border:1px solid var(--button-border);
-      color:#fff;
+      color:var(--ink);
       background:var(--button-bg);
       padding:10px 14px;
       border-radius:999px;
       font-size:14px;
       line-height:1.15;
-      backdrop-filter:blur(8px) saturate(120%);
-      -webkit-backdrop-filter:blur(8px) saturate(120%);
-      box-shadow:0 8px 24px rgba(0,0,0,.18);
+      backdrop-filter:blur(10px) saturate(140%);
+      -webkit-backdrop-filter:blur(10px) saturate(140%);
+      box-shadow:0 8px 24px rgba(0,0,0,.12);
       cursor:pointer;
       white-space:nowrap;
       text-decoration:none;
     }
 
-    .btn.clear{
-      background:rgba(255,255,255,.12);
-      border-color:rgba(255,255,255,.32);
+    .btn:hover{
+      background:var(--button-bg-hover);
+    }
+
+    .btn.primary{
+      background:rgba(255,255,255,.78);
+      border-color:rgba(255,255,255,.88);
     }
 
     .shell{
       border:1px solid var(--line);
       border-radius:24px;
       background:var(--glass);
-      backdrop-filter:blur(18px) saturate(135%);
-      -webkit-backdrop-filter:blur(18px) saturate(135%);
+      backdrop-filter:blur(22px) saturate(150%);
+      -webkit-backdrop-filter:blur(22px) saturate(150%);
       box-shadow:var(--shadow);
       overflow:hidden;
       animation:riseIn .75s cubic-bezier(.21,.98,.25,.99) .12s both;
@@ -162,8 +168,9 @@
     .hero{
       padding:30px 24px 24px;
       text-align:center;
-      border-bottom:1px solid var(--line-2);
-      background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.035));
+      border-bottom:1px solid var(--line-soft);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.54), rgba(255,255,255,.20));
     }
 
     .eyebrow{
@@ -182,8 +189,7 @@
       font-size:clamp(50px, 11vw, 94px);
       line-height:.92;
       letter-spacing:-.055em;
-      color:#fff;
-      text-shadow:0 10px 34px rgba(0,0,0,.22);
+      color:var(--ink);
     }
 
     .dek{
@@ -201,21 +207,21 @@
     }
 
     .card{
-      border:1px solid var(--line-2);
+      border:1px solid var(--line-soft);
       border-radius:18px;
-      background:rgba(255,255,255,.085);
-      backdrop-filter:blur(14px) saturate(125%);
-      -webkit-backdrop-filter:blur(14px) saturate(125%);
+      background:var(--glass-soft);
+      backdrop-filter:blur(18px) saturate(145%);
+      -webkit-backdrop-filter:blur(18px) saturate(145%);
       padding:17px;
     }
 
     .card.more{
-      background:rgba(255,255,255,.12);
+      background:rgba(255,255,255,.54);
     }
 
     h2{
       margin:0 0 11px;
-      color:#fff;
+      color:var(--ink);
       font-size:18px;
       font-weight:650;
       letter-spacing:-.01em;
@@ -223,7 +229,7 @@
 
     h3{
       margin:16px 0 7px;
-      color:#fff;
+      color:var(--ink);
       font-size:14px;
       font-weight:700;
     }
@@ -249,7 +255,7 @@
 
     .address strong{
       display:block;
-      color:#fff;
+      color:var(--ink);
       font-size:20px;
       margin-bottom:3px;
     }
@@ -268,9 +274,11 @@
     }
 
     .meta-item{
-      border:1px solid var(--line-2);
+      border:1px solid var(--line-soft);
       border-radius:16px;
-      background:rgba(255,255,255,.08);
+      background:var(--glass-lighter);
+      backdrop-filter:blur(16px) saturate(140%);
+      -webkit-backdrop-filter:blur(16px) saturate(140%);
       padding:13px;
     }
 
@@ -285,7 +293,7 @@
 
     .value{
       margin:0;
-      color:#fff;
+      color:var(--ink);
       font-size:14px;
       line-height:1.35;
     }
@@ -295,15 +303,17 @@
       height:310px;
       border:0;
       border-radius:16px;
-      background:rgba(255,255,255,.12);
-      box-shadow:0 8px 24px rgba(0,0,0,.18);
+      background:rgba(255,255,255,.35);
+      box-shadow:0 8px 24px rgba(0,0,0,.14);
       filter:saturate(.86) contrast(.96);
     }
 
     details{
-      border:1px solid var(--line-2);
+      border:1px solid var(--line-soft);
       border-radius:16px;
-      background:rgba(255,255,255,.085);
+      background:var(--glass-soft);
+      backdrop-filter:blur(18px) saturate(145%);
+      -webkit-backdrop-filter:blur(18px) saturate(145%);
       overflow:hidden;
     }
 
@@ -315,7 +325,7 @@
       list-style:none;
       cursor:pointer;
       padding:15px 16px;
-      color:#fff;
+      color:var(--ink);
       font-size:15px;
       font-weight:650;
       display:flex;
@@ -354,7 +364,8 @@
     footer{
       margin:14px 0 0;
       text-align:center;
-      color:rgba(255,255,255,.58);
+      color:rgba(255,255,255,.82);
+      text-shadow:0 1px 8px rgba(0,0,0,.24);
       font-size:12px;
     }
 
@@ -405,9 +416,9 @@
 
   <main class="wrap">
     <nav class="nav" aria-label="Wedding site navigation">
-      <a class="btn clear" href="index.html">Home</a>
-      <a class="btn clear" href="faq.html">FAQ</a>
-      <a class="btn clear" href="registry.html">Registry</a>
+      <a class="btn" href="index.html">Home</a>
+      <a class="btn" href="faq.html">FAQ</a>
+      <a class="btn" href="registry.html">Registry</a>
     </nav>
 
     <section class="shell">
@@ -436,13 +447,13 @@
           </p>
 
           <div class="btn-row">
-            <a class="btn" href="https://maps.app.goo.gl/vTsV19gqAxjDsSb88?g_st=ic" target="_blank" rel="noopener">
+            <a class="btn primary" href="https://maps.app.goo.gl/vTsV19gqAxjDsSb88?g_st=ic" target="_blank" rel="noopener">
               Open Map
             </a>
-            <a class="btn clear" href="https://www.google.com/maps/search/?api=1&query=Carne%20Mare%2089%20South%20St%20New%20York%20NY%2010038" target="_blank" rel="noopener">
+            <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Carne%20Mare%2089%20South%20St%20New%20York%20NY%2010038" target="_blank" rel="noopener">
               Google Maps
             </a>
-            <a class="btn clear" href="https://maps.apple.com/?address=89%20South%20St,%20New%20York,%20NY%2010038&q=Carne%20Mare" target="_blank" rel="noopener">
+            <a class="btn" href="https://maps.apple.com/?address=89%20South%20St,%20New%20York,%20NY%2010038&q=Carne%20Mare" target="_blank" rel="noopener">
               Apple Maps
             </a>
           </div>
@@ -519,10 +530,10 @@
                 There is no on-site parking, and street parking is limited. We recommend booking a nearby garage ahead of time.
               </p>
               <div class="btn-row">
-                <a class="btn clear" href="https://www.google.com/maps/search/parking+near+89+South+Street+New+York+NY+10038" target="_blank" rel="noopener">
+                <a class="btn" href="https://www.google.com/maps/search/parking+near+89+South+Street+New+York+NY+10038" target="_blank" rel="noopener">
                   Find Parking
                 </a>
-                <a class="btn clear" href="https://spothero.com/search?kind=address&latitude=40.706&longitude=-74.002&search_string=89%20South%20Street%2C%20New%20York%2C%20NY" target="_blank" rel="noopener">
+                <a class="btn" href="https://spothero.com/search?kind=address&latitude=40.706&longitude=-74.002&search_string=89%20South%20Street%2C%20New%20York%2C%20NY" target="_blank" rel="noopener">
                   SpotHero
                 </a>
               </div>
@@ -537,7 +548,7 @@
                 please reach out ahead of time so we can help coordinate.
               </p>
               <div class="btn-row">
-                <a class="btn clear" href="mailto:hello@luna.wedding?subject=Venue%20Question">
+                <a class="btn" href="mailto:hello@luna.wedding?subject=Venue%20Question">
                   Contact the Couple
                 </a>
               </div>
