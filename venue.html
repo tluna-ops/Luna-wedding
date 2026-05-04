@@ -41,13 +41,19 @@
 
   <style>
     :root{
-      --ink:#171313;
-      --muted:rgba(23,19,19,.72);
-      --soft:rgba(23,19,19,.54);
+      --ink:#181313;
+      --muted:rgba(24,19,19,.72);
+      --soft:rgba(24,19,19,.54);
+
+      --pink:#c78391;
+      --pink-deep:#9f5f70;
+      --pink-soft:rgba(199,131,145,.18);
+      --pink-line:rgba(199,131,145,.35);
 
       --glass:rgba(255,255,255,.68);
-      --glass-light:rgba(255,255,255,.46);
-      --line:rgba(255,255,255,.70);
+      --glass-light:rgba(255,255,255,.48);
+      --glass-lighter:rgba(255,255,255,.34);
+      --line:rgba(255,255,255,.72);
 
       --shadow:0 20px 48px rgba(0,0,0,.18);
     }
@@ -66,7 +72,7 @@
       color:var(--ink);
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       background:
-        linear-gradient(rgba(255,255,255,.18), rgba(255,255,255,.24)),
+        linear-gradient(rgba(255,255,255,.18), rgba(255,255,255,.22)),
         url("assets/bg.jpg?v=37") center / cover fixed no-repeat;
       overflow-x:hidden;
     }
@@ -75,15 +81,15 @@
       content:"";
       position:fixed;
       inset:0;
-      background:rgba(255,255,255,.10);
-      backdrop-filter:blur(1px);
-      -webkit-backdrop-filter:blur(1px);
+      background:
+        radial-gradient(circle at 50% 8%, rgba(255,255,255,.28), transparent 34%),
+        radial-gradient(circle at 50% 92%, rgba(199,131,145,.16), transparent 34%);
       pointer-events:none;
       z-index:-1;
     }
 
     .wrap{
-      width:min(760px, calc(100% - 28px));
+      width:min(780px, calc(100% - 28px));
       margin:0 auto;
       padding:24px 0 42px;
     }
@@ -106,7 +112,7 @@
       padding:10px 15px;
       border-radius:999px;
       border:1px solid var(--line);
-      background:rgba(255,255,255,.50);
+      background:rgba(255,255,255,.52);
       color:var(--ink);
       text-decoration:none;
       font-size:14px;
@@ -114,6 +120,13 @@
       box-shadow:0 8px 22px rgba(0,0,0,.10);
       backdrop-filter:blur(14px) saturate(145%);
       -webkit-backdrop-filter:blur(14px) saturate(145%);
+    }
+
+    .nav a[aria-current="page"]{
+      background:var(--pink-soft);
+      border-color:var(--pink-line);
+      color:var(--pink-deep);
+      font-weight:650;
     }
 
     .page{
@@ -137,14 +150,23 @@
       display:grid;
       place-items:center;
       border-radius:18px;
-      background:rgba(255,255,255,.62);
+      background:linear-gradient(180deg, rgba(255,255,255,.70), rgba(255,255,255,.42));
       border:1px solid rgba(255,255,255,.78);
       box-shadow:0 8px 22px rgba(0,0,0,.10);
       font-family:Georgia, "Times New Roman", serif;
       font-style:italic;
       font-size:34px;
       line-height:1;
-      color:var(--ink);
+      color:var(--pink-deep);
+    }
+
+    .eyebrow{
+      margin:0 0 8px;
+      text-align:center;
+      color:var(--pink-deep);
+      font-size:12px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
     }
 
     h1{
@@ -160,7 +182,7 @@
     }
 
     .intro{
-      max-width:600px;
+      max-width:610px;
       margin:0 auto 26px;
       text-align:center;
       color:var(--muted);
@@ -170,7 +192,7 @@
 
     section{
       padding:22px 0;
-      border-top:1px solid rgba(23,19,19,.12);
+      border-top:1px solid rgba(24,19,19,.12);
     }
 
     section:first-of-type{
@@ -184,6 +206,17 @@
       font-weight:700;
       letter-spacing:-.02em;
       color:var(--ink);
+    }
+
+    h2::before{
+      content:"";
+      display:inline-block;
+      width:8px;
+      height:8px;
+      margin-right:9px;
+      border-radius:999px;
+      background:var(--pink);
+      transform:translateY(-1px);
     }
 
     h3{
@@ -201,6 +234,10 @@
 
     p:last-child{
       margin-bottom:0;
+    }
+
+    strong{
+      color:var(--ink);
     }
 
     .address{
@@ -226,9 +263,18 @@
     }
 
     .button.primary{
-      background:rgba(255,255,255,.72);
-      border-color:rgba(255,255,255,.88);
-      font-weight:650;
+      background:var(--pink-soft);
+      border-color:var(--pink-line);
+      color:var(--pink-deep);
+      font-weight:700;
+    }
+
+    .button:hover{
+      background:rgba(255,255,255,.68);
+    }
+
+    .button.primary:hover{
+      background:rgba(199,131,145,.24);
     }
 
     .facts{
@@ -250,7 +296,7 @@
     .label{
       display:block;
       margin-bottom:4px;
-      color:var(--soft);
+      color:var(--pink-deep);
       font-size:11px;
       letter-spacing:.13em;
       text-transform:uppercase;
@@ -261,6 +307,27 @@
       color:var(--ink);
       font-size:15px;
       line-height:1.4;
+    }
+
+    .map-card{
+      margin-top:16px;
+      padding:10px;
+      border:1px solid rgba(255,255,255,.62);
+      border-radius:22px;
+      background:var(--glass-lighter);
+      backdrop-filter:blur(16px) saturate(145%);
+      -webkit-backdrop-filter:blur(16px) saturate(145%);
+    }
+
+    .map{
+      display:block;
+      width:100%;
+      height:330px;
+      border:0;
+      border-radius:16px;
+      background:rgba(255,255,255,.45);
+      box-shadow:0 8px 22px rgba(0,0,0,.12);
+      filter:saturate(.88) contrast(.96);
     }
 
     ul{
@@ -279,9 +346,13 @@
       margin-top:14px;
       padding:14px 15px;
       border-radius:18px;
-      background:rgba(255,255,255,.38);
-      border:1px solid rgba(255,255,255,.58);
+      background:var(--pink-soft);
+      border:1px solid var(--pink-line);
       color:var(--muted);
+    }
+
+    .note strong{
+      color:var(--pink-deep);
     }
 
     footer{
@@ -294,7 +365,7 @@
 
     @media (max-width:640px){
       .wrap{
-        width:min(100% - 24px, 760px);
+        width:min(100% - 24px, 780px);
         padding-top:18px;
       }
 
@@ -314,6 +385,10 @@
       .button{
         text-align:center;
       }
+
+      .map{
+        height:300px;
+      }
     }
   </style>
 </head>
@@ -322,6 +397,7 @@
   <main class="wrap">
     <nav class="nav" aria-label="Wedding site navigation">
       <a href="index.html">Home</a>
+      <a href="venue.html" aria-current="page">Venue</a>
       <a href="faq.html">FAQ</a>
       <a href="registry.html">Registry</a>
     </nav>
@@ -330,7 +406,8 @@
       <div class="inner">
         <div class="monogram" aria-hidden="true">L</div>
 
-        <h1>Venue</h1>
+        <p class="eyebrow">Wedding Venue</p>
+        <h1>Carne Mare</h1>
 
         <p class="intro">
           We’re celebrating at Carne Mare in Manhattan’s Seaport. Here’s everything you’ll need for arrival,
@@ -338,7 +415,7 @@
         </p>
 
         <section>
-          <h2>Carne Mare</h2>
+          <h2>Location</h2>
 
           <address class="address">
             <strong>Carne Mare – Seaport</strong>
@@ -363,6 +440,16 @@
             <a class="button" href="https://maps.apple.com/?address=89%20South%20St,%20New%20York,%20NY%2010038&q=Carne%20Mare" target="_blank" rel="noopener">
               Apple Maps
             </a>
+          </div>
+
+          <div class="map-card">
+            <iframe
+              class="map"
+              loading="lazy"
+              allowfullscreen
+              referrerpolicy="no-referrer-when-downgrade"
+              src="https://www.google.com/maps?q=Carne%20Mare%2089%20South%20St%20New%20York%20NY%2010038&output=embed">
+            </iframe>
           </div>
         </section>
 
@@ -407,7 +494,7 @@
           </ul>
 
           <p class="note">
-            If you’re taking a taxi or rideshare, tell the driver you’re heading to Pier 17 / the Tin Building at the Seaport.
+            <strong>Tip:</strong> If you’re taking a taxi or rideshare, tell the driver you’re heading to Pier 17 / the Tin Building at the Seaport.
           </p>
         </section>
 
@@ -430,11 +517,19 @@
         </section>
 
         <section>
-          <h2>Questions?</h2>
+          <h2>Accessibility</h2>
 
           <p>
             If you need step-free access, elevator details, seating help, or another accommodation,
             please reach out ahead of time so we can help coordinate.
+          </p>
+        </section>
+
+        <section>
+          <h2>Questions?</h2>
+
+          <p>
+            If you have any questions about arrival, directions, parking, or accessibility, send us a note.
           </p>
 
           <div class="button-row">
