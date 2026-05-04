@@ -43,24 +43,25 @@
 
   <style>
     :root{
-      --fallback:#000;
+      --fallback:#f4eee7;
 
       /* light / clear glass scheme */
-      --glass:rgba(255,255,255,.68);
-      --glass-soft:rgba(255,255,255,.46);
-      --glass-lighter:rgba(255,255,255,.32);
-      --line:rgba(255,255,255,.74);
+      --glass:rgba(255,255,255,.72);
+      --glass-soft:rgba(255,255,255,.52);
+      --glass-light:rgba(255,255,255,.38);
+
+      --line:rgba(255,255,255,.72);
       --line-soft:rgba(255,255,255,.48);
 
-      --ink:#171717;
-      --muted:rgba(23,23,23,.72);
-      --faint:rgba(23,23,23,.52);
+      --ink:#171313;
+      --muted:rgba(23,19,19,.72);
+      --faint:rgba(23,19,19,.52);
 
-      --button-bg:rgba(255,255,255,.42);
-      --button-bg-hover:rgba(255,255,255,.58);
-      --button-border:rgba(255,255,255,.72);
+      --btn-bg:rgba(255,255,255,.56);
+      --btn-bg-strong:rgba(255,255,255,.78);
+      --btn-border:rgba(255,255,255,.78);
 
-      --shadow:0 20px 48px rgba(0,0,0,.22);
+      --shadow:0 20px 48px rgba(60,35,20,.18);
     }
 
     html, body{
@@ -106,8 +107,8 @@
       position:fixed;
       inset:0;
       background:
-        radial-gradient(circle at 50% 8%, rgba(255,255,255,.22), transparent 38%),
-        linear-gradient(to bottom, rgba(255,255,255,.08), rgba(255,255,255,.02));
+        radial-gradient(circle at 50% 8%, rgba(255,255,255,.42), transparent 36%),
+        linear-gradient(to bottom, rgba(255,255,255,.32), rgba(255,255,255,.16));
       z-index:-1;
       pointer-events:none;
     }
@@ -130,36 +131,36 @@
 
     .btn{
       appearance:none;
-      border:1px solid var(--button-border);
+      border:1px solid var(--btn-border);
       color:var(--ink);
-      background:var(--button-bg);
+      background:var(--btn-bg);
       padding:10px 14px;
       border-radius:999px;
       font-size:14px;
       line-height:1.15;
-      backdrop-filter:blur(10px) saturate(140%);
-      -webkit-backdrop-filter:blur(10px) saturate(140%);
-      box-shadow:0 8px 24px rgba(0,0,0,.12);
+      backdrop-filter:blur(14px) saturate(145%);
+      -webkit-backdrop-filter:blur(14px) saturate(145%);
+      box-shadow:0 8px 24px rgba(60,35,20,.10);
       cursor:pointer;
       white-space:nowrap;
       text-decoration:none;
     }
 
     .btn:hover{
-      background:var(--button-bg-hover);
+      background:var(--btn-bg-strong);
     }
 
     .btn.primary{
-      background:rgba(255,255,255,.78);
-      border-color:rgba(255,255,255,.88);
+      background:var(--btn-bg-strong);
+      border-color:rgba(255,255,255,.9);
     }
 
     .shell{
       border:1px solid var(--line);
       border-radius:24px;
       background:var(--glass);
-      backdrop-filter:blur(22px) saturate(150%);
-      -webkit-backdrop-filter:blur(22px) saturate(150%);
+      backdrop-filter:blur(24px) saturate(150%);
+      -webkit-backdrop-filter:blur(24px) saturate(150%);
       box-shadow:var(--shadow);
       overflow:hidden;
       animation:riseIn .75s cubic-bezier(.21,.98,.25,.99) .12s both;
@@ -169,8 +170,11 @@
       padding:30px 24px 24px;
       text-align:center;
       border-bottom:1px solid var(--line-soft);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.54), rgba(255,255,255,.20));
+      background:linear-gradient(
+        180deg,
+        rgba(255,255,255,.62),
+        rgba(255,255,255,.28)
+      );
     }
 
     .eyebrow{
@@ -216,7 +220,7 @@
     }
 
     .card.more{
-      background:rgba(255,255,255,.54);
+      background:rgba(255,255,255,.62);
     }
 
     h2{
@@ -276,9 +280,9 @@
     .meta-item{
       border:1px solid var(--line-soft);
       border-radius:16px;
-      background:var(--glass-lighter);
-      backdrop-filter:blur(16px) saturate(140%);
-      -webkit-backdrop-filter:blur(16px) saturate(140%);
+      background:var(--glass-light);
+      backdrop-filter:blur(18px) saturate(145%);
+      -webkit-backdrop-filter:blur(18px) saturate(145%);
       padding:13px;
     }
 
@@ -303,8 +307,8 @@
       height:310px;
       border:0;
       border-radius:16px;
-      background:rgba(255,255,255,.35);
-      box-shadow:0 8px 24px rgba(0,0,0,.14);
+      background:rgba(255,255,255,.45);
+      box-shadow:0 8px 24px rgba(60,35,20,.12);
       filter:saturate(.86) contrast(.96);
     }
 
@@ -364,8 +368,8 @@
     footer{
       margin:14px 0 0;
       text-align:center;
-      color:rgba(255,255,255,.82);
-      text-shadow:0 1px 8px rgba(0,0,0,.24);
+      color:rgba(255,255,255,.92);
+      text-shadow:0 1px 8px rgba(60,35,20,.32);
       font-size:12px;
     }
 
