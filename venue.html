@@ -44,14 +44,20 @@
   <style>
     :root{
       --fallback:#000;
-      --glass:rgba(255,255,255,.16);
-      --glass-strong:rgba(255,255,255,.22);
-      --glass-soft:rgba(255,255,255,.10);
-      --line:rgba(255,255,255,.32);
-      --line-soft:rgba(255,255,255,.20);
+
+      /* clear-glass scheme to match FAQ/main pages */
+      --glass:rgba(255,255,255,.11);
+      --glass-2:rgba(255,255,255,.145);
+      --glass-3:rgba(255,255,255,.18);
+      --line:rgba(255,255,255,.28);
+      --line-2:rgba(255,255,255,.18);
+
       --text:#fff;
-      --muted:rgba(255,255,255,.82);
-      --faint:rgba(255,255,255,.64);
+      --muted:rgba(255,255,255,.78);
+      --faint:rgba(255,255,255,.58);
+
+      --button-bg:rgba(0,0,0,.34);
+      --button-border:rgba(255,255,255,.50);
       --shadow:0 20px 48px rgba(0,0,0,.25);
     }
 
@@ -59,15 +65,19 @@
       min-height:100%;
       margin:0;
       background:var(--fallback);
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       color:var(--text);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
     }
 
     body{
       overflow-x:hidden;
     }
 
-    @keyframes fadeBg{ from{opacity:0} to{opacity:1} }
+    @keyframes fadeBg{
+      from{opacity:0}
+      to{opacity:1}
+    }
+
     @keyframes riseIn{
       from{opacity:0; transform:translateY(10px) scale(.992)}
       to{opacity:1; transform:translateY(0) scale(1)}
@@ -94,14 +104,14 @@
       position:fixed;
       inset:0;
       background:
-        radial-gradient(circle at 50% 8%, rgba(255,255,255,.10), transparent 35%),
-        linear-gradient(to bottom, rgba(0,0,0,.16), rgba(0,0,0,.46));
+        radial-gradient(circle at 50% 8%, rgba(255,255,255,.08), transparent 34%),
+        linear-gradient(to bottom, rgba(0,0,0,.20), rgba(0,0,0,.55));
       z-index:-1;
       pointer-events:none;
     }
 
     .wrap{
-      width:min(900px, calc(100% - 28px));
+      width:min(860px, calc(100% - 28px));
       margin:0 auto;
       padding:calc(18px + env(safe-area-inset-top)) 0 calc(34px + env(safe-area-inset-bottom));
     }
@@ -118,9 +128,9 @@
 
     .btn{
       appearance:none;
-      border:1px solid rgba(255,255,255,.54);
+      border:1px solid var(--button-border);
       color:#fff;
-      background:rgba(0,0,0,.34);
+      background:var(--button-bg);
       padding:10px 14px;
       border-radius:999px;
       font-size:14px;
@@ -134,13 +144,13 @@
     }
 
     .btn.clear{
-      background:rgba(255,255,255,.16);
-      border-color:rgba(255,255,255,.42);
+      background:rgba(255,255,255,.12);
+      border-color:rgba(255,255,255,.32);
     }
 
     .shell{
       border:1px solid var(--line);
-      border-radius:22px;
+      border-radius:24px;
       background:var(--glass);
       backdrop-filter:blur(18px) saturate(135%);
       -webkit-backdrop-filter:blur(18px) saturate(135%);
@@ -150,10 +160,10 @@
     }
 
     .hero{
-      padding:28px 24px 22px;
+      padding:30px 24px 24px;
       text-align:center;
-      border-bottom:1px solid var(--line-soft);
-      background:linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.04));
+      border-bottom:1px solid var(--line-2);
+      background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.035));
     }
 
     .eyebrow{
@@ -169,7 +179,7 @@
       font-family:Georgia, "Times New Roman", serif;
       font-style:italic;
       font-weight:400;
-      font-size:clamp(50px, 11vw, 96px);
+      font-size:clamp(50px, 11vw, 94px);
       line-height:.92;
       letter-spacing:-.055em;
       color:#fff;
@@ -185,32 +195,22 @@
     }
 
     .content{
-      padding:18px;
+      padding:16px;
       display:grid;
-      gap:12px;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
       gap:12px;
     }
 
     .card{
-      border:1px solid var(--line-soft);
+      border:1px solid var(--line-2);
       border-radius:18px;
-      background:var(--glass-soft);
+      background:rgba(255,255,255,.085);
       backdrop-filter:blur(14px) saturate(125%);
       -webkit-backdrop-filter:blur(14px) saturate(125%);
       padding:17px;
     }
 
-    .card.strong{
-      background:var(--glass-strong);
-    }
-
-    .card.full{
-      grid-column:1 / -1;
+    .card.more{
+      background:rgba(255,255,255,.12);
     }
 
     h2{
@@ -254,37 +254,6 @@
       margin-bottom:3px;
     }
 
-    .info-list{
-      display:grid;
-      gap:10px;
-    }
-
-    .info-item{
-      padding-top:10px;
-      border-top:1px solid var(--line-soft);
-    }
-
-    .info-item:first-child{
-      padding-top:0;
-      border-top:0;
-    }
-
-    .label{
-      display:block;
-      margin-bottom:3px;
-      color:var(--faint);
-      font-size:11px;
-      letter-spacing:.13em;
-      text-transform:uppercase;
-    }
-
-    .value{
-      margin:0;
-      color:#fff;
-      font-size:15px;
-      line-height:1.45;
-    }
-
     .btn-row{
       display:flex;
       flex-wrap:wrap;
@@ -292,9 +261,38 @@
       margin-top:14px;
     }
 
+    .meta{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:8px;
+    }
+
+    .meta-item{
+      border:1px solid var(--line-2);
+      border-radius:16px;
+      background:rgba(255,255,255,.08);
+      padding:13px;
+    }
+
+    .label{
+      display:block;
+      margin-bottom:4px;
+      color:var(--faint);
+      font-size:10px;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+    }
+
+    .value{
+      margin:0;
+      color:#fff;
+      font-size:14px;
+      line-height:1.35;
+    }
+
     .map{
       width:100%;
-      height:320px;
+      height:310px;
       border:0;
       border-radius:16px;
       background:rgba(255,255,255,.12);
@@ -302,16 +300,15 @@
       filter:saturate(.86) contrast(.96);
     }
 
-    .small{
-      font-size:13px;
-      color:var(--faint);
+    details{
+      border:1px solid var(--line-2);
+      border-radius:16px;
+      background:rgba(255,255,255,.085);
+      overflow:hidden;
     }
 
-    details{
-      border:1px solid var(--line-soft);
-      border-radius:16px;
-      background:rgba(255,255,255,.10);
-      overflow:hidden;
+    details + details{
+      margin-top:8px;
     }
 
     summary{
@@ -344,7 +341,6 @@
 
     .details-body{
       padding:0 16px 16px;
-      color:var(--muted);
     }
 
     .details-body ul{
@@ -364,27 +360,23 @@
 
     @media (max-width:740px){
       .wrap{
-        width:min(100% - 24px, 900px);
+        width:min(100% - 24px, 860px);
       }
 
       .hero{
-        padding:24px 20px 20px;
+        padding:25px 20px 21px;
       }
 
       .content{
         padding:12px;
       }
 
-      .grid{
-        grid-template-columns:1fr;
-      }
-
-      .card.full{
-        grid-column:auto;
+      .meta{
+        grid-template-columns:1fr 1fr;
       }
 
       .map{
-        height:290px;
+        height:285px;
       }
     }
 
@@ -398,8 +390,8 @@
         text-align:center;
       }
 
-      .nav{
-        justify-content:center;
+      .meta{
+        grid-template-columns:1fr;
       }
     }
   </style>
@@ -429,62 +421,56 @@
       </header>
 
       <div class="content">
-        <section class="grid">
-          <article class="card strong">
-            <h2>Location</h2>
+        <section class="card more">
+          <h2>Location</h2>
 
-            <address class="address">
-              <strong>Carne Mare – Seaport</strong>
-              89 South Street<br>
-              New York, NY 10038
-            </address>
+          <address class="address">
+            <strong>Carne Mare – Seaport</strong>
+            89 South Street<br>
+            New York, NY 10038
+          </address>
 
-            <p>
-              Carne Mare is on Pier 17, behind the Tin Building. Cars cannot pull directly up to the restaurant,
-              so please plan for a short walk from the nearby sidewalk or drop-off area.
-            </p>
+          <p>
+            Carne Mare is on Pier 17, behind the Tin Building. Cars cannot pull directly up to the restaurant,
+            so please plan for a short walk from the nearby sidewalk or drop-off area.
+          </p>
 
-            <div class="btn-row">
-              <a class="btn" href="https://maps.app.goo.gl/vTsV19gqAxjDsSb88?g_st=ic" target="_blank" rel="noopener">
-                Open Map
-              </a>
-              <a class="btn clear" href="https://www.google.com/maps/search/?api=1&query=Carne%20Mare%2089%20South%20St%20New%20York%20NY%2010038" target="_blank" rel="noopener">
-                Google Maps
-              </a>
-              <a class="btn clear" href="https://maps.apple.com/?address=89%20South%20St,%20New%20York,%20NY%2010038&q=Carne%20Mare" target="_blank" rel="noopener">
-                Apple Maps
-              </a>
-            </div>
-          </article>
-
-          <aside class="card">
-            <h2>At a Glance</h2>
-
-            <div class="info-list">
-              <div class="info-item">
-                <span class="label">Date</span>
-                <p class="value">Saturday, June 6, 2026</p>
-              </div>
-
-              <div class="info-item">
-                <span class="label">Time</span>
-                <p class="value">7:00 PM–10:00 PM</p>
-              </div>
-
-              <div class="info-item">
-                <span class="label">Arrival</span>
-                <p class="value">Please arrive promptly at 7:00 PM.</p>
-              </div>
-
-              <div class="info-item">
-                <span class="label">Dress Code</span>
-                <p class="value">Formal cocktail attire</p>
-              </div>
-            </div>
-          </aside>
+          <div class="btn-row">
+            <a class="btn" href="https://maps.app.goo.gl/vTsV19gqAxjDsSb88?g_st=ic" target="_blank" rel="noopener">
+              Open Map
+            </a>
+            <a class="btn clear" href="https://www.google.com/maps/search/?api=1&query=Carne%20Mare%2089%20South%20St%20New%20York%20NY%2010038" target="_blank" rel="noopener">
+              Google Maps
+            </a>
+            <a class="btn clear" href="https://maps.apple.com/?address=89%20South%20St,%20New%20York,%20NY%2010038&q=Carne%20Mare" target="_blank" rel="noopener">
+              Apple Maps
+            </a>
+          </div>
         </section>
 
-        <article class="card">
+        <section class="meta" aria-label="Event details">
+          <div class="meta-item">
+            <span class="label">Date</span>
+            <p class="value">Saturday, June 6, 2026</p>
+          </div>
+
+          <div class="meta-item">
+            <span class="label">Time</span>
+            <p class="value">7:00 PM–10:00 PM</p>
+          </div>
+
+          <div class="meta-item">
+            <span class="label">Arrival</span>
+            <p class="value">Please arrive promptly at 7:00 PM.</p>
+          </div>
+
+          <div class="meta-item">
+            <span class="label">Dress Code</span>
+            <p class="value">Formal cocktail attire</p>
+          </div>
+        </section>
+
+        <section class="card">
           <h2>Map</h2>
 
           <iframe
@@ -495,18 +481,18 @@
             src="https://www.google.com/maps?q=Carne%20Mare%2089%20South%20St%20New%20York%20NY%2010038&output=embed">
           </iframe>
 
-          <p class="small" style="margin-top:12px;">
+          <p style="margin-top:12px; color:var(--faint); font-size:13px;">
             For taxi or rideshare, use “89 South Street” and ask to be dropped near the Seaport / Tin Building / Pier 17 entrance.
           </p>
-        </article>
+        </section>
 
-        <section class="faq-style">
+        <section aria-label="Venue questions">
           <details open>
             <summary>How do I get there?</summary>
             <div class="details-body">
               <p>
                 Carne Mare is on Pier 17, behind the Tin Building, in the Seaport.
-                Cars are not allowed to drive directly to the restaurant entrance.
+                Cars are not allowed to drive directly to the door.
               </p>
               <ul>
                 <li>Use 89 South Street, New York, NY 10038 as your destination.</li>
