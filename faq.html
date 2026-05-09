@@ -25,14 +25,19 @@
 
   <style>
     :root{
-      --text:#111;
-      --muted:#2f2f2f;
-      --card-bg:rgba(255,255,255,.78);
-      --card-border:rgba(0,0,0,.10);
-      --shadow:0 20px 48px rgba(0,0,0,.14);
+      --text:#3c2f2f;
+      --muted:#6f5959;
+      --pink:#d8a6a6;
+      --pink-dark:#c98f8f;
+      --pink-deep:#b97878;
+      --pink-light:#f3dede;
+      --cream:rgba(255,248,244,.78);
+      --cream-strong:rgba(255,248,244,.90);
+      --border:rgba(216,166,166,.48);
+      --shadow:0 20px 48px rgba(80,45,45,.16);
     }
 
-    * { box-sizing:border-box; }
+    *{ box-sizing:border-box; }
 
     html, body{
       margin:0;
@@ -40,6 +45,7 @@
       color:var(--text);
       background:#000;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      overflow-x:hidden;
     }
 
     .bg{
@@ -47,28 +53,36 @@
       inset:0;
       z-index:0;
     }
+
     .bg img{
       width:100vw;
       height:100vh;
       object-fit:cover;
       object-position:center;
       display:block;
-      filter: brightness(1.03);
+      filter:brightness(1.04) saturate(.96);
     }
+
     .bg::after{
       content:"";
       position:absolute;
       inset:0;
-      background:rgba(255,255,255,.14);
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255,246,242,.46),
+          rgba(255,246,242,.20) 45%,
+          rgba(255,246,242,.36)
+        );
       pointer-events:none;
     }
 
     .wrap{
       position:relative;
       z-index:1;
-      width:min(940px, 94vw);
-      margin:18px auto 36px;
-      padding:8px 0 24px;
+      width:min(940px, calc(100vw - 32px));
+      margin:0 auto;
+      padding:18px 0 calc(36px + env(safe-area-inset-bottom));
     }
 
     .topbar{
@@ -76,153 +90,251 @@
       justify-content:flex-end;
       gap:8px;
       flex-wrap:wrap;
-      margin-bottom:12px;
+      margin:0 0 12px;
+      width:100%;
     }
 
+    .nav-btn,
     .btn{
       appearance:none;
-      border:1px solid rgba(255,255,255,.6);
-      color:#fff;
-      background:rgba(0,0,0,.45);
+      border:1px solid rgba(255,255,255,.64);
+      color:var(--text);
+      background:rgba(216,166,166,.72);
       padding:10px 14px;
       border-radius:999px;
       font-size:14px;
+      font-weight:700;
       line-height:1.15;
       text-decoration:none;
       cursor:pointer;
       white-space:nowrap;
-      backdrop-filter:blur(6px);
-      -webkit-backdrop-filter:blur(6px);
-      box-shadow:0 8px 24px rgba(0,0,0,.18);
-      transition:transform .15s ease, background .15s ease;
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      box-shadow:0 8px 24px rgba(80,45,45,.15);
+      transition:transform .15s ease, background .15s ease, box-shadow .15s ease, border-color .15s ease;
+      text-align:center;
     }
+
+    .nav-btn:hover,
     .btn:hover{
       transform:translateY(-1px);
-      background:rgba(0,0,0,.52);
+      background:rgba(216,166,166,.88);
+      border-color:rgba(255,255,255,.76);
+    }
+
+    .nav-btn.active{
+      background:rgba(185,120,120,.92);
+      color:#fff;
+      border-color:rgba(255,255,255,.82);
+      box-shadow:
+        0 10px 28px rgba(80,45,45,.22),
+        inset 0 0 0 1px rgba(255,255,255,.20);
     }
 
     .hero{
-      background:var(--card-bg);
-      border:1px solid var(--card-border);
-      border-radius:18px;
-      padding:18px;
+      background:var(--cream-strong);
+      border:1px solid var(--border);
+      border-radius:24px;
+      padding:24px;
       box-shadow:var(--shadow);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       margin-bottom:12px;
+      text-align:center;
+    }
+
+    .eyebrow{
+      display:inline-block;
+      margin:0 0 8px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(216,166,166,.28);
+      border:1px solid rgba(216,166,166,.42);
+      color:var(--pink-deep);
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.12em;
+      text-transform:uppercase;
     }
 
     .hero h1{
-      margin:0 0 6px;
-      font-size:clamp(24px, 4vw, 34px);
-      line-height:1.05;
+      margin:0 0 8px;
+      font-size:clamp(30px, 5vw, 46px);
+      line-height:1.04;
       letter-spacing:.2px;
-      color:#111;
+      color:var(--text);
     }
 
     .hero p{
-      margin:0;
+      margin:0 auto;
       color:var(--muted);
-      font-size:14px;
-      line-height:1.45;
+      font-size:15px;
+      line-height:1.6;
+      max-width:720px;
     }
 
     .faq-list{
       display:grid;
-      gap:10px;
+      gap:12px;
+      width:100%;
     }
 
     details.faq{
-      background:var(--card-bg);
-      border:1px solid var(--card-border);
-      border-radius:14px;
+      background:var(--cream);
+      border:1px solid var(--border);
+      border-radius:20px;
       box-shadow:var(--shadow);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       overflow:hidden;
     }
 
     details.faq summary{
       list-style:none;
       cursor:pointer;
-      padding:14px 16px;
-      font-weight:600;
+      padding:16px 18px;
+      font-weight:750;
       line-height:1.25;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:12px;
-      color:#111;
+      color:var(--text);
     }
-    details.faq summary::-webkit-details-marker{ display:none; }
+
+    details.faq summary::-webkit-details-marker{
+      display:none;
+    }
 
     .chev{
       flex:0 0 auto;
-      width:24px; height:24px;
+      width:28px;
+      height:28px;
       border-radius:999px;
-      border:1px solid rgba(0,0,0,.14);
+      border:1px solid rgba(216,166,166,.55);
       display:grid;
       place-items:center;
-      font-size:13px;
-      color:#111;
-      background:rgba(255,255,255,.65);
-      transition:transform .18s ease, background .18s ease;
+      font-size:14px;
+      color:var(--text);
+      background:rgba(255,255,255,.68);
+      transition:transform .18s ease, background .18s ease, border-color .18s ease;
     }
+
     details.faq[open] .chev{
       transform:rotate(180deg);
-      background:rgba(255,255,255,.95);
+      background:rgba(216,166,166,.52);
+      border-color:rgba(185,120,120,.50);
     }
 
     .answer{
-      padding:0 16px 16px;
+      padding:0 18px 18px;
       color:var(--muted);
       font-size:14px;
-      line-height:1.55;
-      border-top:1px solid rgba(0,0,0,.06);
+      line-height:1.6;
+      border-top:1px solid rgba(216,166,166,.34);
     }
 
-    .answer p{ margin:10px 0 0; }
-    .answer p:first-child{ margin-top:12px; }
-    .answer ul{ margin:10px 0 0 18px; padding:0; }
-    .answer li{ margin:6px 0; }
+    .answer p{
+      margin:10px 0 0;
+    }
+
+    .answer p:first-child{
+      margin-top:12px;
+    }
+
+    .answer ul{
+      margin:10px 0 0 18px;
+      padding:0;
+    }
+
+    .answer li{
+      margin:6px 0;
+    }
 
     .answer a{
-      color:#111;
+      color:var(--pink-deep);
+      font-weight:700;
       text-decoration:underline;
       text-underline-offset:2px;
     }
 
     .footer-note{
-      margin-top:14px;
+      margin:14px auto 0;
       text-align:center;
-      color:rgba(0,0,0,.70);
+      color:rgba(60,47,47,.78);
       font-size:12px;
-      background:rgba(255,255,255,.55);
-      border:1px solid rgba(0,0,0,.08);
-      border-radius:12px;
-      padding:10px 12px;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      line-height:1.45;
+      background:rgba(255,248,244,.68);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:11px 14px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      max-width:720px;
     }
 
-    @media (max-width: 520px){
-      .topbar{ justify-content:stretch; }
-      .topbar .btn{ flex:1 1 auto; text-align:center; }
+    @media (max-width: 640px){
+      .wrap{
+        width:min(100% - 24px, 940px);
+        padding-top:14px;
+      }
+
+      .topbar{
+        justify-content:center;
+      }
+
+      .topbar .nav-btn{
+        flex:1 1 calc(50% - 8px);
+        min-width:0;
+      }
+
+      .hero{
+        padding:20px 16px;
+        border-radius:22px;
+      }
+
+      details.faq{
+        border-radius:20px;
+      }
+
+      details.faq summary{
+        padding:15px 16px;
+        text-align:left;
+      }
+
+      .answer{
+        padding:0 16px 16px;
+        text-align:left;
+      }
+    }
+
+    @media (max-width: 380px){
+      .wrap{
+        width:min(100% - 18px, 940px);
+      }
+
+      .topbar .nav-btn{
+        flex:1 1 100%;
+      }
     }
   </style>
 </head>
+
 <body>
   <div class="bg" aria-hidden="true">
     <img src="assets/bg.jpg?v=37" alt="">
   </div>
 
   <main class="wrap">
-    <div class="topbar">
-      <a class="btn" href="index.html">Home</a>
-      <a class="btn" href="registry.html">Registry</a>
-    </div>
+    <nav class="topbar" aria-label="Site navigation">
+      <a class="nav-btn" href="index.html">Home</a>
+      <a class="nav-btn" href="venue.html">Venue</a>
+      <a class="nav-btn active" href="faq.html" aria-current="page">FAQ</a>
+      <a class="nav-btn" href="registry.html">Registry</a>
+    </nav>
 
     <section class="hero">
+      <span class="eyebrow">Wedding FAQ</span>
       <h1>Frequently Asked Questions</h1>
       <p>Everything you need to know for our celebration on Saturday, June 6, 2026.</p>
     </section>
@@ -260,12 +372,12 @@
           <ul>
             <li>Use <strong>89 South Street, New York, NY 10038</strong> as your destination.</li>
             <li>Ask to be dropped off near the Seaport / Tin Building / Pier 17 entrance area.</li>
-            <li>From there, walk down the pier to Carne Mare (cars cannot pull up to the restaurant entrance).</li>
+            <li>From there, walk down the pier to Carne Mare. Cars cannot pull up to the restaurant entrance.</li>
           </ul>
 
           <p><strong>By public transit</strong></p>
           <ul>
-            <li>Take the subway to the <strong>Fulton Street</strong> area (several lines stop nearby).</li>
+            <li>Take the subway to the <strong>Fulton Street</strong> area. Several lines stop nearby.</li>
             <li>Walk east toward the Seaport / Pier 17 and continue past the Tin Building.</li>
             <li>Please allow a few extra minutes if it’s your first time navigating the Seaport.</li>
           </ul>
@@ -274,7 +386,7 @@
 
       <details class="faq">
         <summary>
-          <span>What is parking situation?</span>
+          <span>What is the parking situation?</span>
           <span class="chev" aria-hidden="true">⌄</span>
         </summary>
         <div class="answer">
@@ -346,7 +458,9 @@
         <div class="answer">
           <p>
             A special 5-course menu that includes oysters, shrimp, caviar, lobster pasta, and tomahawk steak will be served.
-            You can review Carne Mare's full menu on this page: <a href="https://www.carnemare.com/menus/#dinner" target="_blank" rel="noopener noreferrer">Carne Mare Dinner Menu</a>. Come hungry!
+            You can review Carne Mare's full menu on this page:
+            <a href="https://www.carnemare.com/menus/#dinner" target="_blank" rel="noopener noreferrer">Carne Mare Dinner Menu</a>.
+            Come hungry!
           </p>
           <p>
             Please include any food allergies in your RSVP, or use the "Contact the Couple" button from the Menu option on the home page to share any concerns.
@@ -433,7 +547,9 @@
       </details>
     </section>
 
-    <p class="footer-note">More details may be added as we get closer. We can’t wait to celebrate with you.</p>
+    <p class="footer-note">
+      More details may be added as we get closer. We can’t wait to celebrate with you.
+    </p>
   </main>
 </body>
 </html>
