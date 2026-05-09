@@ -8,512 +8,443 @@
   <link rel="canonical" href="https://luna.wedding/venue.html" />
 
   <meta name="title" content="Venue — Luna Wedding" />
-  <meta name="description" content="Venue details, directions, parking, and arrival information for the Luna Wedding." />
+  <meta name="description" content="Venue details, directions, parking, and accessibility information for Toby and Michelle’s wedding." />
 
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Luna Wedding" />
   <meta property="og:title" content="Venue — Luna Wedding" />
-  <meta property="og:description" content="Venue details, directions, parking, and arrival information." />
+  <meta property="og:description" content="Venue details, directions, parking, and accessibility information for Toby and Michelle’s wedding." />
   <meta property="og:url" content="https://luna.wedding/venue.html" />
   <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=15" />
-  <meta property="og:image:type" content="image/png" />
-  <meta property="og:image:alt" content="Luna Wedding — June 6, 2026" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Venue — Luna Wedding" />
-  <meta name="twitter:description" content="Venue details, directions, parking, and arrival information." />
+  <meta name="twitter:description" content="Venue details, directions, parking, and accessibility information for Toby and Michelle’s wedding." />
   <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=15" />
-
-  <link rel="icon" type="image/svg+xml"
-    href='data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-      <rect width="512" height="512" rx="128" fill="%23ffffff"/>
-      <g transform="translate(0,20)">
-        <text x="50%" y="55%" text-anchor="middle"
-          font-family="Georgia, Times New Roman, serif" font-style="italic"
-          font-size="280" fill="%23000000">L</text>
-        <text x="60%" y="72%" text-anchor="middle"
-          font-family="Georgia, Times New Roman, serif" font-style="italic"
-          font-size="220" fill="%23000000">M</text>
-      </g>
-    </svg>' />
 
   <style>
     :root{
-      --ink:#181313;
-      --muted:rgba(24,19,19,.72);
-      --soft:rgba(24,19,19,.54);
-
-      --pink:#c78391;
-      --pink-deep:#9f5f70;
-      --pink-soft:rgba(199,131,145,.18);
-      --pink-line:rgba(199,131,145,.35);
-
-      --glass:rgba(255,255,255,.68);
-      --glass-light:rgba(255,255,255,.48);
-      --glass-lighter:rgba(255,255,255,.34);
-      --line:rgba(255,255,255,.72);
-
-      --shadow:0 20px 48px rgba(0,0,0,.18);
+      --text:#3c2f2f;
+      --muted:#6f5959;
+      --pink:#d8a6a6;
+      --pink-dark:#c98f8f;
+      --pink-deep:#b97878;
+      --pink-light:#f3dede;
+      --cream:rgba(255,248,244,.78);
+      --cream-strong:rgba(255,248,244,.90);
+      --border:rgba(216,166,166,.48);
+      --shadow:0 20px 48px rgba(80,45,45,.16);
     }
 
-    *{
-      box-sizing:border-box;
-    }
+    *{ box-sizing:border-box; }
 
-    html,
-    body{
-      min-height:100%;
+    html, body{
       margin:0;
-    }
-
-    body{
-      color:var(--ink);
+      min-height:100%;
+      color:var(--text);
+      background:#000;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      background:
-        linear-gradient(rgba(255,255,255,.18), rgba(255,255,255,.22)),
-        url("assets/bg.jpg?v=37") center / cover fixed no-repeat;
       overflow-x:hidden;
     }
 
-    body::before{
-      content:"";
+    .bg{
       position:fixed;
       inset:0;
+      z-index:0;
+    }
+
+    .bg img{
+      width:100vw;
+      height:100vh;
+      object-fit:cover;
+      object-position:center;
+      display:block;
+      filter:brightness(1.04) saturate(.96);
+    }
+
+    .bg::after{
+      content:"";
+      position:absolute;
+      inset:0;
       background:
-        radial-gradient(circle at 50% 8%, rgba(255,255,255,.28), transparent 34%),
-        radial-gradient(circle at 50% 92%, rgba(199,131,145,.16), transparent 34%);
+        linear-gradient(
+          180deg,
+          rgba(255,246,242,.46),
+          rgba(255,246,242,.20) 45%,
+          rgba(255,246,242,.36)
+        );
       pointer-events:none;
-      z-index:-1;
     }
 
     .wrap{
-      width:min(780px, calc(100% - 28px));
+      position:relative;
+      z-index:1;
+      width:min(940px, calc(100vw - 32px));
       margin:0 auto;
-      padding:24px 0 42px;
+      padding:18px 0 calc(36px + env(safe-area-inset-bottom));
     }
 
-    .nav{
+    .topbar{
       display:flex;
-      justify-content:center;
-      align-items:center;
-      gap:10px;
+      justify-content:flex-end;
+      gap:8px;
       flex-wrap:wrap;
-      margin-bottom:14px;
+      margin:0 0 12px;
+      width:100%;
     }
 
-    .nav a,
-    .button{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-height:40px;
-      padding:10px 15px;
+    .nav-btn,
+    .btn{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.64);
+      color:var(--text);
+      background:rgba(216,166,166,.72);
+      padding:10px 14px;
       border-radius:999px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.52);
-      color:var(--ink);
-      text-decoration:none;
       font-size:14px;
+      font-weight:700;
       line-height:1.15;
-      box-shadow:0 8px 22px rgba(0,0,0,.10);
-      backdrop-filter:blur(14px) saturate(145%);
-      -webkit-backdrop-filter:blur(14px) saturate(145%);
+      text-decoration:none;
+      cursor:pointer;
+      white-space:nowrap;
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      box-shadow:0 8px 24px rgba(80,45,45,.15);
+      transition:transform .15s ease, background .15s ease, box-shadow .15s ease, border-color .15s ease;
+      text-align:center;
     }
 
-    .nav a[aria-current="page"]{
-      background:var(--pink-soft);
-      border-color:var(--pink-line);
-      color:var(--pink-deep);
-      font-weight:650;
+    .nav-btn:hover,
+    .btn:hover{
+      transform:translateY(-1px);
+      background:rgba(216,166,166,.88);
+      border-color:rgba(255,255,255,.76);
     }
 
-    .page{
-      border:1px solid var(--line);
-      border-radius:26px;
-      background:var(--glass);
+    .nav-btn.active{
+      background:rgba(185,120,120,.92);
+      color:#fff;
+      border-color:rgba(255,255,255,.82);
+      box-shadow:
+        0 10px 28px rgba(80,45,45,.22),
+        inset 0 0 0 1px rgba(255,255,255,.20);
+    }
+
+    .hero{
+      background:var(--cream-strong);
+      border:1px solid var(--border);
+      border-radius:24px;
+      padding:24px;
       box-shadow:var(--shadow);
-      backdrop-filter:blur(22px) saturate(150%);
-      -webkit-backdrop-filter:blur(22px) saturate(150%);
-      overflow:hidden;
-    }
-
-    .inner{
-      padding:28px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      margin-bottom:12px;
+      text-align:center;
     }
 
     .eyebrow{
+      display:inline-block;
       margin:0 0 8px;
-      text-align:center;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(216,166,166,.28);
+      border:1px solid rgba(216,166,166,.42);
       color:var(--pink-deep);
       font-size:12px;
-      letter-spacing:.18em;
+      font-weight:800;
+      letter-spacing:.12em;
       text-transform:uppercase;
     }
 
-    h1{
-      margin:0 0 14px;
-      text-align:center;
-      font-family:Georgia, "Times New Roman", serif;
-      font-style:italic;
-      font-weight:400;
-      font-size:clamp(48px, 10vw, 82px);
-      line-height:.95;
-      letter-spacing:-.055em;
-      color:var(--ink);
+    .hero h1{
+      margin:0 0 8px;
+      font-size:clamp(30px, 5vw, 46px);
+      line-height:1.04;
+      letter-spacing:.2px;
+      color:var(--text);
     }
 
-    .intro{
-      max-width:610px;
-      margin:0 auto 26px;
-      text-align:center;
-      color:var(--muted);
-      font-size:16px;
-      line-height:1.55;
-    }
-
-    section{
-      padding:22px 0;
-      border-top:1px solid rgba(24,19,19,.12);
-    }
-
-    section:first-of-type{
-      border-top:0;
-      padding-top:0;
-    }
-
-    h2{
-      margin:0 0 10px;
-      font-size:21px;
-      font-weight:700;
-      letter-spacing:-.02em;
-      color:var(--ink);
-    }
-
-    h3{
-      margin:18px 0 7px;
-      font-size:15px;
-      color:var(--ink);
-    }
-
-    p{
-      margin:0 0 13px;
+    .hero p{
+      margin:0 auto;
       color:var(--muted);
       font-size:15px;
-      line-height:1.55;
+      line-height:1.6;
+      max-width:720px;
     }
 
-    p:last-child{
-      margin-bottom:0;
+    .grid{
+      display:grid;
+      gap:12px;
+      width:100%;
     }
 
-    strong{
-      color:var(--ink);
+    .card{
+      background:var(--cream);
+      border:1px solid var(--border);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding:18px;
     }
 
-    .address{
-      margin:0 0 14px;
+    .card h2{
+      margin:0 0 8px;
+      font-size:20px;
+      line-height:1.15;
+      color:var(--text);
+    }
+
+    .card p{
+      margin:0;
       color:var(--muted);
-      font-style:normal;
-      font-size:16px;
-      line-height:1.5;
+      font-size:14px;
+      line-height:1.6;
     }
 
-    .address strong{
+    .detail-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .detail{
+      background:rgba(255,255,255,.48);
+      border:1px solid rgba(216,166,166,.36);
+      border-radius:16px;
+      padding:12px;
+    }
+
+    .detail strong{
       display:block;
-      color:var(--ink);
-      font-size:18px;
-      margin-bottom:2px;
+      color:var(--pink-deep);
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      margin-bottom:4px;
+    }
+
+    .detail span{
+      display:block;
+      color:var(--text);
+      font-size:14px;
+      line-height:1.4;
+      font-weight:650;
     }
 
     .button-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:16px;
-    }
-
-    .button.primary{
-      background:var(--pink-soft);
-      border-color:var(--pink-line);
-      color:var(--pink-deep);
-      font-weight:700;
-    }
-
-    .button:hover{
-      background:rgba(255,255,255,.68);
-    }
-
-    .button.primary:hover{
-      background:rgba(199,131,145,.24);
-    }
-
-    .facts{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0,1fr));
-      gap:10px;
       margin-top:14px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
     }
 
-    .fact{
-      border:1px solid rgba(255,255,255,.62);
-      border-radius:18px;
-      background:var(--glass-light);
-      padding:15px;
-      backdrop-filter:blur(16px) saturate(145%);
-      -webkit-backdrop-filter:blur(16px) saturate(145%);
-    }
-
-    .label{
-      display:block;
-      margin-bottom:4px;
-      color:var(--pink-deep);
-      font-size:11px;
-      letter-spacing:.13em;
-      text-transform:uppercase;
-    }
-
-    .value{
-      margin:0;
-      color:var(--ink);
-      font-size:15px;
-      line-height:1.4;
-    }
-
-    .map-card{
-      margin-top:16px;
-      padding:10px;
-      border:1px solid rgba(255,255,255,.62);
-      border-radius:22px;
-      background:var(--glass-lighter);
-      backdrop-filter:blur(16px) saturate(145%);
-      -webkit-backdrop-filter:blur(16px) saturate(145%);
-    }
-
-    .map{
-      display:block;
-      width:100%;
-      height:330px;
-      border:0;
-      border-radius:16px;
-      background:rgba(255,255,255,.45);
-      box-shadow:0 8px 22px rgba(0,0,0,.12);
-      filter:saturate(.88) contrast(.96);
+    .button-row .btn{
+      flex:0 0 auto;
     }
 
     ul{
-      margin:8px 0 0;
+      margin:12px 0 0;
       padding-left:20px;
       color:var(--muted);
-      font-size:15px;
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .tip{
+      margin-top:12px;
+      padding:12px;
+      border-radius:16px;
+      background:rgba(243,222,222,.58);
+      border:1px solid rgba(216,166,166,.44);
+      color:var(--text);
+      font-size:14px;
       line-height:1.55;
     }
 
-    li + li{
-      margin-top:5px;
-    }
-
-    .note{
-      margin-top:14px;
-      padding:14px 15px;
-      border-radius:18px;
-      background:var(--pink-soft);
-      border:1px solid var(--pink-line);
-      color:var(--muted);
-    }
-
-    .note strong{
-      color:var(--pink-deep);
-    }
-
-    footer{
-      margin-top:16px;
+    .footer-note{
+      margin:14px auto 0;
       text-align:center;
-      color:rgba(255,255,255,.88);
-      text-shadow:0 1px 8px rgba(0,0,0,.25);
+      color:rgba(60,47,47,.78);
       font-size:12px;
+      line-height:1.45;
+      background:rgba(255,248,244,.68);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:11px 14px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      max-width:720px;
     }
 
-    @media (max-width:640px){
+    @media (max-width: 640px){
       .wrap{
-        width:min(100% - 24px, 780px);
-        padding-top:18px;
+        width:min(100% - 24px, 940px);
+        padding-top:14px;
       }
 
-      .inner{
-        padding:22px;
+      .topbar{
+        justify-content:center;
       }
 
-      .facts{
+      .topbar .nav-btn{
+        flex:1 1 calc(50% - 8px);
+        min-width:0;
+      }
+
+      .hero{
+        padding:20px 16px;
+        border-radius:22px;
+      }
+
+      .card{
+        padding:16px;
+        border-radius:20px;
+        text-align:center;
+      }
+
+      .detail-grid{
         grid-template-columns:1fr;
       }
 
       .button-row{
-        display:grid;
-        grid-template-columns:1fr;
+        justify-content:center;
       }
 
-      .button{
-        text-align:center;
+      .button-row .btn{
+        flex:1 1 100%;
+        width:100%;
+        white-space:normal;
       }
 
-      .map{
-        height:300px;
+      ul{
+        text-align:left;
+      }
+    }
+
+    @media (max-width: 380px){
+      .wrap{
+        width:min(100% - 18px, 940px);
+      }
+
+      .topbar .nav-btn{
+        flex:1 1 100%;
       }
     }
   </style>
 </head>
 
 <body>
+  <div class="bg" aria-hidden="true">
+    <img src="assets/bg.jpg?v=37" alt="">
+  </div>
+
   <main class="wrap">
-    <nav class="nav" aria-label="Wedding site navigation">
-      <a href="index.html">Home</a>
-      <a href="venue.html" aria-current="page">Venue</a>
-      <a href="faq.html">FAQ</a>
-      <a href="registry.html">Registry</a>
+    <nav class="topbar" aria-label="Site navigation">
+      <a class="nav-btn" href="index.html">Home</a>
+      <a class="nav-btn active" href="venue.html" aria-current="page">Venue</a>
+      <a class="nav-btn" href="faq.html">FAQ</a>
+      <a class="nav-btn" href="registry.html">Registry</a>
     </nav>
 
-    <article class="page">
-      <div class="inner">
-        <p class="eyebrow">Wedding Venue</p>
-        <h1>Carne Mare</h1>
+    <section class="hero">
+      <span class="eyebrow">Wedding Venue</span>
+      <h1>Carne Mare</h1>
+      <p>
+        We’re celebrating at Carne Mare in Manhattan’s Seaport. Here’s everything you’ll need for arrival, directions, parking, and getting around Pier 17.
+      </p>
+    </section>
 
-        <p class="intro">
-          We’re celebrating at Carne Mare in Manhattan’s Seaport. Here’s everything you’ll need for arrival,
-          directions, parking, and getting around Pier 17.
+    <section class="grid" aria-label="Venue details">
+      <div class="card">
+        <h2>Location</h2>
+        <p>
+          Carne Mare – Seaport<br>
+          89 South Street<br>
+          New York, NY 10038
         </p>
-
-        <section>
-          <h2>Location</h2>
-
-          <address class="address">
-            <strong>Carne Mare – Seaport</strong>
-            89 South Street<br>
-            New York, NY 10038
-          </address>
-
-          <p>
-            Carne Mare is on Pier 17, behind the Tin Building. Cars cannot pull directly up to the restaurant,
-            so please plan for a short walk from the nearby sidewalk or drop-off area.
-          </p>
-
-          <div class="button-row">
-            <a class="button primary" href="https://maps.app.goo.gl/vTsV19gqAxjDsSb88?g_st=ic" target="_blank" rel="noopener">
-              Open Map
-            </a>
-
-            <a class="button" href="https://www.google.com/maps/search/?api=1&query=Carne%20Mare%2089%20South%20St%20New%20York%20NY%2010038" target="_blank" rel="noopener">
-              Google Maps
-            </a>
-
-            <a class="button" href="https://maps.apple.com/?address=89%20South%20St,%20New%20York,%20NY%2010038&q=Carne%20Mare" target="_blank" rel="noopener">
-              Apple Maps
-            </a>
-          </div>
-
-          <div class="map-card">
-            <iframe
-              class="map"
-              loading="lazy"
-              allowfullscreen
-              referrerpolicy="no-referrer-when-downgrade"
-              src="https://www.google.com/maps?q=Carne%20Mare%2089%20South%20St%20New%20York%20NY%2010038&output=embed">
-            </iframe>
-          </div>
-        </section>
-
-        <section>
-          <h2>Event Details</h2>
-
-          <div class="facts">
-            <div class="fact">
-              <span class="label">Date</span>
-              <p class="value">Saturday, June 6, 2026</p>
-            </div>
-
-            <div class="fact">
-              <span class="label">Time</span>
-              <p class="value">7:00 PM–10:00 PM</p>
-            </div>
-
-            <div class="fact">
-              <span class="label">Arrival</span>
-              <p class="value">Please arrive promptly at 7:00 PM.</p>
-            </div>
-
-            <div class="fact">
-              <span class="label">Dress Code</span>
-              <p class="value">Formal cocktail attire</p>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <h2>Getting There</h2>
-
-          <p>
-            Use <strong>89 South Street, New York, NY 10038</strong> as your destination.
-            Ask to be dropped near the Seaport / Tin Building / Pier 17 entrance area.
-          </p>
-
-          <ul>
-            <li>Cars are not allowed to drive directly to the Carne Mare entrance.</li>
-            <li>From the drop-off area, walk down the pier to Carne Mare.</li>
-            <li>The closest major subway area is Fulton Street, with additional options around Wall Street.</li>
-          </ul>
-
-          <p class="note">
-            <strong>Tip:</strong> If you’re taking a taxi or rideshare, tell the driver you’re heading to Pier 17 / the Tin Building at the Seaport.
-          </p>
-        </section>
-
-        <section>
-          <h2>Parking</h2>
-
-          <p>
-            There is no on-site parking, and street parking is limited. We recommend booking a nearby garage ahead of time.
-          </p>
-
-          <div class="button-row">
-            <a class="button" href="https://www.google.com/maps/search/parking+near+89+South+Street+New+York+NY+10038" target="_blank" rel="noopener">
-              Find Parking
-            </a>
-
-            <a class="button" href="https://spothero.com/search?kind=address&latitude=40.706&longitude=-74.002&search_string=89%20South%20Street%2C%20New%20York%2C%20NY" target="_blank" rel="noopener">
-              SpotHero
-            </a>
-          </div>
-        </section>
-
-        <section>
-          <h2>Accessibility</h2>
-
-          <p>
-            If you need step-free access, elevator details, seating help, or another accommodation,
-            please reach out ahead of time so we can help coordinate.
-          </p>
-        </section>
-
-        <section>
-          <h2>Questions?</h2>
-
-          <p>
-            If you have any questions about arrival, directions, parking, or accessibility, send us a note.
-          </p>
-
-          <div class="button-row">
-            <a class="button primary" href="mailto:hello@luna.wedding?subject=Venue%20Question">
-              Contact the Couple
-            </a>
-          </div>
-        </section>
+        <p style="margin-top:10px;">
+          Carne Mare is on Pier 17, behind the Tin Building. Cars cannot pull directly up to the restaurant, so please plan for a short walk from the nearby sidewalk or drop-off area.
+        </p>
+        <div class="button-row">
+          <a class="btn" href="https://maps.app.goo.gl/MafEQTgfLxrq5g9fA" target="_blank" rel="noopener noreferrer">Open Map</a>
+          <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Carne%20Mare%2089%20South%20Street%20New%20York%20NY%2010038" target="_blank" rel="noopener noreferrer">Google Maps</a>
+          <a class="btn" href="https://maps.apple.com/?address=89%20South%20St,%20New%20York,%20NY%2010038&q=Carne%20Mare" target="_blank" rel="noopener noreferrer">Apple Maps</a>
+        </div>
       </div>
-    </article>
 
-    <footer>
-      Toby & Michelle · June 6, 2026 · New York City
-    </footer>
+      <div class="card">
+        <h2>Event Details</h2>
+        <div class="detail-grid">
+          <div class="detail">
+            <strong>Date</strong>
+            <span>Saturday, June 6, 2026</span>
+          </div>
+          <div class="detail">
+            <strong>Time</strong>
+            <span>7:00 PM–10:00 PM</span>
+          </div>
+          <div class="detail">
+            <strong>Arrival</strong>
+            <span>Please arrive promptly at 7:00 PM.</span>
+          </div>
+          <div class="detail">
+            <strong>Dress Code</strong>
+            <span>Formal cocktail attire</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Getting There</h2>
+        <p>
+          Use 89 South Street, New York, NY 10038 as your destination. Ask to be dropped near the Seaport / Tin Building / Pier 17 entrance area.
+        </p>
+        <ul>
+          <li>Cars are not allowed to drive directly to the Carne Mare entrance.</li>
+          <li>From the drop-off area, walk down the pier to Carne Mare.</li>
+          <li>The closest major subway area is Fulton Street, with additional options around Wall Street.</li>
+        </ul>
+        <div class="tip">
+          Tip: If you’re taking a taxi or rideshare, tell the driver you’re heading to Pier 17 / the Tin Building at the Seaport.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Parking</h2>
+        <p>
+          There is no on-site parking, and street parking is limited. We recommend booking a nearby garage ahead of time.
+        </p>
+        <div class="button-row">
+          <a class="btn" href="https://www.google.com/maps/search/parking+near+89+South+Street+New+York+NY+10038" target="_blank" rel="noopener noreferrer">Find Parking</a>
+          <a class="btn" href="https://spothero.com/search?kind=address&latitude=40.706&longitude=-74.002&search_string=89%20South%20Street%2C%20New%20York%2C%20NY" target="_blank" rel="noopener noreferrer">SpotHero</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Accessibility</h2>
+        <p>
+          If you need step-free access, elevator details, seating help, or another accommodation, please reach out ahead of time so we can help coordinate.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>Questions?</h2>
+        <p>
+          If you have any questions about arrival, directions, parking, or accessibility, send us a note.
+        </p>
+        <div class="button-row">
+          <a class="btn" href="mailto:hello@luna.wedding">Contact the Couple</a>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer-note">
+      Toby &amp; Michelle · June 6, 2026 · New York City
+    </p>
   </main>
 </body>
 </html>
