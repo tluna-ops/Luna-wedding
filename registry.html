@@ -25,11 +25,15 @@
 
   <style>
     :root{
-      --text:#111;
-      --muted:#2f2f2f;
-      --card-bg:rgba(255,255,255,.78);
-      --card-border:rgba(0,0,0,.10);
-      --shadow:0 20px 48px rgba(0,0,0,.14);
+      --text:#3c2f2f;
+      --muted:#6f5959;
+      --pink:#d8a6a6;
+      --pink-dark:#c98f8f;
+      --pink-light:#f3dede;
+      --card-bg:rgba(255,248,244,.78);
+      --card-bg-strong:rgba(255,248,244,.88);
+      --card-border:rgba(216,166,166,.42);
+      --shadow:0 20px 48px rgba(80,45,45,.16);
     }
 
     *{ box-sizing:border-box; }
@@ -40,6 +44,7 @@
       color:var(--text);
       background:#000;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      overflow-x:hidden;
     }
 
     .bg{
@@ -47,28 +52,36 @@
       inset:0;
       z-index:0;
     }
+
     .bg img{
       width:100vw;
       height:100vh;
       object-fit:cover;
       object-position:center;
       display:block;
-      filter:brightness(1.03);
+      filter:brightness(1.04) saturate(.96);
     }
+
     .bg::after{
       content:"";
       position:absolute;
       inset:0;
-      background:rgba(255,255,255,.14);
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255,246,242,.42),
+          rgba(255,246,242,.20) 45%,
+          rgba(255,246,242,.36)
+        );
       pointer-events:none;
     }
 
     .wrap{
       position:relative;
       z-index:1;
-      width:min(940px, 94vw);
-      margin:18px auto 36px;
-      padding:8px 0 24px;
+      width:min(940px, calc(100vw - 32px));
+      margin:0 auto;
+      padding:18px 0 calc(36px + env(safe-area-inset-bottom));
     }
 
     .topbar{
@@ -76,104 +89,141 @@
       justify-content:flex-end;
       gap:8px;
       flex-wrap:wrap;
-      margin-bottom:12px;
+      margin:0 0 12px;
+      width:100%;
     }
 
-    /* Home-page style buttons */
     .btn{
       appearance:none;
-      border:1px solid rgba(255,255,255,.6);
+      border:1px solid rgba(255,255,255,.62);
       color:#fff;
-      background:rgba(0,0,0,.45);
+      background:rgba(65,42,42,.44);
       padding:10px 14px;
       border-radius:999px;
       font-size:14px;
+      font-weight:600;
       line-height:1.15;
       text-decoration:none;
       cursor:pointer;
       white-space:nowrap;
-      backdrop-filter:blur(6px);
-      -webkit-backdrop-filter:blur(6px);
-      box-shadow:0 8px 24px rgba(0,0,0,.18);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      box-shadow:0 8px 24px rgba(80,45,45,.18);
       transition:transform .15s ease, background .15s ease, opacity .15s ease;
+      text-align:center;
     }
+
     .btn:hover{
       transform:translateY(-1px);
-      background:rgba(0,0,0,.52);
+      background:rgba(65,42,42,.54);
     }
+
     .btn:disabled{
       opacity:.6;
       cursor:default;
     }
 
     .hero{
-      background:var(--card-bg);
+      background:var(--card-bg-strong);
       border:1px solid var(--card-border);
-      border-radius:18px;
-      padding:18px;
+      border-radius:22px;
+      padding:22px;
       box-shadow:var(--shadow);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       margin-bottom:12px;
+      text-align:center;
     }
+
     .hero h1{
-      margin:0 0 6px;
-      font-size:clamp(24px, 4vw, 34px);
-      line-height:1.05;
+      margin:0 0 8px;
+      font-size:clamp(28px, 5vw, 42px);
+      line-height:1.04;
       letter-spacing:.2px;
-      color:#111;
+      color:var(--text);
     }
+
     .hero p{
-      margin:0;
+      margin:0 auto;
       color:var(--muted);
-      font-size:14px;
-      line-height:1.5;
+      font-size:15px;
+      line-height:1.55;
+      max-width:680px;
     }
 
     .grid{
       display:grid;
       gap:12px;
+      width:100%;
     }
 
     .card{
       background:var(--card-bg);
       border:1px solid var(--card-border);
-      border-radius:14px;
+      border-radius:18px;
       box-shadow:var(--shadow);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      padding:14px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding:18px;
+      text-align:left;
     }
 
     .card h2{
-      margin:0 0 6px;
-      font-size:18px;
+      margin:0 0 8px;
+      font-size:20px;
       line-height:1.15;
-      color:#111;
+      color:var(--text);
     }
 
     .card p{
       margin:0;
       color:var(--muted);
       font-size:14px;
-      line-height:1.5;
+      line-height:1.55;
     }
 
     .button-row{
-      margin-top:12px;
+      margin-top:14px;
       display:flex;
       gap:8px;
       flex-wrap:wrap;
+      align-items:center;
     }
 
     .button-row .btn{
       flex:0 0 auto;
     }
 
+    .soft-btn{
+      border-color:rgba(216,166,166,.62);
+      color:var(--text);
+      background:rgba(255,255,255,.54);
+      box-shadow:0 8px 24px rgba(80,45,45,.10);
+    }
+
+    .soft-btn:hover{
+      background:rgba(255,255,255,.70);
+    }
+
     .helper{
       margin-top:10px;
       font-size:12px;
-      color:rgba(0,0,0,.68);
+      color:rgba(60,47,47,.68);
+    }
+
+    .footer-note{
+      margin:14px auto 0;
+      text-align:center;
+      color:rgba(60,47,47,.78);
+      font-size:12px;
+      line-height:1.45;
+      background:rgba(255,248,244,.68);
+      border:1px solid var(--card-border);
+      border-radius:16px;
+      padding:11px 14px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      max-width:720px;
     }
 
     .toast{
@@ -182,18 +232,19 @@
       bottom:calc(14px + env(safe-area-inset-bottom));
       transform:translateX(-50%) translateY(12px);
       z-index:70;
-      background:rgba(0,0,0,.82);
+      background:rgba(60,47,47,.88);
       color:#fff;
       border:1px solid rgba(255,255,255,.35);
       border-radius:999px;
       padding:10px 14px;
       font-size:13px;
-      box-shadow:0 8px 24px rgba(0,0,0,.24);
+      box-shadow:0 8px 24px rgba(80,45,45,.24);
       opacity:0;
       pointer-events:none;
       transition:opacity .18s ease, transform .18s ease;
       white-space:nowrap;
     }
+
     .toast.show{
       opacity:1;
       transform:translateX(-50%) translateY(0);
@@ -203,7 +254,7 @@
       position:fixed;
       inset:0;
       z-index:80;
-      background:rgba(0,0,0,.38);
+      background:rgba(60,47,47,.38);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       opacity:0;
@@ -214,6 +265,7 @@
       justify-content:center;
       padding:16px;
     }
+
     .overlay.show{
       opacity:1;
       pointer-events:auto;
@@ -221,12 +273,12 @@
 
     .modal{
       width:min(520px, 100%);
-      background:rgba(255,255,255,.92);
-      border:1px solid rgba(0,0,0,.12);
-      border-radius:16px;
-      box-shadow:0 20px 48px rgba(0,0,0,.20);
-      padding:14px;
-      color:#111;
+      background:rgba(255,248,244,.94);
+      border:1px solid var(--card-border);
+      border-radius:18px;
+      box-shadow:0 20px 48px rgba(80,45,45,.24);
+      padding:16px;
+      color:var(--text);
     }
 
     .modal-head{
@@ -236,18 +288,19 @@
       gap:8px;
       margin-bottom:6px;
     }
+
     .modal-title{
       margin:0;
-      font-size:16px;
-      font-weight:700;
+      font-size:17px;
+      font-weight:750;
       line-height:1.15;
     }
 
     .xbtn{
       appearance:none;
-      border:1px solid rgba(0,0,0,.12);
-      background:#fff;
-      color:#111;
+      border:1px solid rgba(216,166,166,.55);
+      background:rgba(255,255,255,.72);
+      color:var(--text);
       width:36px;
       height:36px;
       border-radius:999px;
@@ -258,7 +311,7 @@
 
     .modal p{
       margin:8px 0 0;
-      color:#333;
+      color:var(--muted);
       font-size:14px;
       line-height:1.45;
     }
@@ -272,56 +325,97 @@
 
     .light-btn{
       appearance:none;
-      border:1px solid rgba(0,0,0,.12);
-      background:#fff;
-      color:#111;
+      border:1px solid rgba(216,166,166,.55);
+      background:rgba(255,255,255,.78);
+      color:var(--text);
       padding:10px 12px;
       border-radius:999px;
       font-size:14px;
+      font-weight:650;
       line-height:1;
       text-decoration:none;
       cursor:pointer;
-      box-shadow:0 6px 16px rgba(0,0,0,.08);
+      box-shadow:0 6px 16px rgba(80,45,45,.10);
+      text-align:center;
     }
 
     .light-btn.primary{
-      background:rgba(0,0,0,.88);
+      background:rgba(65,42,42,.88);
       color:#fff;
-      border-color:rgba(0,0,0,.88);
+      border-color:rgba(65,42,42,.88);
     }
 
-    .footer-note{
-      margin-top:14px;
-      text-align:center;
-      color:rgba(0,0,0,.70);
-      font-size:12px;
-      background:rgba(255,255,255,.55);
-      border:1px solid rgba(0,0,0,.08);
-      border-radius:12px;
-      padding:10px 12px;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+    @media (max-width: 640px){
+      .wrap{
+        width:min(100% - 24px, 940px);
+        padding-top:14px;
+      }
+
+      .topbar{
+        justify-content:center;
+      }
+
+      .topbar .btn{
+        flex:1 1 calc(50% - 8px);
+        min-width:0;
+      }
+
+      .hero{
+        padding:20px 16px;
+        border-radius:20px;
+      }
+
+      .card{
+        padding:16px;
+        border-radius:18px;
+        text-align:center;
+      }
+
+      .button-row{
+        justify-content:center;
+      }
+
+      .button-row .btn{
+        flex:1 1 100%;
+        width:100%;
+        white-space:normal;
+      }
+
+      .modal-actions .light-btn{
+        flex:1 1 100%;
+        text-align:center;
+      }
+
+      .toast{
+        max-width:92vw;
+        text-align:center;
+        white-space:normal;
+      }
     }
 
-    @media (max-width: 520px){
-      .topbar{ justify-content:stretch; }
-      .topbar .btn{ flex:1 1 auto; text-align:center; }
-      .button-row .btn{ flex:1 1 calc(50% - 8px); text-align:center; }
-      .modal-actions .light-btn{ flex:1 1 100%; text-align:center; }
-      .toast{ max-width:92vw; text-align:center; white-space:normal; }
+    @media (max-width: 380px){
+      .wrap{
+        width:min(100% - 18px, 940px);
+      }
+
+      .topbar .btn{
+        flex:1 1 100%;
+      }
     }
   </style>
 </head>
+
 <body>
   <div class="bg" aria-hidden="true">
     <img src="assets/bg.jpg?v=37" alt="">
   </div>
 
   <main class="wrap">
-    <div class="topbar">
+    <nav class="topbar" aria-label="Site navigation">
       <a class="btn" href="index.html">Home</a>
+      <a class="btn" href="venue.html">Venue</a>
       <a class="btn" href="faq.html">FAQ</a>
-    </div>
+    </nav>
 
     <section class="hero">
       <h1>Registry</h1>
@@ -348,13 +442,24 @@
         <div class="button-row">
           <button id="venmoBtn" class="btn" type="button">Venmo</button>
           <button id="zelleBtn" class="btn" type="button">Zelle</button>
-          <a class="btn" href="https://square.link/u/WVQNx6YM" target="_blank" rel="noopener noreferrer">Other Digital Payment Options (Apple Pay / Google Pay / Credit Card)</a>
+          <a class="btn" href="https://square.link/u/WVQNx6YM" target="_blank" rel="noopener noreferrer">Apple Pay / Google Pay / Credit Card</a>
         </div>
+      </div>
+
+      <div class="card">
+        <h2>Venue Details</h2>
+        <p>
+          Looking for the address, timing, or details for the celebration? Visit the venue page for everything you need.
         </p>
+        <div class="button-row">
+          <a class="btn soft-btn" href="venue.html">View Venue Page</a>
+        </div>
       </div>
     </section>
 
-    <p class="footer-note">Thank you so much for celebrating with us. We appreciate your love and support.</p>
+    <p class="footer-note">
+      Thank you so much for celebrating with us. We appreciate your love and support.
+    </p>
   </main>
 
   <div id="overlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true">
@@ -400,7 +505,6 @@
           showToast(successMessage);
           return true;
         } catch {
-          // Fallback
           const ta = document.createElement('textarea');
           ta.value = value;
           ta.setAttribute('readonly', '');
@@ -408,8 +512,12 @@
           ta.style.opacity = '0';
           document.body.appendChild(ta);
           ta.select();
+
           let ok = false;
-          try { ok = document.execCommand('copy'); } catch {}
+          try {
+            ok = document.execCommand('copy');
+          } catch {}
+
           ta.remove();
           showToast(ok ? successMessage : 'Copy failed. Please try again.');
           return ok;
@@ -423,6 +531,7 @@
       function makeActionButton(opts){
         const el = opts.href ? document.createElement('a') : document.createElement('button');
         el.className = 'light-btn' + (opts.primary ? ' primary' : '');
+
         if (opts.href){
           el.href = opts.href;
           el.target = '_blank';
@@ -431,6 +540,7 @@
           el.type = 'button';
           el.addEventListener('click', opts.onClick);
         }
+
         el.textContent = opts.label;
         return el;
       }
@@ -441,11 +551,13 @@
         if (kind === 'venmo'){
           modalTitle.textContent = 'Venmo';
           modalText.textContent = 'Use the buttons below to open Venmo or copy our Venmo handle.';
+
           modalActions.appendChild(makeActionButton({
             label: 'Open Venmo',
             href: VENMO_URL,
             primary: true
           }));
+
           modalActions.appendChild(makeActionButton({
             label: 'Copy Venmo Handle',
             onClick: () => copyText(VENMO_HANDLE, 'Venmo handle copied')
@@ -455,6 +567,7 @@
         if (kind === 'zelle'){
           modalTitle.textContent = 'Zelle';
           modalText.textContent = 'Use the button below to copy our Zelle number, then paste it into your banking app.';
+
           modalActions.appendChild(makeActionButton({
             label: 'Copy Zelle Number',
             onClick: () => copyText(ZELLE_VALUE, 'Zelle number copied'),
@@ -475,7 +588,6 @@
 
       venmoBtn.addEventListener('click', () => openModal('venmo'));
       zelleBtn.addEventListener('click', () => openModal('zelle'));
-
       closeModalBtn.addEventListener('click', closeModal);
 
       overlay.addEventListener('click', (e) => {
