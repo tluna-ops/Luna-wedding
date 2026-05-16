@@ -24,20 +24,20 @@
   <style>
     :root {
       --bg: #b79a9a;
-      --card: rgba(255, 250, 247, 0.82);
-      --card-strong: rgba(255, 250, 247, 0.9);
+      --card: rgba(255, 250, 247, 0.84);
+      --card-strong: rgba(255, 250, 247, 0.92);
       --ink: #3f3638;
-      --muted: #6e5f61;
-      --pink: #e8c1c3;
-      --pink-strong: #dfb1b5;
-      --border: rgba(255, 255, 255, 0.64);
-      --shadow: rgba(70, 45, 48, 0.18);
+      --muted: #6f6264;
+      --pink: #e7bfc2;
+      --pink-strong: #ddb0b4;
+      --border: rgba(255, 255, 255, 0.66);
+      --soft-border: rgba(130, 83, 88, 0.18);
+      --shadow: rgba(67, 42, 45, 0.16);
+      --max-width: 1080px;
+      --page-pad: 24px;
       --radius-lg: 34px;
-      --radius-md: 26px;
+      --radius-md: 24px;
       --radius-pill: 999px;
-      --page-pad: 28px;
-      --max-width: 920px;
-      --letter: 0.08em;
     }
 
     * {
@@ -55,10 +55,10 @@
       color: var(--ink);
       font-family: Georgia, "Times New Roman", serif;
       background:
-        radial-gradient(circle at 18% 14%, rgba(255,255,255,0.32), transparent 28%),
-        radial-gradient(circle at 88% 22%, rgba(255,255,255,0.22), transparent 32%),
-        radial-gradient(circle at 50% 86%, rgba(80,42,48,0.28), transparent 38%),
-        linear-gradient(180deg, #b89b9b 0%, #aa8d8e 48%, #8e7476 100%);
+        radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.3), transparent 28%),
+        radial-gradient(circle at 86% 22%, rgba(255, 255, 255, 0.22), transparent 30%),
+        radial-gradient(circle at 48% 88%, rgba(64, 37, 41, 0.24), transparent 40%),
+        linear-gradient(180deg, #bda4a4 0%, #ad9293 50%, #907779 100%);
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
@@ -69,8 +69,8 @@
       inset: 0;
       pointer-events: none;
       background:
-        linear-gradient(90deg, rgba(255,255,255,0.14), transparent 18%, transparent 82%, rgba(255,255,255,0.11)),
-        radial-gradient(circle at 50% 45%, transparent 0 44%, rgba(68,38,42,0.17) 100%);
+        linear-gradient(90deg, rgba(255,255,255,0.12), transparent 18%, transparent 82%, rgba(255,255,255,0.1)),
+        radial-gradient(circle at 50% 45%, transparent 0 42%, rgba(61, 37, 41, 0.14) 100%);
       mix-blend-mode: soft-light;
     }
 
@@ -79,34 +79,10 @@
     }
 
     .page {
+      position: relative;
       width: min(100%, var(--max-width));
       margin: 0 auto;
-      padding: calc(env(safe-area-inset-top, 0px) + 28px) var(--page-pad) calc(env(safe-area-inset-bottom, 0px) + 34px);
-    }
-
-    .top-nav {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 22px;
-    }
-
-    .nav-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 42px;
-      padding: 8px 24px;
-      border: 1px solid rgba(112, 71, 76, 0.18);
-      border-radius: var(--radius-pill);
-      background: rgba(250, 232, 232, 0.56);
-      color: #866d70;
-      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      text-decoration: none;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.65);
+      padding: calc(env(safe-area-inset-top, 0px) + 32px) var(--page-pad) calc(env(safe-area-inset-bottom, 0px) + 36px);
     }
 
     .hero,
@@ -115,34 +91,37 @@
       border: 1px solid var(--border);
       background: var(--card);
       box-shadow:
-        0 20px 55px var(--shadow),
+        0 18px 45px var(--shadow),
         inset 0 1px 0 rgba(255,255,255,0.58);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
 
     .hero {
-      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-      padding: 42px 34px 48px;
-      text-align: center;
+      border-radius: var(--radius-lg);
+      padding: 46px 44px 50px;
       margin-bottom: 30px;
+      text-align: center;
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 8px 28px;
-      margin-bottom: 18px;
+      min-height: 38px;
+      padding: 8px 30px;
+      margin-bottom: 20px;
       border-radius: var(--radius-pill);
-      border: 1px solid rgba(142, 88, 94, 0.2);
+      border: 1px solid rgba(142, 88, 94, 0.22);
       background: rgba(244, 218, 219, 0.58);
-      color: #9b7377;
+      color: #927176;
       font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       font-size: 0.8rem;
       font-weight: 800;
       letter-spacing: 0.2em;
+      line-height: 1;
       text-transform: uppercase;
+      white-space: nowrap;
     }
 
     h1,
@@ -153,20 +132,21 @@
 
     h1 {
       font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: clamp(2.45rem, 9vw, 4.9rem);
-      line-height: 0.96;
-      letter-spacing: 0.01em;
+      font-size: clamp(3rem, 7vw, 5.35rem);
+      line-height: 0.95;
       font-weight: 800;
-      margin-bottom: 22px;
+      letter-spacing: 0.005em;
+      margin-bottom: 28px;
     }
 
     .hero-copy {
-      max-width: 760px;
+      max-width: 910px;
       margin: 0 auto;
       color: var(--muted);
-      font-size: clamp(1.35rem, 4.6vw, 2.25rem);
+      font-size: clamp(1.55rem, 3.35vw, 2.55rem);
       line-height: 1.52;
-      letter-spacing: 0.055em;
+      letter-spacing: 0.075em;
+      text-align: center;
     }
 
     .stack {
@@ -178,43 +158,14 @@
       position: relative;
       overflow: hidden;
       border-radius: var(--radius-lg);
-      padding: 34px 38px 38px;
+      padding: 44px 44px 48px;
       text-align: center;
     }
 
     .card.with-sparkles {
-      border-color: rgba(255,255,255,0.68);
+      border-color: rgba(255,255,255,0.72);
       outline: 1px solid rgba(142, 88, 94, 0.18);
       outline-offset: -2px;
-    }
-
-    .sparkle {
-      position: absolute;
-      color: #c49198;
-      font-size: 1.45rem;
-      line-height: 1;
-      pointer-events: none;
-      opacity: 0.9;
-    }
-
-    .sparkle.left-top {
-      top: 31px;
-      left: 32px;
-    }
-
-    .sparkle.right-top {
-      top: 31px;
-      right: 32px;
-    }
-
-    .sparkle.left-bottom {
-      bottom: 30px;
-      left: 33px;
-    }
-
-    .sparkle.right-bottom {
-      bottom: 30px;
-      right: 33px;
     }
 
     .section-title-wrap {
@@ -232,21 +183,17 @@
       margin: 0 auto;
       text-align: center;
       font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: clamp(1.58rem, 6vw, 2.35rem);
+      font-size: clamp(1.95rem, 4.6vw, 3rem);
       line-height: 1.12;
       font-weight: 800;
       letter-spacing: 0.035em;
     }
 
-    .digital-card .section-title {
-      transform: translateX(0);
-    }
-
     .section-copy {
-      max-width: 760px;
-      margin: 22px auto 30px;
+      max-width: 820px;
+      margin: 24px auto 34px;
       color: var(--muted);
-      font-size: clamp(1.14rem, 4.15vw, 1.72rem);
+      font-size: clamp(1.32rem, 3vw, 2rem);
       line-height: 1.55;
       letter-spacing: 0.095em;
       text-align: center;
@@ -254,7 +201,7 @@
 
     .button-stack {
       display: grid;
-      gap: 16px;
+      gap: 18px;
       width: 100%;
       margin: 0 auto;
     }
@@ -263,15 +210,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 72px;
       width: 100%;
+      min-height: 72px;
+      padding: 0 26px;
       border-radius: var(--radius-pill);
       border: 1px solid rgba(255,255,255,0.74);
       background: linear-gradient(180deg, var(--pink), var(--pink-strong));
       color: var(--ink);
       text-decoration: none;
       font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: clamp(1.08rem, 4.25vw, 1.55rem);
+      font-size: clamp(1.2rem, 2.7vw, 1.62rem);
       line-height: 1.18;
       font-weight: 800;
       letter-spacing: 0.055em;
@@ -286,14 +234,59 @@
       transform: translateY(1px);
     }
 
+    .sparkle {
+      position: absolute;
+      color: #c49198;
+      font-size: 1.35rem;
+      line-height: 1;
+      pointer-events: none;
+      opacity: 0.9;
+    }
+
+    .sparkle.left-top {
+      top: 34px;
+      left: 34px;
+    }
+
+    .sparkle.right-top {
+      top: 34px;
+      right: 34px;
+    }
+
+    .sparkle.left-bottom {
+      bottom: 32px;
+      left: 34px;
+    }
+
+    .sparkle.right-bottom {
+      bottom: 32px;
+      right: 34px;
+    }
+
     .thanks {
       border-radius: var(--radius-md);
-      padding: 26px 28px;
+      padding: 28px 30px;
       text-align: center;
       color: var(--muted);
-      font-size: clamp(1.08rem, 4vw, 1.45rem);
+      font-size: clamp(1.18rem, 2.65vw, 1.55rem);
       line-height: 1.45;
-      letter-spacing: 0.055em;
+      letter-spacing: 0.06em;
+    }
+
+    @media (min-width: 900px) {
+      .page {
+        max-width: 1120px;
+      }
+
+      .hero {
+        padding-top: 52px;
+        padding-bottom: 54px;
+      }
+
+      .card {
+        padding-left: 52px;
+        padding-right: 52px;
+      }
     }
 
     @media (max-width: 720px) {
@@ -305,28 +298,42 @@
         padding-top: calc(env(safe-area-inset-top, 0px) + 0px);
       }
 
-      .top-nav {
-        display: none;
-      }
-
       .hero {
         margin-left: calc(var(--page-pad) * -1);
         margin-right: calc(var(--page-pad) * -1);
         border-left: 0;
         border-right: 0;
+        border-top: 0;
         border-radius: 0 0 34px 34px;
         padding: 34px 30px 44px;
+      }
+
+      h1 {
+        font-size: clamp(2.45rem, 10vw, 4rem);
+        margin-bottom: 22px;
+      }
+
+      .hero-copy {
+        font-size: clamp(1.35rem, 4.6vw, 2.25rem);
+        line-height: 1.52;
+        letter-spacing: 0.055em;
       }
 
       .card {
         padding: 34px 34px 38px;
       }
 
+      .section-title {
+        font-size: clamp(1.58rem, 6vw, 2.35rem);
+      }
+
       .section-copy {
+        font-size: clamp(1.14rem, 4.15vw, 1.72rem);
         margin-top: 22px;
       }
 
       .digital-card .section-title {
+        position: relative;
         transform: translateX(3px);
       }
     }
@@ -342,8 +349,19 @@
       }
 
       .eyebrow {
+        min-height: 34px;
         padding-inline: 22px;
         font-size: 0.72rem;
+      }
+
+      h1 {
+        font-size: 2.7rem;
+      }
+
+      .hero-copy {
+        font-size: 1.24rem;
+        line-height: 1.52;
+        letter-spacing: 0.052em;
       }
 
       .stack {
@@ -405,6 +423,7 @@
       .thanks {
         border-radius: 22px;
         padding: 24px 22px;
+        font-size: 1rem;
       }
     }
 
@@ -432,13 +451,11 @@
 
 <body>
   <main class="page">
-    <nav class="top-nav" aria-label="Wedding pages">
-      <a class="nav-pill" href="/">Wedding Registry</a>
-    </nav>
-
     <section class="hero" aria-labelledby="registry-title">
       <div class="eyebrow">Wedding Registry</div>
+
       <h1 id="registry-title">Registry</h1>
+
       <p class="hero-copy">
         If you’d like to celebrate our wedding with a gift, we’re grateful for anything from our registries or the digital gift options below.
       </p>
@@ -450,7 +467,9 @@
           <h2 class="section-title" id="wedding-registries-title">Wedding Registries</h2>
         </div>
 
-        <p class="section-copy">Shop directly from our registries:</p>
+        <p class="section-copy">
+          Shop directly from our registries:
+        </p>
 
         <div class="button-stack">
           <a class="registry-button" href="#" target="_blank" rel="noopener">Amazon</a>
