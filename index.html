@@ -11,7 +11,11 @@
 
   <meta name="title" content="Luna Wedding — June 6, 2026" />
   <meta name="description" content="Luna Wedding — RSVP • June 6, 2026" />
+
+  <!-- Safari / browser chrome color -->
   <meta name="theme-color" content="#fff6f2" />
+  <meta name="theme-color" content="#fff6f2" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#fff6f2" media="(prefers-color-scheme: dark)" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
   <meta property="og:locale" content="en_US" />
@@ -67,7 +71,14 @@
     /* ===== END DESIGN VARIABLES ===== */
 
     /* ===== START BASE PAGE RESET ===== */
-    html, body{
+    html{
+      height:100%;
+      margin:0;
+      background:#fff6f2;
+      color-scheme:light only;
+    }
+
+    body{
       height:100%;
       margin:0;
       background:#fff6f2;
@@ -97,6 +108,19 @@
       }
     }
     /* ===== END ANIMATIONS ===== */
+
+    /* ===== START SAFARI CHROME TINT ===== */
+    .safari-chrome-tint{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      height:1px;
+      background:#fff6f2;
+      z-index:0;
+      pointer-events:none;
+    }
+    /* ===== END SAFARI CHROME TINT ===== */
 
     /* ===== START BACKGROUND IMAGE ===== */
     .bg{
@@ -487,6 +511,10 @@
 </head>
 
 <body>
+  <!-- ===== START SAFARI CHROME TINT MARKUP ===== -->
+  <div class="safari-chrome-tint" aria-hidden="true"></div>
+  <!-- ===== END SAFARI CHROME TINT MARKUP ===== -->
+
   <!-- ===== START BACKGROUND IMAGE MARKUP ===== -->
   <div class="bg" aria-hidden="true">
     <img src="assets/bg.jpg?v=37" alt="">
