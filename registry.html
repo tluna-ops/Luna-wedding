@@ -12,6 +12,12 @@
   <meta name="title" content="Registry — Luna Wedding" />
   <meta name="description" content="Wedding registry and gift options for Toby and Michelle." />
 
+  <!-- ===== START DESKTOP BROWSER CHROME / SAFARI TINT ===== -->
+  <!-- Desktop/tablet uses the registry-matched gray. Mobile removes this dynamically so Safari can tint from the background image. -->
+  <meta name="theme-color" content="#736f6e" media="(min-width: 641px)" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <!-- ===== END DESKTOP BROWSER CHROME / SAFARI TINT ===== -->
+
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Luna Wedding" />
@@ -40,6 +46,13 @@
       --cream-strong:rgba(255,248,244,.90);
       --border:rgba(216,166,166,.48);
       --shadow:0 20px 48px rgba(80,45,45,.16);
+      --chrome-gray:#736f6e;
+      --bg-overlay:linear-gradient(
+        180deg,
+        rgba(255,246,242,.46),
+        rgba(255,246,242,.20) 45%,
+        rgba(255,246,242,.36)
+      );
     }
     /* ===== END DESIGN VARIABLES ===== */
 
@@ -50,9 +63,10 @@
       margin:0;
       min-height:100%;
       color:var(--text);
-      background:#000;
+      background:var(--chrome-gray);
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       overflow-x:hidden;
+      color-scheme:light only;
     }
     /* ===== END BASE PAGE RESET ===== */
 
@@ -61,6 +75,7 @@
       position:fixed;
       inset:0;
       z-index:0;
+      background:var(--chrome-gray);
     }
 
     .bg img{
@@ -76,13 +91,7 @@
       content:"";
       position:absolute;
       inset:0;
-      background:
-        linear-gradient(
-          180deg,
-          rgba(255,246,242,.46),
-          rgba(255,246,242,.20) 45%,
-          rgba(255,246,242,.36)
-        );
+      background:var(--bg-overlay);
       pointer-events:none;
     }
     /* ===== END BACKGROUND IMAGE ===== */
@@ -461,6 +470,23 @@
     }
     /* ===== END MODAL ===== */
 
+    /* ===== START MOBILE BACKGROUND EXTENSION ===== */
+    @media (max-width: 640px){
+      html,
+      body{
+        background:
+          var(--bg-overlay),
+          url("assets/bg.jpg?v=37") center center / cover no-repeat #000;
+      }
+
+      .bg{
+        background:
+          var(--bg-overlay),
+          url("assets/bg.jpg?v=37") center center / cover no-repeat #000;
+      }
+    }
+    /* ===== END MOBILE BACKGROUND EXTENSION ===== */
+
     /* ===== START MOBILE STYLES ===== */
     @media (max-width: 640px){
       .wrap{
@@ -621,6 +647,83 @@
   <!-- ===== START PAGE SCRIPT ===== -->
   <script>
     (function(){
+      /* ===== START SAFARI / MOBILE CHROME COLOR CONTROL ===== */
+      const DESKTOP_CHROME_COLOR = '#736f6e';
+      const DESKTOP_CHROME_COLOR_NUDGE = '#706c6b';
+      const MOBILE_BREAKPOINT = 640;
+
+      let lastChromeMode = null;
+
+      function isMobileViewport(){
+        return window.matchMedia('(max-width: ' + MOBILE_BREAKPOINT + 'px)').matches;
+      }
+
+      function clearThemeColors(){
+        document
+          .querySelectorAll('meta[name="theme-color"]')
+          .forEach((el) => el.remove());
+      }
+
+      function applyChromeColorMode(){
+        const mode = isMobileViewport() ? 'mobile' : 'desktop';
+
+        if (mode === lastChromeMode) return;
+        lastChromeMode = mode;
+
+        clearThemeColors();
+
+        if (mode === 'mobile'){
+          return;
+        }
+
+        const metaLight = document.createElement('meta');
+        metaLight.name = 'theme-color';
+        metaLight.content = DESKTOP_CHROME_COLOR;
+        metaLight.setAttribute('media', '(prefers-color-scheme: light)');
+        document.head.appendChild(metaLight);
+
+        const metaDark = document.createElement('meta');
+        metaDark.name = 'theme-color';
+        metaDark.content = DESKTOP_CHROME_COLOR;
+        metaDark.setAttribute('media', '(prefers-color-scheme: dark)');
+        document.head.appendChild(metaDark);
+
+        const meta = document.createElement('meta');
+        meta.name = 'theme-color';
+        meta.content = DESKTOP_CHROME_COLOR;
+        document.head.appendChild(meta);
+
+        requestAnimationFrame(() => {
+          meta.content = DESKTOP_CHROME_COLOR_NUDGE;
+
+          requestAnimationFrame(() => {
+            meta.content = DESKTOP_CHROME_COLOR;
+          });
+        });
+      }
+
+      applyChromeColorMode();
+
+      window.addEventListener('pageshow', () => {
+        lastChromeMode = null;
+        applyChromeColorMode();
+      });
+
+      window.addEventListener('resize', applyChromeColorMode);
+
+      window.addEventListener('orientationchange', () => {
+        lastChromeMode = null;
+        setTimeout(applyChromeColorMode, 80);
+      });
+
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden){
+          lastChromeMode = null;
+          applyChromeColorMode();
+        }
+      });
+      /* ===== END SAFARI / MOBILE CHROME COLOR CONTROL ===== */
+
       /* ===== START DIGITAL GIFT VALUES ===== */
       const VENMO_HANDLE = 'PayToby';
       const ZELLE_VALUE = '347-636-5211';
