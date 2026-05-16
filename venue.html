@@ -245,6 +245,7 @@
       background:rgba(255,248,244,.42);
       border:1px solid rgba(216,166,166,.40);
       box-shadow:0 10px 26px rgba(80,45,45,.14);
+      cursor:pointer;
     }
 
     .venue-slide{
@@ -285,6 +286,7 @@
       display:flex;
       gap:6px;
       z-index:2;
+      pointer-events:none;
     }
 
     .venue-dot{
@@ -513,7 +515,7 @@
 
       <!-- ===== START VENUE PHOTO CAROUSEL CARD ===== -->
       <div class="card venue-carousel-card">
-        <div class="venue-carousel" aria-label="Carne Mare photo carousel">
+        <div class="venue-carousel" aria-label="Carne Mare photo carousel" role="button" tabindex="0">
           <img
             class="venue-slide active"
             src="https://images.getbento.com/accounts/ea793854f69248d89a4c840f6fe3de37/media/gQGFIaexS5a5MSQ3CkO9_Carne-Mare_Interiors_Bar_007.jpg?auto=compress%2Cformat&cs=origin&fit=max&w=1200"
@@ -546,11 +548,6 @@
           >
           <img
             class="venue-slide"
-            src="https://images.getbento.com/accounts/ea793854f69248d89a4c840f6fe3de37/media/IjZp2nbWR5mzlm7WKQHx_Carne-Mare_Interiors_Reception_039.jpg?auto=compress%2Cformat&cs=origin&fit=max&w=1200"
-            alt="Carne Mare reception desk"
-          >
-          <img
-            class="venue-slide"
             src="https://images.getbento.com/accounts/ea793854f69248d89a4c840f6fe3de37/media/1mZJsWsLRtWv01dBcWHq_Carne-Mare_Food_SpicyLobsterSpaghetti-Spaghetti_027.jpg?auto=compress%2Cformat&cs=origin&fit=max&w=1200"
             alt="Carne Mare lobster spaghetti"
           >
@@ -558,6 +555,11 @@
             class="venue-slide"
             src="https://images.getbento.com/accounts/ea793854f69248d89a4c840f6fe3de37/media/OgcSO2maR2qCpVlvXxtD_Carne-Mare_Food_Steak-Sides_012.jpg?auto=compress%2Cformat&cs=origin&fit=max&w=1200"
             alt="Carne Mare steak and sides"
+          >
+          <img
+            class="venue-slide"
+            src="https://images.getbento.com/accounts/ea793854f69248d89a4c840f6fe3de37/media/images/84536Carne-Mare_Food_Porterhouse_024-rotated.jpg?auto=compress%2Cformat&cs=origin&fit=max&w=1200"
+            alt="Carne Mare porterhouse steak"
           >
 
           <div class="venue-carousel-dots" aria-hidden="true">
@@ -762,6 +764,7 @@
       /* ===== END SAFARI / MOBILE CHROME COLOR CONTROL ===== */
 
       /* ===== START VENUE PHOTO CAROUSEL ===== */
+      const venueCarousel = document.querySelector('.venue-carousel');
       const venueSlides = Array.from(document.querySelectorAll('.venue-slide'));
       const venueDots = Array.from(document.querySelectorAll('.venue-dot'));
       let venueSlideIndex = 0;
@@ -779,12 +782,35 @@
         if (venueDots[venueSlideIndex]) venueDots[venueSlideIndex].classList.add('active');
       }
 
-      function startVenueCarousel(){
+      function advanceVenueSlide(){
+        showVenueSlide(venueSlideIndex + 1);
+      }
+
+      function restartVenueCarousel(){
+        if (venueCarouselTimer) clearInterval(venueCarouselTimer);
+
         if (!venueSlides.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-        venueCarouselTimer = setInterval(() => {
-          showVenueSlide(venueSlideIndex + 1);
-        }, 3000);
+        venueCarouselTimer = setInterval(advanceVenueSlide, 3000);
+      }
+
+      function startVenueCarousel(){
+        restartVenueCarousel();
+      }
+
+      if (venueCarousel){
+        venueCarousel.addEventListener('click', () => {
+          advanceVenueSlide();
+          restartVenueCarousel();
+        });
+
+        venueCarousel.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' '){
+            e.preventDefault();
+            advanceVenueSlide();
+            restartVenueCarousel();
+          }
+        });
       }
 
       startVenueCarousel();
