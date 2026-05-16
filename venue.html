@@ -1,5 +1,7 @@
 <!doctype html>
 <html lang="en">
+
+<!-- ===== START HEAD / PAGE METADATA ===== -->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,6 +11,12 @@
 
   <meta name="title" content="Venue — Luna Wedding" />
   <meta name="description" content="Venue details, directions, parking, and accessibility information for Toby and Michelle’s wedding." />
+
+  <!-- ===== START DESKTOP BROWSER CHROME / SAFARI TINT ===== -->
+  <!-- Desktop/tablet uses the registry-matched gray. Mobile removes this dynamically so Safari can tint from the background image. -->
+  <meta name="theme-color" content="#736f6e" media="(min-width: 641px)" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <!-- ===== END DESKTOP BROWSER CHROME / SAFARI TINT ===== -->
 
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
@@ -23,7 +31,9 @@
   <meta name="twitter:description" content="Venue details, directions, parking, and accessibility information for Toby and Michelle’s wedding." />
   <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=15" />
 
+  <!-- ===== START PAGE STYLES ===== -->
   <style>
+    /* ===== START DESIGN VARIABLES ===== */
     :root{
       --text:#3c2f2f;
       --muted:#6f5959;
@@ -35,23 +45,36 @@
       --cream-strong:rgba(255,248,244,.90);
       --border:rgba(216,166,166,.48);
       --shadow:0 20px 48px rgba(80,45,45,.16);
+      --chrome-gray:#736f6e;
+      --bg-overlay:linear-gradient(
+        180deg,
+        rgba(255,246,242,.46),
+        rgba(255,246,242,.20) 45%,
+        rgba(255,246,242,.36)
+      );
     }
+    /* ===== END DESIGN VARIABLES ===== */
 
+    /* ===== START BASE PAGE RESET ===== */
     *{ box-sizing:border-box; }
 
     html, body{
       margin:0;
       min-height:100%;
       color:var(--text);
-      background:#000;
+      background:var(--chrome-gray);
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       overflow-x:hidden;
+      color-scheme:light only;
     }
+    /* ===== END BASE PAGE RESET ===== */
 
+    /* ===== START BACKGROUND IMAGE ===== */
     .bg{
       position:fixed;
       inset:0;
       z-index:0;
+      background:var(--chrome-gray);
     }
 
     .bg img{
@@ -67,16 +90,12 @@
       content:"";
       position:absolute;
       inset:0;
-      background:
-        linear-gradient(
-          180deg,
-          rgba(255,246,242,.46),
-          rgba(255,246,242,.20) 45%,
-          rgba(255,246,242,.36)
-        );
+      background:var(--bg-overlay);
       pointer-events:none;
     }
+    /* ===== END BACKGROUND IMAGE ===== */
 
+    /* ===== START PAGE LAYOUT ===== */
     .wrap{
       position:relative;
       z-index:1;
@@ -84,7 +103,9 @@
       margin:0 auto;
       padding:18px 0 calc(36px + env(safe-area-inset-bottom));
     }
+    /* ===== END PAGE LAYOUT ===== */
 
+    /* ===== START NAVIGATION ===== */
     .topbar{
       display:flex;
       justify-content:flex-end;
@@ -130,7 +151,9 @@
         0 10px 28px rgba(80,45,45,.22),
         inset 0 0 0 1px rgba(255,255,255,.20);
     }
+    /* ===== END NAVIGATION ===== */
 
+    /* ===== START HERO SECTION ===== */
     .hero{
       background:var(--cream-strong);
       border:1px solid var(--border);
@@ -172,7 +195,9 @@
       line-height:1.6;
       max-width:720px;
     }
+    /* ===== END HERO SECTION ===== */
 
+    /* ===== START CARD GRID ===== */
     .grid{
       display:grid;
       gap:12px;
@@ -202,7 +227,9 @@
       font-size:14px;
       line-height:1.6;
     }
+    /* ===== END CARD GRID ===== */
 
+    /* ===== START DETAIL GRID ===== */
     .detail-grid{
       display:grid;
       grid-template-columns:repeat(2, minmax(0, 1fr));
@@ -233,7 +260,9 @@
       line-height:1.4;
       font-weight:650;
     }
+    /* ===== END DETAIL GRID ===== */
 
+    /* ===== START BUTTON ROWS ===== */
     .button-row{
       margin-top:14px;
       display:flex;
@@ -245,7 +274,9 @@
     .button-row .btn{
       flex:0 0 auto;
     }
+    /* ===== END BUTTON ROWS ===== */
 
+    /* ===== START LISTS AND TIPS ===== */
     ul{
       margin:12px 0 0;
       padding-left:20px;
@@ -264,7 +295,9 @@
       font-size:14px;
       line-height:1.55;
     }
+    /* ===== END LISTS AND TIPS ===== */
 
+    /* ===== START FOOTER NOTE ===== */
     .footer-note{
       margin:14px auto 0;
       text-align:center;
@@ -279,7 +312,26 @@
       -webkit-backdrop-filter: blur(8px);
       max-width:720px;
     }
+    /* ===== END FOOTER NOTE ===== */
 
+    /* ===== START MOBILE BACKGROUND EXTENSION ===== */
+    @media (max-width: 640px){
+      html,
+      body{
+        background:
+          var(--bg-overlay),
+          url("assets/bg.jpg?v=37") center center / cover no-repeat #000;
+      }
+
+      .bg{
+        background:
+          var(--bg-overlay),
+          url("assets/bg.jpg?v=37") center center / cover no-repeat #000;
+      }
+    }
+    /* ===== END MOBILE BACKGROUND EXTENSION ===== */
+
+    /* ===== START MOBILE STYLES ===== */
     @media (max-width: 640px){
       .wrap{
         width:min(100% - 24px, 940px);
@@ -334,22 +386,31 @@
         flex:1 1 100%;
       }
     }
+    /* ===== END MOBILE STYLES ===== */
   </style>
+  <!-- ===== END PAGE STYLES ===== -->
 </head>
 
 <body>
+  <!-- ===== START BACKGROUND IMAGE MARKUP ===== -->
   <div class="bg" aria-hidden="true">
     <img src="assets/bg.jpg?v=37" alt="">
   </div>
+  <!-- ===== END BACKGROUND IMAGE MARKUP ===== -->
 
+  <!-- ===== START MAIN PAGE CONTENT ===== -->
   <main class="wrap">
+
+    <!-- ===== START SITE NAVIGATION ===== -->
     <nav class="topbar" aria-label="Site navigation">
       <a class="nav-btn" href="index.html">Home</a>
       <a class="nav-btn active" href="venue.html" aria-current="page">Venue</a>
       <a class="nav-btn" href="faq.html">FAQ</a>
       <a class="nav-btn" href="registry.html">Registry</a>
     </nav>
+    <!-- ===== END SITE NAVIGATION ===== -->
 
+    <!-- ===== START HERO / INTRO SECTION ===== -->
     <section class="hero">
       <span class="eyebrow">Wedding Venue</span>
       <h1>Carne Mare</h1>
@@ -357,8 +418,12 @@
         We’re celebrating at <strong>Carne Mare</strong> on Pier 17 in Manhattan’s South Street Seaport. Here’s everything you’ll need to get there smoothly on our wedding day, including arrival details, directions, and parking.
       </p>
     </section>
+    <!-- ===== END HERO / INTRO SECTION ===== -->
 
+    <!-- ===== START VENUE DETAILS SECTION ===== -->
     <section class="grid" aria-label="Venue details">
+
+      <!-- ===== START LOCATION CARD ===== -->
       <div class="card">
         <h2>Location</h2>
         <p>
@@ -375,7 +440,9 @@
           <a class="btn" href="https://maps.apple.com/?address=89%20South%20St,%20New%20York,%20NY%2010038&q=Carne%20Mare" target="_blank" rel="noopener noreferrer">Apple Maps</a>
         </div>
       </div>
+      <!-- ===== END LOCATION CARD ===== -->
 
+      <!-- ===== START EVENT DETAILS CARD ===== -->
       <div class="card">
         <h2>Event Details</h2>
         <div class="detail-grid">
@@ -397,7 +464,9 @@
           </div>
         </div>
       </div>
+      <!-- ===== END EVENT DETAILS CARD ===== -->
 
+      <!-- ===== START GETTING THERE CARD ===== -->
       <div class="card">
         <h2>Getting There</h2>
         <p>
@@ -412,7 +481,9 @@
           Tip: If you’re taking a taxi or rideshare, tell the driver you’re heading to Pier 17 / the Tin Building in the South Street Seaport.
         </div>
       </div>
+      <!-- ===== END GETTING THERE CARD ===== -->
 
+      <!-- ===== START PARKING CARD ===== -->
       <div class="card">
         <h2>Parking</h2>
         <p>
@@ -423,14 +494,18 @@
           <a class="btn" href="https://spothero.com/search?kind=address&latitude=40.706&longitude=-74.002&search_string=89%20South%20Street%2C%20New%20York%2C%20NY" target="_blank" rel="noopener noreferrer">SpotHero</a>
         </div>
       </div>
+      <!-- ===== END PARKING CARD ===== -->
 
+      <!-- ===== START ACCESSIBILITY CARD ===== -->
       <div class="card">
         <h2>Accessibility</h2>
         <p>
           If you need step-free access, elevator details, seating help, or another accommodation, please reach out ahead of time so we can help coordinate.
         </p>
       </div>
+      <!-- ===== END ACCESSIBILITY CARD ===== -->
 
+      <!-- ===== START QUESTIONS CARD ===== -->
       <div class="card">
         <h2>Questions?</h2>
         <p>
@@ -440,11 +515,101 @@
           <a class="btn" href="mailto:hello@luna.wedding">Contact the Couple</a>
         </div>
       </div>
-    </section>
+      <!-- ===== END QUESTIONS CARD ===== -->
 
+    </section>
+    <!-- ===== END VENUE DETAILS SECTION ===== -->
+
+    <!-- ===== START FOOTER NOTE ===== -->
     <p class="footer-note">
       Toby &amp; Michelle · June 6, 2026 · New York City
     </p>
+    <!-- ===== END FOOTER NOTE ===== -->
+
   </main>
+  <!-- ===== END MAIN PAGE CONTENT ===== -->
+
+  <!-- ===== START PAGE SCRIPT ===== -->
+  <script>
+    (function(){
+      /* ===== START SAFARI / MOBILE CHROME COLOR CONTROL ===== */
+      const DESKTOP_CHROME_COLOR = '#736f6e';
+      const DESKTOP_CHROME_COLOR_NUDGE = '#706c6b';
+      const MOBILE_BREAKPOINT = 640;
+
+      let lastChromeMode = null;
+
+      function isMobileViewport(){
+        return window.matchMedia('(max-width: ' + MOBILE_BREAKPOINT + 'px)').matches;
+      }
+
+      function clearThemeColors(){
+        document
+          .querySelectorAll('meta[name="theme-color"]')
+          .forEach((el) => el.remove());
+      }
+
+      function applyChromeColorMode(){
+        const mode = isMobileViewport() ? 'mobile' : 'desktop';
+
+        if (mode === lastChromeMode) return;
+        lastChromeMode = mode;
+
+        clearThemeColors();
+
+        if (mode === 'mobile'){
+          return;
+        }
+
+        const metaLight = document.createElement('meta');
+        metaLight.name = 'theme-color';
+        metaLight.content = DESKTOP_CHROME_COLOR;
+        metaLight.setAttribute('media', '(prefers-color-scheme: light)');
+        document.head.appendChild(metaLight);
+
+        const metaDark = document.createElement('meta');
+        metaDark.name = 'theme-color';
+        metaDark.content = DESKTOP_CHROME_COLOR;
+        metaDark.setAttribute('media', '(prefers-color-scheme: dark)');
+        document.head.appendChild(metaDark);
+
+        const meta = document.createElement('meta');
+        meta.name = 'theme-color';
+        meta.content = DESKTOP_CHROME_COLOR;
+        document.head.appendChild(meta);
+
+        requestAnimationFrame(() => {
+          meta.content = DESKTOP_CHROME_COLOR_NUDGE;
+
+          requestAnimationFrame(() => {
+            meta.content = DESKTOP_CHROME_COLOR;
+          });
+        });
+      }
+
+      applyChromeColorMode();
+
+      window.addEventListener('pageshow', () => {
+        lastChromeMode = null;
+        applyChromeColorMode();
+      });
+
+      window.addEventListener('resize', applyChromeColorMode);
+
+      window.addEventListener('orientationchange', () => {
+        lastChromeMode = null;
+        setTimeout(applyChromeColorMode, 80);
+      });
+
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden){
+          lastChromeMode = null;
+          applyChromeColorMode();
+        }
+      });
+      /* ===== END SAFARI / MOBILE CHROME COLOR CONTROL ===== */
+    })();
+  </script>
+  <!-- ===== END PAGE SCRIPT ===== -->
 </body>
 </html>
