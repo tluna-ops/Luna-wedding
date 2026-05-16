@@ -12,9 +12,9 @@
   <meta name="title" content="Luna Wedding — June 6, 2026" />
   <meta name="description" content="Luna Wedding — RSVP • June 6, 2026" />
 
-  <meta name="theme-color" content="#fff6f2" />
-  <meta name="theme-color" content="#fff6f2" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#fff6f2" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f6dede" />
+  <meta name="theme-color" content="#f6dede" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#f6dede" media="(prefers-color-scheme: dark)" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
   <meta property="og:locale" content="en_US" />
@@ -65,17 +65,15 @@
       --cream-strong:rgba(255,248,244,.90);
       --border:rgba(216,166,166,.48);
       --shadow:0 20px 48px rgba(80,45,45,.16);
-      --fallback:#fff6f2;
     }
     /* ===== END DESIGN VARIABLES ===== */
 
     /* ===== START BASE PAGE RESET ===== */
-    html,
-    body{
-      height:100%;
+    html, body{
       margin:0;
-      background:#fff6f2;
+      height:100%;
       color:var(--text);
+      background:#000;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       overflow:hidden;
       color-scheme:light only;
@@ -110,7 +108,6 @@
       z-index:0;
       opacity:0;
       animation:fadeBg 900ms ease-out .05s forwards;
-      background:#fff6f2;
     }
 
     .bg img{
@@ -122,27 +119,6 @@
       user-select:none;
       -webkit-user-drag:none;
       filter:brightness(1.04) saturate(.96);
-
-      /*
-        This keeps the actual top rendered pixels light/cream so the browser
-        address bar samples the same tone as the registry and venue pages.
-        The background image fades in below the address-bar area instead of
-        showing its dark top edge directly under browser chrome.
-      */
-      -webkit-mask-image:linear-gradient(
-        180deg,
-        transparent 0,
-        transparent calc(46px + env(safe-area-inset-top)),
-        rgba(0,0,0,.35) calc(92px + env(safe-area-inset-top)),
-        #000 calc(150px + env(safe-area-inset-top))
-      );
-      mask-image:linear-gradient(
-        180deg,
-        transparent 0,
-        transparent calc(46px + env(safe-area-inset-top)),
-        rgba(0,0,0,.35) calc(92px + env(safe-area-inset-top)),
-        #000 calc(150px + env(safe-area-inset-top))
-      );
     }
 
     .bg::after{
