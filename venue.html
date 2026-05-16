@@ -229,6 +229,106 @@
     }
     /* ===== END CARD GRID ===== */
 
+    /* ===== START VENUE PHOTO CAROUSEL ===== */
+    .venue-carousel-card{
+      padding:14px;
+      overflow:hidden;
+    }
+
+    .venue-carousel-head{
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      gap:10px;
+      margin:0 0 10px;
+    }
+
+    .venue-carousel-head h2{
+      margin:0;
+      font-size:17px;
+      line-height:1.15;
+    }
+
+    .venue-carousel-head a{
+      color:var(--pink-deep);
+      font-size:12px;
+      font-weight:800;
+      text-decoration:underline;
+      text-underline-offset:2px;
+      white-space:nowrap;
+    }
+
+    .venue-carousel{
+      position:relative;
+      width:100%;
+      height:190px;
+      border-radius:16px;
+      overflow:hidden;
+      background:rgba(255,248,244,.42);
+      border:1px solid rgba(216,166,166,.40);
+      box-shadow:0 10px 26px rgba(80,45,45,.14);
+    }
+
+    .venue-slide{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      opacity:0;
+      transition:opacity 900ms ease-in-out;
+      user-select:none;
+      -webkit-user-drag:none;
+    }
+
+    .venue-slide.active{
+      opacity:1;
+    }
+
+    .venue-carousel::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(60,47,47,.02),
+          rgba(60,47,47,.14)
+        );
+      pointer-events:none;
+    }
+
+    .venue-carousel-dots{
+      position:absolute;
+      left:50%;
+      bottom:9px;
+      transform:translateX(-50%);
+      display:flex;
+      gap:6px;
+      z-index:2;
+    }
+
+    .venue-dot{
+      width:7px;
+      height:7px;
+      border-radius:999px;
+      background:rgba(255,248,244,.62);
+      border:1px solid rgba(60,47,47,.20);
+      transition:transform .2s ease, background .2s ease;
+    }
+
+    .venue-dot.active{
+      background:rgba(255,248,244,.96);
+      transform:scale(1.22);
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .venue-slide{
+        transition:none;
+      }
+    }
+    /* ===== END VENUE PHOTO CAROUSEL ===== */
+
     /* ===== START DETAIL GRID ===== */
     .detail-grid{
       display:grid;
@@ -358,6 +458,20 @@
         text-align:center;
       }
 
+      .venue-carousel-card{
+        padding:12px;
+      }
+
+      .venue-carousel-head{
+        justify-content:center;
+        flex-wrap:wrap;
+        gap:6px 12px;
+      }
+
+      .venue-carousel{
+        height:170px;
+      }
+
       .detail-grid{
         grid-template-columns:1fr;
       }
@@ -384,6 +498,10 @@
 
       .topbar .nav-btn{
         flex:1 1 100%;
+      }
+
+      .venue-carousel{
+        height:155px;
       }
     }
     /* ===== END MOBILE STYLES ===== */
@@ -422,6 +540,45 @@
 
     <!-- ===== START VENUE DETAILS SECTION ===== -->
     <section class="grid" aria-label="Venue details">
+
+      <!-- ===== START VENUE PHOTO CAROUSEL CARD ===== -->
+      <div class="card venue-carousel-card">
+        <div class="venue-carousel-head">
+          <h2>Inside Carne Mare</h2>
+          <a href="https://www.carnemare.com/gallery/" target="_blank" rel="noopener noreferrer">Photo Gallery</a>
+        </div>
+
+        <div class="venue-carousel" aria-label="Carne Mare photo carousel">
+          <img
+            class="venue-slide active"
+            src="https://images.getbento.com/accounts/ea793854f69248d89a4c840f6fe3de37/media/gQGFIaexS5a5MSQ3CkO9_Carne-Mare_Interiors_Bar_007.jpg?auto=compress%2Cformat&cs=origin&fit=max&w=1200"
+            alt="Carne Mare bar interior"
+          >
+          <img
+            class="venue-slide"
+            src="https://images.getbento.com/accounts/ea793854f69248d89a4c840f6fe3de37/media/LL4tApUuTkxZrHeevYEQ_Carne-Mare_Interiors_Dining-Room_Daytime_014.jpg?auto=compress%2Cformat&cs=origin&fit=max&w=1200"
+            alt="Carne Mare dining room during daytime"
+          >
+          <img
+            class="venue-slide"
+            src="https://images.getbento.com/accounts/ea793854f69248d89a4c840f6fe3de37/media/s5cGyX66TyuULpyn7nw8_Carne-Mare_Interiors_Reception_053.jpg?auto=compress%2Cformat&cs=origin&fit=max&w=1200"
+            alt="Carne Mare reception area with flowers and staircase"
+          >
+          <img
+            class="venue-slide"
+            src="https://images.getbento.com/accounts/ea793854f69248d89a4c840f6fe3de37/media/jQNcUxkKQU6ygdFUqNmm_Carne-Mare_Interiors_Dining-Room_Evening_022.jpg?auto=compress%2Cformat&cs=origin&fit=max&w=1200"
+            alt="Carne Mare dining room in the evening"
+          >
+
+          <div class="venue-carousel-dots" aria-hidden="true">
+            <span class="venue-dot active"></span>
+            <span class="venue-dot"></span>
+            <span class="venue-dot"></span>
+            <span class="venue-dot"></span>
+          </div>
+        </div>
+      </div>
+      <!-- ===== END VENUE PHOTO CAROUSEL CARD ===== -->
 
       <!-- ===== START LOCATION CARD ===== -->
       <div class="card">
@@ -608,6 +765,39 @@
         }
       });
       /* ===== END SAFARI / MOBILE CHROME COLOR CONTROL ===== */
+
+      /* ===== START VENUE PHOTO CAROUSEL ===== */
+      const venueSlides = Array.from(document.querySelectorAll('.venue-slide'));
+      const venueDots = Array.from(document.querySelectorAll('.venue-dot'));
+      let venueSlideIndex = 0;
+      let venueCarouselTimer = null;
+
+      function showVenueSlide(nextIndex){
+        if (!venueSlides.length) return;
+
+        venueSlides[venueSlideIndex].classList.remove('active');
+        if (venueDots[venueSlideIndex]) venueDots[venueSlideIndex].classList.remove('active');
+
+        venueSlideIndex = nextIndex % venueSlides.length;
+
+        venueSlides[venueSlideIndex].classList.add('active');
+        if (venueDots[venueSlideIndex]) venueDots[venueSlideIndex].classList.add('active');
+      }
+
+      function startVenueCarousel(){
+        if (!venueSlides.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        venueCarouselTimer = setInterval(() => {
+          showVenueSlide(venueSlideIndex + 1);
+        }, 3000);
+      }
+
+      startVenueCarousel();
+
+      window.addEventListener('pagehide', () => {
+        if (venueCarouselTimer) clearInterval(venueCarouselTimer);
+      });
+      /* ===== END VENUE PHOTO CAROUSEL ===== */
     })();
   </script>
   <!-- ===== END PAGE SCRIPT ===== -->
