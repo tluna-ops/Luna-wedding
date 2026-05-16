@@ -12,12 +12,11 @@
   <meta name="title" content="Luna Wedding — June 6, 2026" />
   <meta name="description" content="Luna Wedding — RSVP • June 6, 2026" />
 
-  <!-- ===== START BROWSER CHROME / SAFARI TINT ===== -->
-  <meta name="theme-color" content="#736f6e" />
-  <meta name="theme-color" content="#736f6e" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#736f6e" media="(prefers-color-scheme: dark)" />
+  <!-- ===== START DESKTOP BROWSER CHROME / SAFARI TINT ===== -->
+  <!-- Desktop/tablet uses the registry-matched gray. Mobile removes this dynamically so Safari can tint from the background image. -->
+  <meta name="theme-color" content="#736f6e" media="(min-width: 641px)" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <!-- ===== END BROWSER CHROME / SAFARI TINT ===== -->
+  <!-- ===== END DESKTOP BROWSER CHROME / SAFARI TINT ===== -->
 
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
@@ -68,6 +67,12 @@
       --border:rgba(216,166,166,.48);
       --shadow:0 20px 48px rgba(80,45,45,.16);
       --chrome-gray:#736f6e;
+      --bg-overlay:linear-gradient(
+        180deg,
+        rgba(255,246,242,.46),
+        rgba(255,246,242,.20) 45%,
+        rgba(255,246,242,.36)
+      );
     }
     /* ===== END DESIGN VARIABLES ===== */
 
@@ -132,13 +137,7 @@
       content:"";
       position:absolute;
       inset:0;
-      background:
-        linear-gradient(
-          180deg,
-          rgba(255,246,242,.46),
-          rgba(255,246,242,.20) 45%,
-          rgba(255,246,242,.36)
-        );
+      background:var(--bg-overlay);
       pointer-events:none;
     }
     /* ===== END BACKGROUND IMAGE ===== */
@@ -457,6 +456,23 @@
     }
     /* ===== END BOTTOM DOCK ===== */
 
+    /* ===== START MOBILE BACKGROUND EXTENSION ===== */
+    @media (max-width: 640px){
+      html,
+      body{
+        background:
+          var(--bg-overlay),
+          url("assets/bg.jpg?v=37") center center / cover no-repeat #000;
+      }
+
+      .bg{
+        background:
+          var(--bg-overlay),
+          url("assets/bg.jpg?v=37") center center / cover no-repeat #000;
+      }
+    }
+    /* ===== END MOBILE BACKGROUND EXTENSION ===== */
+
     /* ===== START MOBILE STYLES ===== */
     @media (max-width: 430px){
       .actions{
@@ -559,48 +575,82 @@
   <!-- ===== START PAGE SCRIPT ===== -->
   <script>
     (function(){
-      /* ===== START SAFARI / MOBILE CHROME COLOR FORCE ===== */
-      const SITE_CHROME_COLOR = '#736f6e';
+      /* ===== START SAFARI / MOBILE CHROME COLOR CONTROL ===== */
+      const DESKTOP_CHROME_COLOR = '#736f6e';
+      const DESKTOP_CHROME_COLOR_NUDGE = '#706c6b';
+      const MOBILE_BREAKPOINT = 640;
 
-      function forceSafariChromeColor(){
+      let lastChromeMode = null;
+
+      function isMobileViewport(){
+        return window.matchMedia('(max-width: ' + MOBILE_BREAKPOINT + 'px)').matches;
+      }
+
+      function clearThemeColors(){
         document
           .querySelectorAll('meta[name="theme-color"]')
           .forEach((el) => el.remove());
+      }
+
+      function applyChromeColorMode(){
+        const mode = isMobileViewport() ? 'mobile' : 'desktop';
+
+        if (mode === lastChromeMode) return;
+        lastChromeMode = mode;
+
+        clearThemeColors();
+
+        if (mode === 'mobile'){
+          return;
+        }
 
         const metaLight = document.createElement('meta');
         metaLight.name = 'theme-color';
-        metaLight.content = SITE_CHROME_COLOR;
+        metaLight.content = DESKTOP_CHROME_COLOR;
         metaLight.setAttribute('media', '(prefers-color-scheme: light)');
         document.head.appendChild(metaLight);
 
         const metaDark = document.createElement('meta');
         metaDark.name = 'theme-color';
-        metaDark.content = SITE_CHROME_COLOR;
+        metaDark.content = DESKTOP_CHROME_COLOR;
         metaDark.setAttribute('media', '(prefers-color-scheme: dark)');
         document.head.appendChild(metaDark);
 
         const meta = document.createElement('meta');
         meta.name = 'theme-color';
-        meta.content = SITE_CHROME_COLOR;
+        meta.content = DESKTOP_CHROME_COLOR;
         document.head.appendChild(meta);
 
         requestAnimationFrame(() => {
-          meta.content = '#706c6b';
+          meta.content = DESKTOP_CHROME_COLOR_NUDGE;
 
           requestAnimationFrame(() => {
-            meta.content = SITE_CHROME_COLOR;
+            meta.content = DESKTOP_CHROME_COLOR;
           });
         });
       }
 
-      forceSafariChromeColor();
+      applyChromeColorMode();
 
-      window.addEventListener('pageshow', forceSafariChromeColor);
+      window.addEventListener('pageshow', () => {
+        lastChromeMode = null;
+        applyChromeColorMode();
+      });
+
+      window.addEventListener('resize', applyChromeColorMode);
+
+      window.addEventListener('orientationchange', () => {
+        lastChromeMode = null;
+        setTimeout(applyChromeColorMode, 80);
+      });
 
       document.addEventListener('visibilitychange', () => {
-        if (!document.hidden) forceSafariChromeColor();
+        if (!document.hidden){
+          lastChromeMode = null;
+          applyChromeColorMode();
+        }
       });
-      /* ===== END SAFARI / MOBILE CHROME COLOR FORCE ===== */
+      /* ===== END SAFARI / MOBILE CHROME COLOR CONTROL ===== */
 
       /* ===== START ELEMENT REFERENCES ===== */
       const body = document.body;
