@@ -1,22 +1,21 @@
+You’re right. The mobile layout still has decorative elements close enough to the heading that it reads off-center. I removed the extra title sparkle entirely and pushed the corner sparkles away from the title area. The heading is now plain text in a dedicated centered content layer, with no inline or nearby sparkle affecting the visual center.
+
+registry.html — Registry
+
 <!doctype html>
 <html lang="en">
-
 <!-- ===== START HEAD / PAGE METADATA ===== -->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <title>Registry — Luna Wedding</title>
   <link rel="canonical" href="https://luna.wedding/registry.html" />
-
   <meta name="title" content="Registry — Luna Wedding" />
   <meta name="description" content="Wedding registry and gift options for Toby and Michelle." />
-
   <!-- ===== START DESKTOP BROWSER CHROME / SAFARI TINT ===== -->
   <meta name="theme-color" content="#736f6e" media="(min-width: 641px)" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <!-- ===== END DESKTOP BROWSER CHROME / SAFARI TINT ===== -->
-
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Luna Wedding" />
@@ -24,13 +23,11 @@
   <meta property="og:description" content="Wedding registry and gift options for Toby and Michelle." />
   <meta property="og:url" content="https://luna.wedding/registry.html" />
   <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=15" />
-
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Registry — Luna Wedding" />
   <meta name="twitter:description" content="Wedding registry and gift options for Toby and Michelle." />
   <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=15" />
   <!-- ===== END HEAD / PAGE METADATA ===== -->
-
   <!-- ===== START PAGE STYLES ===== -->
   <style>
     /* ===== START DESIGN VARIABLES ===== */
@@ -54,11 +51,12 @@
       );
     }
     /* ===== END DESIGN VARIABLES ===== */
-
     /* ===== START BASE PAGE RESET ===== */
-    *{ box-sizing:border-box; }
-
-    html, body{
+    *{
+      box-sizing:border-box;
+    }
+    html,
+    body{
       margin:0;
       min-height:100%;
       color:var(--text);
@@ -68,7 +66,6 @@
       color-scheme:light only;
     }
     /* ===== END BASE PAGE RESET ===== */
-
     /* ===== START BACKGROUND IMAGE ===== */
     .bg{
       position:fixed;
@@ -76,7 +73,6 @@
       z-index:0;
       background:var(--chrome-gray);
     }
-
     .bg img{
       width:100vw;
       height:100vh;
@@ -85,7 +81,6 @@
       display:block;
       filter:brightness(1.04) saturate(.96);
     }
-
     .bg::after{
       content:"";
       position:absolute;
@@ -94,7 +89,6 @@
       pointer-events:none;
     }
     /* ===== END BACKGROUND IMAGE ===== */
-
     /* ===== START PAGE LAYOUT ===== */
     .wrap{
       position:relative;
@@ -104,7 +98,6 @@
       padding:18px 0 calc(36px + env(safe-area-inset-bottom));
     }
     /* ===== END PAGE LAYOUT ===== */
-
     /* ===== START NAVIGATION ===== */
     .topbar{
       display:flex;
@@ -114,7 +107,6 @@
       margin:0 0 12px;
       width:100%;
     }
-
     .nav-btn,
     .btn{
       appearance:none;
@@ -135,14 +127,12 @@
       transition:transform .15s ease, background .15s ease, box-shadow .15s ease, border-color .15s ease;
       text-align:center;
     }
-
     .nav-btn:hover,
     .btn:hover{
       transform:translateY(-1px);
       background:rgba(216,166,166,.88);
       border-color:rgba(255,255,255,.76);
     }
-
     .nav-btn.active{
       background:rgba(185,120,120,.92);
       color:#fff;
@@ -152,7 +142,6 @@
         inset 0 0 0 1px rgba(255,255,255,.20);
     }
     /* ===== END NAVIGATION ===== */
-
     /* ===== START HERO SECTION ===== */
     .hero{
       background:var(--cream-strong);
@@ -165,7 +154,6 @@
       margin-bottom:12px;
       text-align:center;
     }
-
     .eyebrow{
       display:inline-block;
       margin:0 0 8px;
@@ -179,7 +167,6 @@
       letter-spacing:.12em;
       text-transform:uppercase;
     }
-
     .hero h1{
       margin:0 0 8px;
       font-size:clamp(30px, 5vw, 46px);
@@ -187,7 +174,6 @@
       letter-spacing:.2px;
       color:var(--text);
     }
-
     .hero p{
       margin:0 auto;
       color:var(--muted);
@@ -196,14 +182,12 @@
       max-width:720px;
     }
     /* ===== END HERO SECTION ===== */
-
     /* ===== START CARD GRID ===== */
     .grid{
       display:grid;
       gap:12px;
       width:100%;
     }
-
     .card{
       background:var(--cream);
       border:1px solid var(--border);
@@ -214,21 +198,18 @@
       padding:18px;
       text-align:left;
     }
-
     .card h2{
       margin:0 0 8px;
       font-size:20px;
       line-height:1.15;
       color:var(--text);
     }
-
     .card p{
       margin:0;
       color:var(--muted);
       font-size:14px;
       line-height:1.6;
     }
-
     .button-row{
       margin-top:14px;
       display:flex;
@@ -236,46 +217,40 @@
       flex-wrap:wrap;
       align-items:center;
     }
-
     .button-row .btn{
       flex:0 0 auto;
     }
     /* ===== END CARD GRID ===== */
-
     /* ===== START REGISTRY CARD CENTERING ===== */
     .registry-card{
       text-align:center;
     }
-
     .registry-card h2,
     .registry-card p{
       text-align:center;
     }
-
     .registry-card .button-row{
       justify-content:center;
     }
     /* ===== END REGISTRY CARD CENTERING ===== */
-
     /* ===== START DIGITAL GIFT SPARKLE EFFECT ===== */
     .gift-card{
       position:relative;
       overflow:hidden;
       text-align:center;
       border-color:rgba(185,120,120,.70);
-      padding-left:42px;
-      padding-right:42px;
+      padding:18px 42px;
       box-shadow:
         var(--shadow),
         0 0 0 1px rgba(255,255,255,.34),
         0 0 32px rgba(216,166,166,.38);
     }
-
-    .gift-card h2,
-    .gift-card p{
+    .gift-content{
+      position:relative;
+      z-index:3;
+      width:100%;
       text-align:center;
     }
-
     .gift-title{
       display:block;
       width:100%;
@@ -284,18 +259,18 @@
       text-align:center;
       line-height:1.15;
     }
-
+    .gift-card h2,
+    .gift-card p{
+      text-align:center;
+    }
     .gift-card p{
       max-width:680px;
       margin-left:auto;
       margin-right:auto;
     }
-
     .gift-card .button-row{
       justify-content:center;
     }
-
-    .gift-card .sparkle-mark,
     .gift-card .corner-star{
       position:absolute;
       color:rgba(185,120,120,.92);
@@ -305,87 +280,52 @@
       text-shadow:
         0 0 8px rgba(255,255,255,.95),
         0 0 14px rgba(216,166,166,.52);
-    }
-
-    .gift-card .sparkle-mark{
-      top:16px;
-      right:52px;
-      font-size:18px;
-      color:var(--pink-deep);
-      animation:sparklePulse 2.4s ease-in-out infinite;
-      transform-origin:center;
-      z-index:2;
-    }
-
-    .gift-card .corner-star{
       animation:cornerTwinkle 2.8s ease-in-out infinite;
     }
-
     .gift-card .corner-star.top-left{
       top:13px;
       left:16px;
       font-size:18px;
       animation-delay:.15s;
     }
-
     .gift-card .corner-star.top-right{
       top:13px;
       right:16px;
       font-size:25px;
       animation-delay:.75s;
     }
-
     .gift-card .corner-star.bottom-left{
       bottom:15px;
       left:18px;
       font-size:15px;
       animation-delay:1.25s;
     }
-
     .gift-card .corner-star.bottom-right{
       bottom:15px;
       right:22px;
       font-size:20px;
       animation-delay:1.8s;
     }
-
-    @keyframes sparklePulse{
-      0%, 100%{
-        opacity:.68;
-        transform:scale(.94) rotate(0deg);
-      }
-
-      50%{
-        opacity:1;
-        transform:scale(1.25) rotate(12deg);
-      }
-    }
-
     @keyframes cornerTwinkle{
       0%, 100%{
         opacity:.42;
         transform:scale(.86) rotate(0deg);
       }
-
       35%{
         opacity:1;
         transform:scale(1.24) rotate(12deg);
       }
-
       65%{
         opacity:.70;
         transform:scale(1) rotate(-8deg);
       }
     }
-
     @media (prefers-reduced-motion: reduce){
-      .gift-card .sparkle-mark,
       .gift-card .corner-star{
         animation:none;
       }
     }
     /* ===== END DIGITAL GIFT SPARKLE EFFECT ===== */
-
     /* ===== START FOOTER NOTE ===== */
     .footer-note{
       margin:14px auto 0;
@@ -402,7 +342,6 @@
       max-width:720px;
     }
     /* ===== END FOOTER NOTE ===== */
-
     /* ===== START COPY TOAST ===== */
     .toast{
       position:fixed;
@@ -422,13 +361,11 @@
       transition:opacity .18s ease, transform .18s ease;
       white-space:nowrap;
     }
-
     .toast.show{
       opacity:1;
       transform:translateX(-50%) translateY(0);
     }
     /* ===== END COPY TOAST ===== */
-
     /* ===== START MODAL ===== */
     .overlay{
       position:fixed;
@@ -445,12 +382,10 @@
       justify-content:center;
       padding:16px;
     }
-
     .overlay.show{
       opacity:1;
       pointer-events:auto;
     }
-
     .modal{
       width:min(520px, 100%);
       background:rgba(255,248,244,.94);
@@ -460,7 +395,6 @@
       padding:16px;
       color:var(--text);
     }
-
     .modal-head{
       display:flex;
       align-items:center;
@@ -468,14 +402,12 @@
       gap:8px;
       margin-bottom:6px;
     }
-
     .modal-title{
       margin:0;
       font-size:17px;
       font-weight:750;
       line-height:1.15;
     }
-
     .xbtn{
       appearance:none;
       border:1px solid rgba(216,166,166,.55);
@@ -488,21 +420,18 @@
       line-height:1;
       cursor:pointer;
     }
-
     .modal p{
       margin:8px 0 0;
       color:var(--muted);
       font-size:14px;
       line-height:1.45;
     }
-
     .modal-actions{
       margin-top:12px;
       display:flex;
       gap:8px;
       flex-wrap:wrap;
     }
-
     .light-btn{
       appearance:none;
       border:1px solid rgba(216,166,166,.55);
@@ -518,14 +447,12 @@
       box-shadow:0 6px 16px rgba(80,45,45,.10);
       text-align:center;
     }
-
     .light-btn.primary{
       background:rgba(185,120,120,.92);
       color:#fff;
       border-color:rgba(185,120,120,.92);
     }
     /* ===== END MODAL ===== */
-
     /* ===== START MOBILE BACKGROUND EXTENSION ===== */
     @media (max-width: 640px){
       html,
@@ -534,7 +461,6 @@
           var(--bg-overlay),
           url("assets/bg.jpg?v=37") center center / cover no-repeat #000;
       }
-
       .bg{
         background:
           var(--bg-overlay),
@@ -542,105 +468,102 @@
       }
     }
     /* ===== END MOBILE BACKGROUND EXTENSION ===== */
-
     /* ===== START MOBILE STYLES ===== */
     @media (max-width: 640px){
       .wrap{
         width:min(100% - 24px, 940px);
         padding-top:14px;
       }
-
       .topbar{
         justify-content:center;
       }
-
       .topbar .nav-btn{
         flex:1 1 calc(50% - 8px);
         min-width:0;
       }
-
       .hero{
         padding:20px 16px;
         border-radius:22px;
       }
-
       .card{
         padding:16px;
         border-radius:20px;
         text-align:center;
       }
-
       .gift-card{
-        padding-left:30px;
-        padding-right:30px;
+        padding:18px 16px;
       }
-
-      .gift-title{
+      .gift-content{
         width:100%;
         text-align:center;
       }
-
-      .gift-card .sparkle-mark{
-        top:18px;
-        right:48px;
+      .gift-title{
+        width:100%;
+        text-align:center;
+        margin-left:0;
+        margin-right:0;
+      }
+      .gift-card .corner-star.top-left{
+        top:10px;
+        left:12px;
+        font-size:14px;
+      }
+      .gift-card .corner-star.top-right{
+        top:10px;
+        right:12px;
         font-size:16px;
       }
-
+      .gift-card .corner-star.bottom-left{
+        bottom:12px;
+        left:14px;
+        font-size:13px;
+      }
+      .gift-card .corner-star.bottom-right{
+        bottom:12px;
+        right:14px;
+        font-size:15px;
+      }
       .button-row{
         justify-content:center;
       }
-
       .button-row .btn{
         flex:1 1 100%;
         width:100%;
         white-space:normal;
       }
-
       .modal-actions .light-btn{
         flex:1 1 100%;
         text-align:center;
       }
-
       .toast{
         max-width:92vw;
         text-align:center;
         white-space:normal;
       }
     }
-
     @media (max-width: 380px){
       .wrap{
         width:min(100% - 18px, 940px);
       }
-
       .topbar .nav-btn{
         flex:1 1 100%;
       }
-
       .gift-card{
-        padding-left:24px;
-        padding-right:24px;
-      }
-
-      .gift-card .sparkle-mark{
-        right:44px;
+        padding:18px 14px;
       }
     }
     /* ===== END MOBILE STYLES ===== */
   </style>
   <!-- ===== END PAGE STYLES ===== -->
 </head>
-
 <body>
   <!-- ===== START BACKGROUND IMAGE MARKUP ===== -->
   <div class="bg" aria-hidden="true">
     <img src="assets/bg.jpg?v=37" alt="">
   </div>
   <!-- ===== END BACKGROUND IMAGE MARKUP ===== -->
-
   <!-- ===== START MAIN PAGE CONTENT ===== -->
   <main class="wrap">
-
     <!-- ===== START SITE NAVIGATION ===== -->
     <nav class="topbar" aria-label="Site navigation">
       <a class="nav-btn" href="index.html">Home</a>
@@ -649,7 +572,6 @@
       <a class="nav-btn active" href="registry.html" aria-current="page">Registry</a>
     </nav>
     <!-- ===== END SITE NAVIGATION ===== -->
-
     <!-- ===== START HERO / INTRO SECTION ===== -->
     <section class="hero">
       <span class="eyebrow">Wedding Registry</span>
@@ -659,15 +581,12 @@
       </p>
     </section>
     <!-- ===== END HERO / INTRO SECTION ===== -->
-
     <!-- ===== START REGISTRY OPTIONS SECTION ===== -->
     <section class="grid" aria-label="Registry options">
-
       <!-- ===== START WEDDING REGISTRIES CARD ===== -->
       <div class="card registry-card">
         <h2>Wedding Registries</h2>
         <p>Shop directly from our registries:</p>
-
         <!-- ===== START REGISTRY BUTTON LINKS ===== -->
         <div class="button-row">
           <a class="btn" href="https://www.amazon.com/wedding/organize-registry?ref_=gr-home-wedding-viewyr" target="_blank" rel="noopener noreferrer">Amazon</a>
@@ -678,43 +597,36 @@
         <!-- ===== END REGISTRY BUTTON LINKS ===== -->
       </div>
       <!-- ===== END WEDDING REGISTRIES CARD ===== -->
-
       <!-- ===== START DIGITAL GIFT OPTIONS CARD ===== -->
       <div class="card gift-card">
         <span class="corner-star top-left" aria-hidden="true">✦</span>
         <span class="corner-star top-right" aria-hidden="true">✦</span>
         <span class="corner-star bottom-left" aria-hidden="true">✦</span>
         <span class="corner-star bottom-right" aria-hidden="true">✦</span>
-        <span class="sparkle-mark" aria-hidden="true">✦</span>
-
-        <h2 class="gift-title">Digital Gift Options</h2>
-
-        <p>
-          We’ve included a few options for guests who prefer to send a digital gift.
-        </p>
-
-        <!-- ===== START DIGITAL GIFT BUTTONS ===== -->
-        <div class="button-row">
-          <button id="venmoBtn" class="btn" type="button">Venmo</button>
-          <button id="zelleBtn" class="btn" type="button">Zelle</button>
-          <a class="btn" href="https://square.link/u/WVQNx6YM" target="_blank" rel="noopener noreferrer">Apple Pay / Google Pay / Credit Card</a>
+        <div class="gift-content">
+          <h2 class="gift-title">Digital Gift Options</h2>
+          <p>
+            We’ve included a few options for guests who prefer to send a digital gift.
+          </p>
+          <!-- ===== START DIGITAL GIFT BUTTONS ===== -->
+          <div class="button-row">
+            <button id="venmoBtn" class="btn" type="button">Venmo</button>
+            <button id="zelleBtn" class="btn" type="button">Zelle</button>
+            <a class="btn" href="https://square.link/u/WVQNx6YM" target="_blank" rel="noopener noreferrer">Apple Pay / Google Pay / Credit Card</a>
+          </div>
+          <!-- ===== END DIGITAL GIFT BUTTONS ===== -->
         </div>
-        <!-- ===== END DIGITAL GIFT BUTTONS ===== -->
       </div>
       <!-- ===== END DIGITAL GIFT OPTIONS CARD ===== -->
-
     </section>
     <!-- ===== END REGISTRY OPTIONS SECTION ===== -->
-
     <!-- ===== START FOOTER THANK YOU NOTE ===== -->
     <p class="footer-note">
       Thank you so much for celebrating with us. We appreciate your love and support.
     </p>
     <!-- ===== END FOOTER THANK YOU NOTE ===== -->
-
   </main>
   <!-- ===== END MAIN PAGE CONTENT ===== -->
-
   <!-- ===== START DIGITAL GIFT MODAL ===== -->
   <div id="overlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="modal" role="document">
@@ -727,11 +639,9 @@
     </div>
   </div>
   <!-- ===== END DIGITAL GIFT MODAL ===== -->
-
   <!-- ===== START COPY CONFIRMATION TOAST ===== -->
   <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
   <!-- ===== END COPY CONFIRMATION TOAST ===== -->
-
   <!-- ===== START PAGE SCRIPT ===== -->
   <script>
     (function(){
@@ -739,71 +649,54 @@
       const DESKTOP_CHROME_COLOR = '#736f6e';
       const DESKTOP_CHROME_COLOR_NUDGE = '#706c6b';
       const MOBILE_BREAKPOINT = 640;
-
       let lastChromeMode = null;
-
       function isMobileViewport(){
         return window.matchMedia('(max-width: ' + MOBILE_BREAKPOINT + 'px)').matches;
       }
-
       function clearThemeColors(){
         document
           .querySelectorAll('meta[name="theme-color"]')
           .forEach((el) => el.remove());
       }
-
       function applyChromeColorMode(){
         const mode = isMobileViewport() ? 'mobile' : 'desktop';
-
         if (mode === lastChromeMode) return;
         lastChromeMode = mode;
-
         clearThemeColors();
-
         if (mode === 'mobile'){
           return;
         }
-
         const metaLight = document.createElement('meta');
         metaLight.name = 'theme-color';
         metaLight.content = DESKTOP_CHROME_COLOR;
         metaLight.setAttribute('media', '(prefers-color-scheme: light)');
         document.head.appendChild(metaLight);
-
         const metaDark = document.createElement('meta');
         metaDark.name = 'theme-color';
         metaDark.content = DESKTOP_CHROME_COLOR;
         metaDark.setAttribute('media', '(prefers-color-scheme: dark)');
         document.head.appendChild(metaDark);
-
         const meta = document.createElement('meta');
         meta.name = 'theme-color';
         meta.content = DESKTOP_CHROME_COLOR;
         document.head.appendChild(meta);
-
         requestAnimationFrame(() => {
           meta.content = DESKTOP_CHROME_COLOR_NUDGE;
-
           requestAnimationFrame(() => {
             meta.content = DESKTOP_CHROME_COLOR;
           });
         });
       }
-
       applyChromeColorMode();
-
       window.addEventListener('pageshow', () => {
         lastChromeMode = null;
         applyChromeColorMode();
       });
-
       window.addEventListener('resize', applyChromeColorMode);
-
       window.addEventListener('orientationchange', () => {
         lastChromeMode = null;
         setTimeout(applyChromeColorMode, 80);
       });
-
       document.addEventListener('visibilitychange', () => {
         if (!document.hidden){
           lastChromeMode = null;
@@ -811,13 +704,11 @@
         }
       });
       /* ===== END SAFARI / MOBILE CHROME COLOR CONTROL ===== */
-
       /* ===== START DIGITAL GIFT VALUES ===== */
       const VENMO_HANDLE = 'PayToby';
       const ZELLE_VALUE = '347-636-5211';
       const VENMO_URL = 'https://venmo.com/' + encodeURIComponent(VENMO_HANDLE);
       /* ===== END DIGITAL GIFT VALUES ===== */
-
       /* ===== START ELEMENT REFERENCES ===== */
       const venmoBtn = document.getElementById('venmoBtn');
       const zelleBtn = document.getElementById('zelleBtn');
@@ -828,9 +719,7 @@
       const closeModalBtn = document.getElementById('closeModalBtn');
       const toast = document.getElementById('toast');
       /* ===== END ELEMENT REFERENCES ===== */
-
       let toastTimer = null;
-
       /* ===== START TOAST MESSAGE FUNCTION ===== */
       function showToast(msg){
         toast.textContent = msg;
@@ -839,7 +728,6 @@
         toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
       }
       /* ===== END TOAST MESSAGE FUNCTION ===== */
-
       /* ===== START COPY TO CLIPBOARD FUNCTION ===== */
       async function copyText(value, successMessage){
         try {
@@ -854,28 +742,23 @@
           ta.style.opacity = '0';
           document.body.appendChild(ta);
           ta.select();
-
           let ok = false;
           try {
             ok = document.execCommand('copy');
           } catch {}
-
           ta.remove();
           showToast(ok ? successMessage : 'Copy failed. Please try again.');
           return ok;
         }
       }
       /* ===== END COPY TO CLIPBOARD FUNCTION ===== */
-
       /* ===== START MODAL ACTION HELPERS ===== */
       function clearModalActions(){
         modalActions.innerHTML = '';
       }
-
       function makeActionButton(opts){
         const el = opts.href ? document.createElement('a') : document.createElement('button');
         el.className = 'light-btn' + (opts.primary ? ' primary' : '');
-
         if (opts.href){
           el.href = opts.href;
           el.target = '_blank';
@@ -884,49 +767,40 @@
           el.type = 'button';
           el.addEventListener('click', opts.onClick);
         }
-
         el.textContent = opts.label;
         return el;
       }
       /* ===== END MODAL ACTION HELPERS ===== */
-
       /* ===== START OPEN MODAL FUNCTION ===== */
       function openModal(kind){
         clearModalActions();
-
         if (kind === 'venmo'){
           modalTitle.textContent = 'Venmo';
           modalText.textContent = 'Use the buttons below to open Venmo or copy our Venmo handle.';
-
           modalActions.appendChild(makeActionButton({
             label: 'Open Venmo',
             href: VENMO_URL,
             primary: true
           }));
-
           modalActions.appendChild(makeActionButton({
             label: 'Copy Venmo Handle',
             onClick: () => copyText(VENMO_HANDLE, 'Venmo handle copied')
           }));
         }
-
         if (kind === 'zelle'){
           modalTitle.textContent = 'Zelle';
           modalText.textContent = 'Use the button below to copy our Zelle number, then paste it into your banking app.';
-
           modalActions.appendChild(makeActionButton({
             label: 'Copy Zelle Number',
             onClick: () => copyText(ZELLE_VALUE, 'Zelle number copied'),
             primary: true
           }));
         }
-
         overlay.classList.add('show');
         overlay.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
       }
       /* ===== END OPEN MODAL FUNCTION ===== */
-
       /* ===== START CLOSE MODAL FUNCTION ===== */
       function closeModal(){
         overlay.classList.remove('show');
@@ -934,16 +808,13 @@
         document.body.style.overflow = '';
       }
       /* ===== END CLOSE MODAL FUNCTION ===== */
-
       /* ===== START EVENT LISTENERS ===== */
       venmoBtn.addEventListener('click', () => openModal('venmo'));
       zelleBtn.addEventListener('click', () => openModal('zelle'));
       closeModalBtn.addEventListener('click', closeModal);
-
       overlay.addEventListener('click', (e) => {
         if (e.target === overlay) closeModal();
       });
-
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeModal();
       });
