@@ -146,6 +146,57 @@
     }
     /* ===== END BACKGROUND IMAGE ===== */
 
+    /* ===== START SITE NAVIGATION ===== */
+    .topbar{
+      position:fixed;
+      top:calc(14px + env(safe-area-inset-top));
+      left:50%;
+      transform:translateX(-50%);
+      z-index:32;
+      width:min(940px, calc(100vw - 32px));
+      display:flex;
+      justify-content:flex-end;
+      gap:8px;
+      flex-wrap:wrap;
+      pointer-events:auto;
+    }
+
+    .nav-btn{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.64);
+      color:var(--text);
+      background:rgba(216,166,166,.72);
+      padding:10px 14px;
+      border-radius:999px;
+      font-size:14px;
+      font-weight:700;
+      line-height:1.15;
+      text-decoration:none;
+      cursor:pointer;
+      white-space:nowrap;
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      box-shadow:0 8px 24px rgba(80,45,45,.15);
+      transition:transform .15s ease, background .15s ease, box-shadow .15s ease, border-color .15s ease;
+      text-align:center;
+    }
+
+    .nav-btn:hover{
+      transform:translateY(-1px);
+      background:rgba(216,166,166,.88);
+      border-color:rgba(255,255,255,.76);
+    }
+
+    .nav-btn.active{
+      background:rgba(185,120,120,.92);
+      color:#fff;
+      border-color:rgba(255,255,255,.82);
+      box-shadow:
+        0 10px 28px rgba(80,45,45,.22),
+        inset 0 0 0 1px rgba(255,255,255,.20);
+    }
+    /* ===== END SITE NAVIGATION ===== */
+
     /* ===== START INVITATION IMAGE ===== */
     .invite{
       position:fixed;
@@ -461,6 +512,18 @@
     /* ===== END BOTTOM DOCK ===== */
 
     /* ===== START MOBILE STYLES ===== */
+    @media (max-width: 640px){
+      .topbar{
+        width:min(100% - 24px, 940px);
+        justify-content:center;
+      }
+
+      .topbar .nav-btn{
+        flex:1 1 calc(50% - 8px);
+        min-width:0;
+      }
+    }
+
     @media (max-width: 430px){
       .actions{
         overflow-x:visible;
@@ -478,6 +541,16 @@
 
       .calendar-pop .btn{
         min-width:160px;
+      }
+    }
+
+    @media (max-width: 380px){
+      .topbar{
+        width:min(100% - 18px, 940px);
+      }
+
+      .topbar .nav-btn{
+        flex:1 1 100%;
       }
     }
 
@@ -502,6 +575,15 @@
     <img src="assets/bg.jpg?v=37" alt="">
   </div>
   <!-- ===== END BACKGROUND IMAGE MARKUP ===== -->
+
+  <!-- ===== START SITE NAVIGATION ===== -->
+  <nav class="topbar" aria-label="Site navigation">
+    <a class="nav-btn active" href="index.html" aria-current="page">Home</a>
+    <a class="nav-btn" href="venue.html">Venue</a>
+    <a class="nav-btn" href="faq.html">FAQ</a>
+    <a class="nav-btn" href="registry.html">Registry</a>
+  </nav>
+  <!-- ===== END SITE NAVIGATION ===== -->
 
   <!-- ===== START INVITATION IMAGE MARKUP ===== -->
   <img id="invite" class="invite" src="assets/weddinginvite.png?v=15" alt="Wedding invitation">
@@ -910,7 +992,7 @@
       });
 
       document.addEventListener('pointerdown', (e) => {
-        const inside = e.target.closest('#actions, #calendarPop, #menuBtn, #menuCloseBtn, #music, .close, #hint');
+        const inside = e.target.closest('#actions, #calendarPop, #menuBtn, #menuCloseBtn, #music, .close, #hint, .topbar');
 
         if (!inside) closeAll();
       });
