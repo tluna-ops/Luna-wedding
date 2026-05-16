@@ -1,5 +1,7 @@
 <!doctype html>
 <html lang="en">
+
+<!-- ===== START HEAD / PAGE METADATA ===== -->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,6 +11,12 @@
 
   <meta name="title" content="FAQ — Luna Wedding" />
   <meta name="description" content="Frequently asked questions for Toby and Michelle's wedding celebration." />
+
+  <!-- ===== START DESKTOP BROWSER CHROME / SAFARI TINT ===== -->
+  <!-- Desktop/tablet uses the registry-matched gray. Mobile removes this dynamically so Safari can tint from the background image. -->
+  <meta name="theme-color" content="#736f6e" media="(min-width: 641px)" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <!-- ===== END DESKTOP BROWSER CHROME / SAFARI TINT ===== -->
 
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
@@ -23,7 +31,9 @@
   <meta name="twitter:description" content="Frequently asked questions for Toby and Michelle's wedding celebration." />
   <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=15" />
 
+  <!-- ===== START PAGE STYLES ===== -->
   <style>
+    /* ===== START DESIGN VARIABLES ===== */
     :root{
       --text:#3c2f2f;
       --muted:#6f5959;
@@ -35,23 +45,36 @@
       --cream-strong:rgba(255,248,244,.90);
       --border:rgba(216,166,166,.48);
       --shadow:0 20px 48px rgba(80,45,45,.16);
+      --chrome-gray:#736f6e;
+      --bg-overlay:linear-gradient(
+        180deg,
+        rgba(255,246,242,.46),
+        rgba(255,246,242,.20) 45%,
+        rgba(255,246,242,.36)
+      );
     }
+    /* ===== END DESIGN VARIABLES ===== */
 
+    /* ===== START BASE PAGE RESET ===== */
     *{ box-sizing:border-box; }
 
     html, body{
       margin:0;
       min-height:100%;
       color:var(--text);
-      background:#000;
+      background:var(--chrome-gray);
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       overflow-x:hidden;
+      color-scheme:light only;
     }
+    /* ===== END BASE PAGE RESET ===== */
 
+    /* ===== START BACKGROUND IMAGE ===== */
     .bg{
       position:fixed;
       inset:0;
       z-index:0;
+      background:var(--chrome-gray);
     }
 
     .bg img{
@@ -67,16 +90,12 @@
       content:"";
       position:absolute;
       inset:0;
-      background:
-        linear-gradient(
-          180deg,
-          rgba(255,246,242,.46),
-          rgba(255,246,242,.20) 45%,
-          rgba(255,246,242,.36)
-        );
+      background:var(--bg-overlay);
       pointer-events:none;
     }
+    /* ===== END BACKGROUND IMAGE ===== */
 
+    /* ===== START PAGE LAYOUT ===== */
     .wrap{
       position:relative;
       z-index:1;
@@ -84,7 +103,9 @@
       margin:0 auto;
       padding:18px 0 calc(36px + env(safe-area-inset-bottom));
     }
+    /* ===== END PAGE LAYOUT ===== */
 
+    /* ===== START NAVIGATION ===== */
     .topbar{
       display:flex;
       justify-content:flex-end;
@@ -130,7 +151,9 @@
         0 10px 28px rgba(80,45,45,.22),
         inset 0 0 0 1px rgba(255,255,255,.20);
     }
+    /* ===== END NAVIGATION ===== */
 
+    /* ===== START HERO SECTION ===== */
     .hero{
       background:var(--cream-strong);
       border:1px solid var(--border);
@@ -172,7 +195,9 @@
       line-height:1.6;
       max-width:720px;
     }
+    /* ===== END HERO SECTION ===== */
 
+    /* ===== START FAQ LIST ===== */
     .faq-list{
       display:grid;
       gap:12px;
@@ -257,7 +282,9 @@
       text-decoration:underline;
       text-underline-offset:2px;
     }
+    /* ===== END FAQ LIST ===== */
 
+    /* ===== START FOOTER NOTE ===== */
     .footer-note{
       margin:14px auto 0;
       text-align:center;
@@ -272,7 +299,26 @@
       -webkit-backdrop-filter: blur(8px);
       max-width:720px;
     }
+    /* ===== END FOOTER NOTE ===== */
 
+    /* ===== START MOBILE BACKGROUND EXTENSION ===== */
+    @media (max-width: 640px){
+      html,
+      body{
+        background:
+          var(--bg-overlay),
+          url("assets/bg.jpg?v=37") center center / cover no-repeat #000;
+      }
+
+      .bg{
+        background:
+          var(--bg-overlay),
+          url("assets/bg.jpg?v=37") center center / cover no-repeat #000;
+      }
+    }
+    /* ===== END MOBILE BACKGROUND EXTENSION ===== */
+
+    /* ===== START MOBILE STYLES ===== */
     @media (max-width: 640px){
       .wrap{
         width:min(100% - 24px, 940px);
@@ -317,29 +363,42 @@
         flex:1 1 100%;
       }
     }
+    /* ===== END MOBILE STYLES ===== */
   </style>
+  <!-- ===== END PAGE STYLES ===== -->
 </head>
 
 <body>
+  <!-- ===== START BACKGROUND IMAGE MARKUP ===== -->
   <div class="bg" aria-hidden="true">
     <img src="assets/bg.jpg?v=37" alt="">
   </div>
+  <!-- ===== END BACKGROUND IMAGE MARKUP ===== -->
 
+  <!-- ===== START MAIN PAGE CONTENT ===== -->
   <main class="wrap">
+
+    <!-- ===== START SITE NAVIGATION ===== -->
     <nav class="topbar" aria-label="Site navigation">
       <a class="nav-btn" href="index.html">Home</a>
       <a class="nav-btn" href="venue.html">Venue</a>
       <a class="nav-btn active" href="faq.html" aria-current="page">FAQ</a>
       <a class="nav-btn" href="registry.html">Registry</a>
     </nav>
+    <!-- ===== END SITE NAVIGATION ===== -->
 
+    <!-- ===== START HERO / INTRO SECTION ===== -->
     <section class="hero">
       <span class="eyebrow">Wedding FAQ</span>
       <h1>Frequently Asked Questions</h1>
       <p>Everything you need to know for our celebration on Saturday, June 6, 2026.</p>
     </section>
+    <!-- ===== END HERO / INTRO SECTION ===== -->
 
+    <!-- ===== START FAQ SECTION ===== -->
     <section class="faq-list" aria-label="Wedding FAQ">
+
+      <!-- ===== START FAQ ITEM: WHERE AND WHEN ===== -->
       <details class="faq" open>
         <summary>
           <span>Where and when is the event?</span>
@@ -355,7 +414,9 @@
           </p>
         </div>
       </details>
+      <!-- ===== END FAQ ITEM: WHERE AND WHEN ===== -->
 
+      <!-- ===== START FAQ ITEM: HOW TO GET THERE ===== -->
       <details class="faq">
         <summary>
           <span>How do I get there?</span>
@@ -383,7 +444,9 @@
           </ul>
         </div>
       </details>
+      <!-- ===== END FAQ ITEM: HOW TO GET THERE ===== -->
 
+      <!-- ===== START FAQ ITEM: PARKING ===== -->
       <details class="faq">
         <summary>
           <span>What is the parking situation?</span>
@@ -396,7 +459,9 @@
           </p>
         </div>
       </details>
+      <!-- ===== END FAQ ITEM: PARKING ===== -->
 
+      <!-- ===== START FAQ ITEM: WHO IS INVITED ===== -->
       <details class="faq">
         <summary>
           <span>Who is invited?</span>
@@ -409,7 +474,9 @@
           </p>
         </div>
       </details>
+      <!-- ===== END FAQ ITEM: WHO IS INVITED ===== -->
 
+      <!-- ===== START FAQ ITEM: PLUS ONES / KIDS ===== -->
       <details class="faq">
         <summary>
           <span>Can I bring my kids, a mutual friend, situationship, or any other uninvited guests?</span>
@@ -425,7 +492,9 @@
           </p>
         </div>
       </details>
+      <!-- ===== END FAQ ITEM: PLUS ONES / KIDS ===== -->
 
+      <!-- ===== START FAQ ITEM: DRESS CODE ===== -->
       <details class="faq">
         <summary>
           <span>What is the dress code?</span>
@@ -435,7 +504,9 @@
           <p>We request <strong>formal, cocktail attire</strong> for the reception dinner.</p>
         </div>
       </details>
+      <!-- ===== END FAQ ITEM: DRESS CODE ===== -->
 
+      <!-- ===== START FAQ ITEM: VOWS / SPEECHES / MUSIC ===== -->
       <details class="faq">
         <summary>
           <span>Will there be vows, speeches, music and dancing?</span>
@@ -449,7 +520,9 @@
           </p>
         </div>
       </details>
+      <!-- ===== END FAQ ITEM: VOWS / SPEECHES / MUSIC ===== -->
 
+      <!-- ===== START FAQ ITEM: MENU ===== -->
       <details class="faq">
         <summary>
           <span>What’s on the menu?</span>
@@ -467,7 +540,9 @@
           </p>
         </div>
       </details>
+      <!-- ===== END FAQ ITEM: MENU ===== -->
 
+      <!-- ===== START FAQ ITEM: REGISTRY ===== -->
       <details class="faq">
         <summary>
           <span>Are you registered anywhere?</span>
@@ -480,7 +555,9 @@
           </p>
         </div>
       </details>
+      <!-- ===== END FAQ ITEM: REGISTRY ===== -->
 
+      <!-- ===== START FAQ ITEM: ARRIVAL TIME ===== -->
       <details class="faq">
         <summary>
           <span>What time should I arrive?</span>
@@ -492,7 +569,9 @@
           </p>
         </div>
       </details>
+      <!-- ===== END FAQ ITEM: ARRIVAL TIME ===== -->
 
+      <!-- ===== START FAQ ITEM: DIETARY RESTRICTIONS ===== -->
       <details class="faq">
         <summary>
           <span>What if I have food allergies or dietary restrictions?</span>
@@ -505,7 +584,9 @@
           </p>
         </div>
       </details>
+      <!-- ===== END FAQ ITEM: DIETARY RESTRICTIONS ===== -->
 
+      <!-- ===== START FAQ ITEM: LATE ARRIVAL ===== -->
       <details class="faq">
         <summary>
           <span>Can I arrive late?</span>
@@ -517,7 +598,9 @@
           </p>
         </div>
       </details>
+      <!-- ===== END FAQ ITEM: LATE ARRIVAL ===== -->
 
+      <!-- ===== START FAQ ITEM: ASSIGNED SEATING ===== -->
       <details class="faq">
         <summary>
           <span>Is there assigned seating?</span>
@@ -533,7 +616,9 @@
           </p>
         </div>
       </details>
+      <!-- ===== END FAQ ITEM: ASSIGNED SEATING ===== -->
 
+      <!-- ===== START FAQ ITEM: QUESTIONS ===== -->
       <details class="faq">
         <summary>
           <span>How do I get in touch with you for questions?</span>
@@ -545,11 +630,101 @@
           </p>
         </div>
       </details>
-    </section>
+      <!-- ===== END FAQ ITEM: QUESTIONS ===== -->
 
+    </section>
+    <!-- ===== END FAQ SECTION ===== -->
+
+    <!-- ===== START FOOTER NOTE ===== -->
     <p class="footer-note">
       More details may be added as we get closer. We can’t wait to celebrate with you.
     </p>
+    <!-- ===== END FOOTER NOTE ===== -->
+
   </main>
+  <!-- ===== END MAIN PAGE CONTENT ===== -->
+
+  <!-- ===== START PAGE SCRIPT ===== -->
+  <script>
+    (function(){
+      /* ===== START SAFARI / MOBILE CHROME COLOR CONTROL ===== */
+      const DESKTOP_CHROME_COLOR = '#736f6e';
+      const DESKTOP_CHROME_COLOR_NUDGE = '#706c6b';
+      const MOBILE_BREAKPOINT = 640;
+
+      let lastChromeMode = null;
+
+      function isMobileViewport(){
+        return window.matchMedia('(max-width: ' + MOBILE_BREAKPOINT + 'px)').matches;
+      }
+
+      function clearThemeColors(){
+        document
+          .querySelectorAll('meta[name="theme-color"]')
+          .forEach((el) => el.remove());
+      }
+
+      function applyChromeColorMode(){
+        const mode = isMobileViewport() ? 'mobile' : 'desktop';
+
+        if (mode === lastChromeMode) return;
+        lastChromeMode = mode;
+
+        clearThemeColors();
+
+        if (mode === 'mobile'){
+          return;
+        }
+
+        const metaLight = document.createElement('meta');
+        metaLight.name = 'theme-color';
+        metaLight.content = DESKTOP_CHROME_COLOR;
+        metaLight.setAttribute('media', '(prefers-color-scheme: light)');
+        document.head.appendChild(metaLight);
+
+        const metaDark = document.createElement('meta');
+        metaDark.name = 'theme-color';
+        metaDark.content = DESKTOP_CHROME_COLOR;
+        metaDark.setAttribute('media', '(prefers-color-scheme: dark)');
+        document.head.appendChild(metaDark);
+
+        const meta = document.createElement('meta');
+        meta.name = 'theme-color';
+        meta.content = DESKTOP_CHROME_COLOR;
+        document.head.appendChild(meta);
+
+        requestAnimationFrame(() => {
+          meta.content = DESKTOP_CHROME_COLOR_NUDGE;
+
+          requestAnimationFrame(() => {
+            meta.content = DESKTOP_CHROME_COLOR;
+          });
+        });
+      }
+
+      applyChromeColorMode();
+
+      window.addEventListener('pageshow', () => {
+        lastChromeMode = null;
+        applyChromeColorMode();
+      });
+
+      window.addEventListener('resize', applyChromeColorMode);
+
+      window.addEventListener('orientationchange', () => {
+        lastChromeMode = null;
+        setTimeout(applyChromeColorMode, 80);
+      });
+
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden){
+          lastChromeMode = null;
+          applyChromeColorMode();
+        }
+      });
+      /* ===== END SAFARI / MOBILE CHROME COLOR CONTROL ===== */
+    })();
+  </script>
+  <!-- ===== END PAGE SCRIPT ===== -->
 </body>
 </html>
