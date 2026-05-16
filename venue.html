@@ -231,37 +231,15 @@
 
     /* ===== START VENUE PHOTO CAROUSEL ===== */
     .venue-carousel-card{
-      padding:14px;
+      padding:12px;
       overflow:hidden;
-    }
-
-    .venue-carousel-head{
-      display:flex;
-      align-items:baseline;
-      justify-content:space-between;
-      gap:10px;
-      margin:0 0 10px;
-    }
-
-    .venue-carousel-head h2{
-      margin:0;
-      font-size:17px;
-      line-height:1.15;
-    }
-
-    .venue-carousel-head a{
-      color:var(--pink-deep);
-      font-size:12px;
-      font-weight:800;
-      text-decoration:underline;
-      text-underline-offset:2px;
-      white-space:nowrap;
     }
 
     .venue-carousel{
       position:relative;
       width:100%;
-      height:190px;
+      aspect-ratio:16 / 9;
+      max-height:430px;
       border-radius:16px;
       overflow:hidden;
       background:rgba(255,248,244,.42);
@@ -275,6 +253,7 @@
       width:100%;
       height:100%;
       object-fit:cover;
+      object-position:center;
       opacity:0;
       transition:opacity 900ms ease-in-out;
       user-select:none;
@@ -292,8 +271,8 @@
       background:
         linear-gradient(
           180deg,
-          rgba(60,47,47,.02),
-          rgba(60,47,47,.14)
+          rgba(60,47,47,.00),
+          rgba(60,47,47,.12)
         );
       pointer-events:none;
     }
@@ -301,7 +280,7 @@
     .venue-carousel-dots{
       position:absolute;
       left:50%;
-      bottom:9px;
+      bottom:10px;
       transform:translateX(-50%);
       display:flex;
       gap:6px;
@@ -459,17 +438,12 @@
       }
 
       .venue-carousel-card{
-        padding:12px;
-      }
-
-      .venue-carousel-head{
-        justify-content:center;
-        flex-wrap:wrap;
-        gap:6px 12px;
+        padding:10px;
       }
 
       .venue-carousel{
-        height:170px;
+        aspect-ratio:4 / 3;
+        max-height:none;
       }
 
       .detail-grid{
@@ -498,10 +472,6 @@
 
       .topbar .nav-btn{
         flex:1 1 100%;
-      }
-
-      .venue-carousel{
-        height:155px;
       }
     }
     /* ===== END MOBILE STYLES ===== */
@@ -543,11 +513,6 @@
 
       <!-- ===== START VENUE PHOTO CAROUSEL CARD ===== -->
       <div class="card venue-carousel-card">
-        <div class="venue-carousel-head">
-          <h2>Inside Carne Mare</h2>
-          <a href="https://www.carnemare.com/gallery/" target="_blank" rel="noopener noreferrer">Photo Gallery</a>
-        </div>
-
         <div class="venue-carousel" aria-label="Carne Mare photo carousel">
           <img
             class="venue-slide active"
@@ -566,12 +531,48 @@
           >
           <img
             class="venue-slide"
+            src="https://images.getbento.com/accounts/ea793854f69248d89a4c840f6fe3de37/media/CHLlpH7oQmHNU5HrB1UL_Carne-Mare_Interiors_Dining-Room_Evening_032.jpg?auto=compress%2Cformat&cs=origin&fit=max&w=1200"
+            alt="Carne Mare evening dining room interior"
+          >
+          <img
+            class="venue-slide"
             src="https://images.getbento.com/accounts/ea793854f69248d89a4c840f6fe3de37/media/jQNcUxkKQU6ygdFUqNmm_Carne-Mare_Interiors_Dining-Room_Evening_022.jpg?auto=compress%2Cformat&cs=origin&fit=max&w=1200"
-            alt="Carne Mare dining room in the evening"
+            alt="Carne Mare dining room with booth seating and water view"
+          >
+          <img
+            class="venue-slide"
+            src="https://images.getbento.com/accounts/ea793854f69248d89a4c840f6fe3de37/media/va9j6izXTr6N5j4tgM9s_Carne-Mare_Interiors_Dining-Room_Evening_023.jpg?auto=compress%2Cformat&cs=origin&fit=max&w=1200"
+            alt="Carne Mare dining room with warm lighting"
+          >
+          <img
+            class="venue-slide"
+            src="https://images.getbento.com/accounts/ea793854f69248d89a4c840f6fe3de37/media/IjZp2nbWR5mzlm7WKQHx_Carne-Mare_Interiors_Reception_039.jpg?auto=compress%2Cformat&cs=origin&fit=max&w=1200"
+            alt="Carne Mare reception desk"
+          >
+          <img
+            class="venue-slide"
+            src="https://images.getbento.com/accounts/ea793854f69248d89a4c840f6fe3de37/media/1mZJsWsLRtWv01dBcWHq_Carne-Mare_Food_SpicyLobsterSpaghetti-Spaghetti_027.jpg?auto=compress%2Cformat&cs=origin&fit=max&w=1200"
+            alt="Carne Mare lobster spaghetti"
+          >
+          <img
+            class="venue-slide"
+            src="https://images.getbento.com/accounts/ea793854f69248d89a4c840f6fe3de37/media/OgcSO2maR2qCpVlvXxtD_Carne-Mare_Food_Steak-Sides_012.jpg?auto=compress%2Cformat&cs=origin&fit=max&w=1200"
+            alt="Carne Mare steak and sides"
+          >
+          <img
+            class="venue-slide"
+            src="https://images.getbento.com/accounts/ea793854f69248d89a4c840f6fe3de37/media/images/84536Carne-Mare_Food_Porterhouse_024-rotated.jpg?auto=compress%2Cformat&cs=origin&fit=max&w=1200"
+            alt="Carne Mare porterhouse steak"
           >
 
           <div class="venue-carousel-dots" aria-hidden="true">
             <span class="venue-dot active"></span>
+            <span class="venue-dot"></span>
+            <span class="venue-dot"></span>
+            <span class="venue-dot"></span>
+            <span class="venue-dot"></span>
+            <span class="venue-dot"></span>
+            <span class="venue-dot"></span>
             <span class="venue-dot"></span>
             <span class="venue-dot"></span>
             <span class="venue-dot"></span>
