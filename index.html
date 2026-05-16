@@ -12,11 +12,12 @@
   <meta name="title" content="Luna Wedding — June 6, 2026" />
   <meta name="description" content="Luna Wedding — RSVP • June 6, 2026" />
 
-  <!-- Match Safari / mobile browser tint to the registry page's gray chrome -->
+  <!-- ===== START BROWSER CHROME / SAFARI TINT ===== -->
   <meta name="theme-color" content="#736f6e" />
   <meta name="theme-color" content="#736f6e" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#736f6e" media="(prefers-color-scheme: dark)" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <!-- ===== END BROWSER CHROME / SAFARI TINT ===== -->
 
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
@@ -967,16 +968,6 @@
 
       const TARGET_VOL = 0.35;
       const SRC = 'assets/bgm_small.mp3?v=37';
-
-      /*
-        Music behavior:
-        - Defaults visually OFF.
-        - Does not autoplay on page load.
-        - First click/tap/key gesture anywhere starts music.
-        - Once music starts, the button changes to ON.
-        - Music button then works normally: click once to mute, click again to play.
-        - If the first gesture is the Music button itself, it starts music and does not immediately toggle back off.
-      */
 
       let pref = 'off';
 
