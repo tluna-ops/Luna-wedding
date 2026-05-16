@@ -101,10 +101,7 @@
     /* ===== START BACKGROUND IMAGE ===== */
     .bg{
       position:fixed;
-      left:0;
-      right:0;
-      bottom:0;
-      top:calc(72px + env(safe-area-inset-top));
+      inset:0;
       opacity:0;
       animation:fadeBg 900ms ease-out .05s forwards;
       background:#f6dede;
@@ -113,25 +110,13 @@
 
     .bg img{
       width:100vw;
-      height:100%;
+      height:100vh;
       object-fit:cover;
       object-position:center;
       user-select:none;
       -webkit-user-drag:none;
       filter:brightness(1.04) saturate(.96);
       display:block;
-    }
-
-    .bg::before{
-      content:"";
-      position:fixed;
-      top:0;
-      left:0;
-      right:0;
-      height:calc(96px + env(safe-area-inset-top));
-      background:#f6dede;
-      pointer-events:none;
-      z-index:0;
     }
 
     .bg::after{
@@ -141,9 +126,10 @@
       background:
         linear-gradient(
           180deg,
-          rgba(255,246,242,.46),
-          rgba(255,246,242,.20) 45%,
-          rgba(255,246,242,.36)
+          rgba(246,222,222,.82) 0%,
+          rgba(255,246,242,.58) 18%,
+          rgba(255,246,242,.26) 46%,
+          rgba(255,246,242,.36) 100%
         );
       pointer-events:none;
     }
