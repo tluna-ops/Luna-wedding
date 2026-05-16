@@ -1,826 +1,490 @@
-You’re right. The mobile layout still has decorative elements close enough to the heading that it reads off-center. I removed the extra title sparkle entirely and pushed the corner sparkles away from the title area. The heading is now plain text in a dedicated centered content layer, with no inline or nearby sparkle affecting the visual center.
-
-registry.html — Registry
-
 <!doctype html>
 <html lang="en">
-<!-- ===== START HEAD / PAGE METADATA ===== -->
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
   <title>Registry — Luna Wedding</title>
   <link rel="canonical" href="https://luna.wedding/registry.html" />
+
   <meta name="title" content="Registry — Luna Wedding" />
-  <meta name="description" content="Wedding registry and gift options for Toby and Michelle." />
-  <!-- ===== START DESKTOP BROWSER CHROME / SAFARI TINT ===== -->
-  <meta name="theme-color" content="#736f6e" media="(min-width: 641px)" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <!-- ===== END DESKTOP BROWSER CHROME / SAFARI TINT ===== -->
+  <meta name="description" content="Wedding registry and digital gift options for Toby and Michelle’s wedding." />
+
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Luna Wedding" />
   <meta property="og:title" content="Registry — Luna Wedding" />
-  <meta property="og:description" content="Wedding registry and gift options for Toby and Michelle." />
+  <meta property="og:description" content="Wedding registry and digital gift options for Toby and Michelle’s wedding." />
   <meta property="og:url" content="https://luna.wedding/registry.html" />
   <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=15" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Registry — Luna Wedding" />
-  <meta name="twitter:description" content="Wedding registry and gift options for Toby and Michelle." />
-  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=15" />
-  <!-- ===== END HEAD / PAGE METADATA ===== -->
-  <!-- ===== START PAGE STYLES ===== -->
+
+  <meta name="theme-color" content="#b79a9a" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
   <style>
-    /* ===== START DESIGN VARIABLES ===== */
-    :root{
-      --text:#3c2f2f;
-      --muted:#6f5959;
-      --pink:#d8a6a6;
-      --pink-dark:#c98f8f;
-      --pink-deep:#b97878;
-      --pink-light:#f3dede;
-      --cream:rgba(255,248,244,.78);
-      --cream-strong:rgba(255,248,244,.90);
-      --border:rgba(216,166,166,.48);
-      --shadow:0 20px 48px rgba(80,45,45,.16);
-      --chrome-gray:#736f6e;
-      --bg-overlay:linear-gradient(
-        180deg,
-        rgba(255,246,242,.46),
-        rgba(255,246,242,.20) 45%,
-        rgba(255,246,242,.36)
-      );
+    :root {
+      --bg: #b79a9a;
+      --card: rgba(255, 250, 247, 0.82);
+      --card-strong: rgba(255, 250, 247, 0.9);
+      --ink: #3f3638;
+      --muted: #6e5f61;
+      --pink: #e8c1c3;
+      --pink-strong: #dfb1b5;
+      --border: rgba(255, 255, 255, 0.64);
+      --shadow: rgba(70, 45, 48, 0.18);
+      --radius-lg: 34px;
+      --radius-md: 26px;
+      --radius-pill: 999px;
+      --page-pad: 28px;
+      --max-width: 920px;
+      --letter: 0.08em;
     }
-    /* ===== END DESIGN VARIABLES ===== */
-    /* ===== START BASE PAGE RESET ===== */
-    *{
-      box-sizing:border-box;
+
+    * {
+      box-sizing: border-box;
     }
-    html,
-    body{
-      margin:0;
-      min-height:100%;
-      color:var(--text);
-      background:var(--chrome-gray);
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      overflow-x:hidden;
-      color-scheme:light only;
+
+    html {
+      min-height: 100%;
+      background: var(--bg);
     }
-    /* ===== END BASE PAGE RESET ===== */
-    /* ===== START BACKGROUND IMAGE ===== */
-    .bg{
-      position:fixed;
-      inset:0;
-      z-index:0;
-      background:var(--chrome-gray);
+
+    body {
+      margin: 0;
+      min-height: 100%;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(circle at 18% 14%, rgba(255,255,255,0.32), transparent 28%),
+        radial-gradient(circle at 88% 22%, rgba(255,255,255,0.22), transparent 32%),
+        radial-gradient(circle at 50% 86%, rgba(80,42,48,0.28), transparent 38%),
+        linear-gradient(180deg, #b89b9b 0%, #aa8d8e 48%, #8e7476 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
-    .bg img{
-      width:100vw;
-      height:100vh;
-      object-fit:cover;
-      object-position:center;
-      display:block;
-      filter:brightness(1.04) saturate(.96);
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,0.14), transparent 18%, transparent 82%, rgba(255,255,255,0.11)),
+        radial-gradient(circle at 50% 45%, transparent 0 44%, rgba(68,38,42,0.17) 100%);
+      mix-blend-mode: soft-light;
     }
-    .bg::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:var(--bg-overlay);
-      pointer-events:none;
+
+    a {
+      color: inherit;
     }
-    /* ===== END BACKGROUND IMAGE ===== */
-    /* ===== START PAGE LAYOUT ===== */
-    .wrap{
-      position:relative;
-      z-index:1;
-      width:min(940px, calc(100vw - 32px));
-      margin:0 auto;
-      padding:18px 0 calc(36px + env(safe-area-inset-bottom));
+
+    .page {
+      width: min(100%, var(--max-width));
+      margin: 0 auto;
+      padding: calc(env(safe-area-inset-top, 0px) + 28px) var(--page-pad) calc(env(safe-area-inset-bottom, 0px) + 34px);
     }
-    /* ===== END PAGE LAYOUT ===== */
-    /* ===== START NAVIGATION ===== */
-    .topbar{
-      display:flex;
-      justify-content:flex-end;
-      gap:8px;
-      flex-wrap:wrap;
-      margin:0 0 12px;
-      width:100%;
+
+    .top-nav {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 22px;
     }
-    .nav-btn,
-    .btn{
-      appearance:none;
-      border:1px solid rgba(255,255,255,.64);
-      color:var(--text);
-      background:rgba(216,166,166,.72);
-      padding:10px 14px;
-      border-radius:999px;
-      font-size:14px;
-      font-weight:700;
-      line-height:1.15;
-      text-decoration:none;
-      cursor:pointer;
-      white-space:nowrap;
-      backdrop-filter:blur(8px);
-      -webkit-backdrop-filter:blur(8px);
-      box-shadow:0 8px 24px rgba(80,45,45,.15);
-      transition:transform .15s ease, background .15s ease, box-shadow .15s ease, border-color .15s ease;
-      text-align:center;
+
+    .nav-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 8px 24px;
+      border: 1px solid rgba(112, 71, 76, 0.18);
+      border-radius: var(--radius-pill);
+      background: rgba(250, 232, 232, 0.56);
+      color: #866d70;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.65);
     }
-    .nav-btn:hover,
-    .btn:hover{
-      transform:translateY(-1px);
-      background:rgba(216,166,166,.88);
-      border-color:rgba(255,255,255,.76);
-    }
-    .nav-btn.active{
-      background:rgba(185,120,120,.92);
-      color:#fff;
-      border-color:rgba(255,255,255,.82);
+
+    .hero,
+    .card,
+    .thanks {
+      border: 1px solid var(--border);
+      background: var(--card);
       box-shadow:
-        0 10px 28px rgba(80,45,45,.22),
-        inset 0 0 0 1px rgba(255,255,255,.20);
-    }
-    /* ===== END NAVIGATION ===== */
-    /* ===== START HERO SECTION ===== */
-    .hero{
-      background:var(--cream-strong);
-      border:1px solid var(--border);
-      border-radius:24px;
-      padding:24px;
-      box-shadow:var(--shadow);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      margin-bottom:12px;
-      text-align:center;
-    }
-    .eyebrow{
-      display:inline-block;
-      margin:0 0 8px;
-      padding:6px 10px;
-      border-radius:999px;
-      background:rgba(216,166,166,.28);
-      border:1px solid rgba(216,166,166,.42);
-      color:var(--pink-deep);
-      font-size:12px;
-      font-weight:800;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-    }
-    .hero h1{
-      margin:0 0 8px;
-      font-size:clamp(30px, 5vw, 46px);
-      line-height:1.04;
-      letter-spacing:.2px;
-      color:var(--text);
-    }
-    .hero p{
-      margin:0 auto;
-      color:var(--muted);
-      font-size:15px;
-      line-height:1.6;
-      max-width:720px;
-    }
-    /* ===== END HERO SECTION ===== */
-    /* ===== START CARD GRID ===== */
-    .grid{
-      display:grid;
-      gap:12px;
-      width:100%;
-    }
-    .card{
-      background:var(--cream);
-      border:1px solid var(--border);
-      border-radius:20px;
-      box-shadow:var(--shadow);
+        0 20px 55px var(--shadow),
+        inset 0 1px 0 rgba(255,255,255,0.58);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      padding:18px;
-      text-align:left;
     }
-    .card h2{
-      margin:0 0 8px;
-      font-size:20px;
-      line-height:1.15;
-      color:var(--text);
+
+    .hero {
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      padding: 42px 34px 48px;
+      text-align: center;
+      margin-bottom: 30px;
     }
-    .card p{
-      margin:0;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.6;
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 28px;
+      margin-bottom: 18px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(142, 88, 94, 0.2);
+      background: rgba(244, 218, 219, 0.58);
+      color: #9b7377;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
     }
-    .button-row{
-      margin-top:14px;
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      align-items:center;
+
+    h1,
+    h2,
+    p {
+      margin: 0;
     }
-    .button-row .btn{
-      flex:0 0 auto;
+
+    h1 {
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: clamp(2.45rem, 9vw, 4.9rem);
+      line-height: 0.96;
+      letter-spacing: 0.01em;
+      font-weight: 800;
+      margin-bottom: 22px;
     }
-    /* ===== END CARD GRID ===== */
-    /* ===== START REGISTRY CARD CENTERING ===== */
-    .registry-card{
-      text-align:center;
+
+    .hero-copy {
+      max-width: 760px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: clamp(1.35rem, 4.6vw, 2.25rem);
+      line-height: 1.52;
+      letter-spacing: 0.055em;
     }
-    .registry-card h2,
-    .registry-card p{
-      text-align:center;
+
+    .stack {
+      display: grid;
+      gap: 30px;
     }
-    .registry-card .button-row{
-      justify-content:center;
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-lg);
+      padding: 34px 38px 38px;
+      text-align: center;
     }
-    /* ===== END REGISTRY CARD CENTERING ===== */
-    /* ===== START DIGITAL GIFT SPARKLE EFFECT ===== */
-    .gift-card{
-      position:relative;
-      overflow:hidden;
-      text-align:center;
-      border-color:rgba(185,120,120,.70);
-      padding:18px 42px;
+
+    .card.with-sparkles {
+      border-color: rgba(255,255,255,0.68);
+      outline: 1px solid rgba(142, 88, 94, 0.18);
+      outline-offset: -2px;
+    }
+
+    .sparkle {
+      position: absolute;
+      color: #c49198;
+      font-size: 1.45rem;
+      line-height: 1;
+      pointer-events: none;
+      opacity: 0.9;
+    }
+
+    .sparkle.left-top {
+      top: 31px;
+      left: 32px;
+    }
+
+    .sparkle.right-top {
+      top: 31px;
+      right: 32px;
+    }
+
+    .sparkle.left-bottom {
+      bottom: 30px;
+      left: 33px;
+    }
+
+    .sparkle.right-bottom {
+      bottom: 30px;
+      right: 33px;
+    }
+
+    .section-title-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .section-title {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+      text-align: center;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: clamp(1.58rem, 6vw, 2.35rem);
+      line-height: 1.12;
+      font-weight: 800;
+      letter-spacing: 0.035em;
+    }
+
+    .digital-card .section-title {
+      transform: translateX(0);
+    }
+
+    .section-copy {
+      max-width: 760px;
+      margin: 22px auto 30px;
+      color: var(--muted);
+      font-size: clamp(1.14rem, 4.15vw, 1.72rem);
+      line-height: 1.55;
+      letter-spacing: 0.095em;
+      text-align: center;
+    }
+
+    .button-stack {
+      display: grid;
+      gap: 16px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .registry-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 72px;
+      width: 100%;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255,255,255,0.74);
+      background: linear-gradient(180deg, var(--pink), var(--pink-strong));
+      color: var(--ink);
+      text-decoration: none;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: clamp(1.08rem, 4.25vw, 1.55rem);
+      line-height: 1.18;
+      font-weight: 800;
+      letter-spacing: 0.055em;
+      text-align: center;
       box-shadow:
-        var(--shadow),
-        0 0 0 1px rgba(255,255,255,.34),
-        0 0 32px rgba(216,166,166,.38);
+        inset 0 1px 0 rgba(255,255,255,0.62),
+        0 8px 22px rgba(85, 46, 50, 0.08);
+      -webkit-tap-highlight-color: transparent;
     }
-    .gift-content{
-      position:relative;
-      z-index:3;
-      width:100%;
-      text-align:center;
+
+    .registry-button:active {
+      transform: translateY(1px);
     }
-    .gift-title{
-      display:block;
-      width:100%;
-      margin:0 0 8px;
-      padding:0;
-      text-align:center;
-      line-height:1.15;
+
+    .thanks {
+      border-radius: var(--radius-md);
+      padding: 26px 28px;
+      text-align: center;
+      color: var(--muted);
+      font-size: clamp(1.08rem, 4vw, 1.45rem);
+      line-height: 1.45;
+      letter-spacing: 0.055em;
     }
-    .gift-card h2,
-    .gift-card p{
-      text-align:center;
-    }
-    .gift-card p{
-      max-width:680px;
-      margin-left:auto;
-      margin-right:auto;
-    }
-    .gift-card .button-row{
-      justify-content:center;
-    }
-    .gift-card .corner-star{
-      position:absolute;
-      color:rgba(185,120,120,.92);
-      pointer-events:none;
-      line-height:1;
-      z-index:1;
-      text-shadow:
-        0 0 8px rgba(255,255,255,.95),
-        0 0 14px rgba(216,166,166,.52);
-      animation:cornerTwinkle 2.8s ease-in-out infinite;
-    }
-    .gift-card .corner-star.top-left{
-      top:13px;
-      left:16px;
-      font-size:18px;
-      animation-delay:.15s;
-    }
-    .gift-card .corner-star.top-right{
-      top:13px;
-      right:16px;
-      font-size:25px;
-      animation-delay:.75s;
-    }
-    .gift-card .corner-star.bottom-left{
-      bottom:15px;
-      left:18px;
-      font-size:15px;
-      animation-delay:1.25s;
-    }
-    .gift-card .corner-star.bottom-right{
-      bottom:15px;
-      right:22px;
-      font-size:20px;
-      animation-delay:1.8s;
-    }
-    @keyframes cornerTwinkle{
-      0%, 100%{
-        opacity:.42;
-        transform:scale(.86) rotate(0deg);
+
+    @media (max-width: 720px) {
+      :root {
+        --page-pad: 24px;
       }
-      35%{
-        opacity:1;
-        transform:scale(1.24) rotate(12deg);
+
+      .page {
+        padding-top: calc(env(safe-area-inset-top, 0px) + 0px);
       }
-      65%{
-        opacity:.70;
-        transform:scale(1) rotate(-8deg);
+
+      .top-nav {
+        display: none;
+      }
+
+      .hero {
+        margin-left: calc(var(--page-pad) * -1);
+        margin-right: calc(var(--page-pad) * -1);
+        border-left: 0;
+        border-right: 0;
+        border-radius: 0 0 34px 34px;
+        padding: 34px 30px 44px;
+      }
+
+      .card {
+        padding: 34px 34px 38px;
+      }
+
+      .section-copy {
+        margin-top: 22px;
+      }
+
+      .digital-card .section-title {
+        transform: translateX(3px);
       }
     }
-    @media (prefers-reduced-motion: reduce){
-      .gift-card .corner-star{
-        animation:none;
+
+    @media (max-width: 430px) {
+      :root {
+        --page-pad: 12px;
+      }
+
+      .hero {
+        padding: 32px 22px 40px;
+        margin-bottom: 26px;
+      }
+
+      .eyebrow {
+        padding-inline: 22px;
+        font-size: 0.72rem;
+      }
+
+      .stack {
+        gap: 24px;
+      }
+
+      .card {
+        border-radius: 28px;
+        padding: 31px 18px 33px;
+      }
+
+      .section-title {
+        font-size: 1.55rem;
+        letter-spacing: 0.025em;
+      }
+
+      .digital-card .section-title {
+        transform: translateX(4px);
+      }
+
+      .section-copy {
+        font-size: 1.08rem;
+        line-height: 1.55;
+        letter-spacing: 0.075em;
+        margin: 22px auto 28px;
+      }
+
+      .button-stack {
+        gap: 13px;
+      }
+
+      .registry-button {
+        min-height: 62px;
+        font-size: 1.02rem;
+        letter-spacing: 0.045em;
+        padding: 0 18px;
+      }
+
+      .sparkle.left-top {
+        top: 28px;
+        left: 26px;
+      }
+
+      .sparkle.right-top {
+        top: 28px;
+        right: 26px;
+      }
+
+      .sparkle.left-bottom {
+        bottom: 26px;
+        left: 27px;
+      }
+
+      .sparkle.right-bottom {
+        bottom: 26px;
+        right: 27px;
+      }
+
+      .thanks {
+        border-radius: 22px;
+        padding: 24px 22px;
       }
     }
-    /* ===== END DIGITAL GIFT SPARKLE EFFECT ===== */
-    /* ===== START FOOTER NOTE ===== */
-    .footer-note{
-      margin:14px auto 0;
-      text-align:center;
-      color:rgba(60,47,47,.78);
-      font-size:12px;
-      line-height:1.45;
-      background:rgba(255,248,244,.68);
-      border:1px solid var(--border);
-      border-radius:16px;
-      padding:11px 14px;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      max-width:720px;
-    }
-    /* ===== END FOOTER NOTE ===== */
-    /* ===== START COPY TOAST ===== */
-    .toast{
-      position:fixed;
-      left:50%;
-      bottom:calc(14px + env(safe-area-inset-bottom));
-      transform:translateX(-50%) translateY(12px);
-      z-index:70;
-      background:rgba(60,47,47,.88);
-      color:#fff;
-      border:1px solid rgba(255,255,255,.35);
-      border-radius:999px;
-      padding:10px 14px;
-      font-size:13px;
-      box-shadow:0 8px 24px rgba(80,45,45,.24);
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .18s ease, transform .18s ease;
-      white-space:nowrap;
-    }
-    .toast.show{
-      opacity:1;
-      transform:translateX(-50%) translateY(0);
-    }
-    /* ===== END COPY TOAST ===== */
-    /* ===== START MODAL ===== */
-    .overlay{
-      position:fixed;
-      inset:0;
-      z-index:80;
-      background:rgba(60,47,47,.38);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .18s ease;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:16px;
-    }
-    .overlay.show{
-      opacity:1;
-      pointer-events:auto;
-    }
-    .modal{
-      width:min(520px, 100%);
-      background:rgba(255,248,244,.94);
-      border:1px solid var(--border);
-      border-radius:18px;
-      box-shadow:0 20px 48px rgba(80,45,45,.24);
-      padding:16px;
-      color:var(--text);
-    }
-    .modal-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:8px;
-      margin-bottom:6px;
-    }
-    .modal-title{
-      margin:0;
-      font-size:17px;
-      font-weight:750;
-      line-height:1.15;
-    }
-    .xbtn{
-      appearance:none;
-      border:1px solid rgba(216,166,166,.55);
-      background:rgba(255,255,255,.72);
-      color:var(--text);
-      width:36px;
-      height:36px;
-      border-radius:999px;
-      font-size:18px;
-      line-height:1;
-      cursor:pointer;
-    }
-    .modal p{
-      margin:8px 0 0;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.45;
-    }
-    .modal-actions{
-      margin-top:12px;
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-    .light-btn{
-      appearance:none;
-      border:1px solid rgba(216,166,166,.55);
-      background:rgba(255,255,255,.78);
-      color:var(--text);
-      padding:10px 12px;
-      border-radius:999px;
-      font-size:14px;
-      font-weight:650;
-      line-height:1;
-      text-decoration:none;
-      cursor:pointer;
-      box-shadow:0 6px 16px rgba(80,45,45,.10);
-      text-align:center;
-    }
-    .light-btn.primary{
-      background:rgba(185,120,120,.92);
-      color:#fff;
-      border-color:rgba(185,120,120,.92);
-    }
-    /* ===== END MODAL ===== */
-    /* ===== START MOBILE BACKGROUND EXTENSION ===== */
-    @media (max-width: 640px){
-      html,
-      body{
-        background:
-          var(--bg-overlay),
-          url("assets/bg.jpg?v=37") center center / cover no-repeat #000;
+
+    @media (max-width: 360px) {
+      .card {
+        padding-left: 16px;
+        padding-right: 16px;
       }
-      .bg{
-        background:
-          var(--bg-overlay),
-          url("assets/bg.jpg?v=37") center center / cover no-repeat #000;
+
+      .section-title {
+        font-size: 1.42rem;
+      }
+
+      .digital-card .section-title {
+        transform: translateX(3px);
+      }
+
+      .registry-button {
+        font-size: 0.96rem;
+        letter-spacing: 0.035em;
       }
     }
-    /* ===== END MOBILE BACKGROUND EXTENSION ===== */
-    /* ===== START MOBILE STYLES ===== */
-    @media (max-width: 640px){
-      .wrap{
-        width:min(100% - 24px, 940px);
-        padding-top:14px;
-      }
-      .topbar{
-        justify-content:center;
-      }
-      .topbar .nav-btn{
-        flex:1 1 calc(50% - 8px);
-        min-width:0;
-      }
-      .hero{
-        padding:20px 16px;
-        border-radius:22px;
-      }
-      .card{
-        padding:16px;
-        border-radius:20px;
-        text-align:center;
-      }
-      .gift-card{
-        padding:18px 16px;
-      }
-      .gift-content{
-        width:100%;
-        text-align:center;
-      }
-      .gift-title{
-        width:100%;
-        text-align:center;
-        margin-left:0;
-        margin-right:0;
-      }
-      .gift-card .corner-star.top-left{
-        top:10px;
-        left:12px;
-        font-size:14px;
-      }
-      .gift-card .corner-star.top-right{
-        top:10px;
-        right:12px;
-        font-size:16px;
-      }
-      .gift-card .corner-star.bottom-left{
-        bottom:12px;
-        left:14px;
-        font-size:13px;
-      }
-      .gift-card .corner-star.bottom-right{
-        bottom:12px;
-        right:14px;
-        font-size:15px;
-      }
-      .button-row{
-        justify-content:center;
-      }
-      .button-row .btn{
-        flex:1 1 100%;
-        width:100%;
-        white-space:normal;
-      }
-      .modal-actions .light-btn{
-        flex:1 1 100%;
-        text-align:center;
-      }
-      .toast{
-        max-width:92vw;
-        text-align:center;
-        white-space:normal;
-      }
-    }
-    @media (max-width: 380px){
-      .wrap{
-        width:min(100% - 18px, 940px);
-      }
-      .topbar .nav-btn{
-        flex:1 1 100%;
-      }
-      .gift-card{
-        padding:18px 14px;
-      }
-    }
-    /* ===== END MOBILE STYLES ===== */
   </style>
-  <!-- ===== END PAGE STYLES ===== -->
 </head>
+
 <body>
-  <!-- ===== START BACKGROUND IMAGE MARKUP ===== -->
-  <div class="bg" aria-hidden="true">
-    <img src="assets/bg.jpg?v=37" alt="">
-  </div>
-  <!-- ===== END BACKGROUND IMAGE MARKUP ===== -->
-  <!-- ===== START MAIN PAGE CONTENT ===== -->
-  <main class="wrap">
-    <!-- ===== START SITE NAVIGATION ===== -->
-    <nav class="topbar" aria-label="Site navigation">
-      <a class="nav-btn" href="index.html">Home</a>
-      <a class="nav-btn" href="venue.html">Venue</a>
-      <a class="nav-btn" href="faq.html">FAQ</a>
-      <a class="nav-btn active" href="registry.html" aria-current="page">Registry</a>
+  <main class="page">
+    <nav class="top-nav" aria-label="Wedding pages">
+      <a class="nav-pill" href="/">Wedding Registry</a>
     </nav>
-    <!-- ===== END SITE NAVIGATION ===== -->
-    <!-- ===== START HERO / INTRO SECTION ===== -->
-    <section class="hero">
-      <span class="eyebrow">Wedding Registry</span>
-      <h1>Registry</h1>
-      <p>
+
+    <section class="hero" aria-labelledby="registry-title">
+      <div class="eyebrow">Wedding Registry</div>
+      <h1 id="registry-title">Registry</h1>
+      <p class="hero-copy">
         If you’d like to celebrate our wedding with a gift, we’re grateful for anything from our registries or the digital gift options below.
       </p>
     </section>
-    <!-- ===== END HERO / INTRO SECTION ===== -->
-    <!-- ===== START REGISTRY OPTIONS SECTION ===== -->
-    <section class="grid" aria-label="Registry options">
-      <!-- ===== START WEDDING REGISTRIES CARD ===== -->
-      <div class="card registry-card">
-        <h2>Wedding Registries</h2>
-        <p>Shop directly from our registries:</p>
-        <!-- ===== START REGISTRY BUTTON LINKS ===== -->
-        <div class="button-row">
-          <a class="btn" href="https://www.amazon.com/wedding/organize-registry?ref_=gr-home-wedding-viewyr" target="_blank" rel="noopener noreferrer">Amazon</a>
-          <a class="btn" href="https://www.crateandbarrel.com/gift-registry/registrant-list/7505503" target="_blank" rel="noopener noreferrer">Crate and Barrel</a>
-          <a class="btn" href="https://www.westelm.com/registry/dhtvd7bsr2/registry-list.html" target="_blank" rel="noopener noreferrer">West Elm</a>
-          <a class="btn" href="https://www.williams-sonoma.com/registry/dhtvd7bsr2/registry-list.html" target="_blank" rel="noopener noreferrer">Williams Sonoma</a>
+
+    <div class="stack">
+      <section class="card" aria-labelledby="wedding-registries-title">
+        <div class="section-title-wrap">
+          <h2 class="section-title" id="wedding-registries-title">Wedding Registries</h2>
         </div>
-        <!-- ===== END REGISTRY BUTTON LINKS ===== -->
-      </div>
-      <!-- ===== END WEDDING REGISTRIES CARD ===== -->
-      <!-- ===== START DIGITAL GIFT OPTIONS CARD ===== -->
-      <div class="card gift-card">
-        <span class="corner-star top-left" aria-hidden="true">✦</span>
-        <span class="corner-star top-right" aria-hidden="true">✦</span>
-        <span class="corner-star bottom-left" aria-hidden="true">✦</span>
-        <span class="corner-star bottom-right" aria-hidden="true">✦</span>
-        <div class="gift-content">
-          <h2 class="gift-title">Digital Gift Options</h2>
-          <p>
-            We’ve included a few options for guests who prefer to send a digital gift.
-          </p>
-          <!-- ===== START DIGITAL GIFT BUTTONS ===== -->
-          <div class="button-row">
-            <button id="venmoBtn" class="btn" type="button">Venmo</button>
-            <button id="zelleBtn" class="btn" type="button">Zelle</button>
-            <a class="btn" href="https://square.link/u/WVQNx6YM" target="_blank" rel="noopener noreferrer">Apple Pay / Google Pay / Credit Card</a>
-          </div>
-          <!-- ===== END DIGITAL GIFT BUTTONS ===== -->
+
+        <p class="section-copy">Shop directly from our registries:</p>
+
+        <div class="button-stack">
+          <a class="registry-button" href="#" target="_blank" rel="noopener">Amazon</a>
+          <a class="registry-button" href="#" target="_blank" rel="noopener">Crate and Barrel</a>
+          <a class="registry-button" href="#" target="_blank" rel="noopener">West Elm</a>
+          <a class="registry-button" href="#" target="_blank" rel="noopener">Williams Sonoma</a>
         </div>
-      </div>
-      <!-- ===== END DIGITAL GIFT OPTIONS CARD ===== -->
-    </section>
-    <!-- ===== END REGISTRY OPTIONS SECTION ===== -->
-    <!-- ===== START FOOTER THANK YOU NOTE ===== -->
-    <p class="footer-note">
-      Thank you so much for celebrating with us. We appreciate your love and support.
-    </p>
-    <!-- ===== END FOOTER THANK YOU NOTE ===== -->
-  </main>
-  <!-- ===== END MAIN PAGE CONTENT ===== -->
-  <!-- ===== START DIGITAL GIFT MODAL ===== -->
-  <div id="overlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true">
-    <div class="modal" role="document">
-      <div class="modal-head">
-        <h3 id="modalTitle" class="modal-title">Digital Gift</h3>
-        <button id="closeModalBtn" class="xbtn" type="button" aria-label="Close">×</button>
-      </div>
-      <p id="modalText"></p>
-      <div class="modal-actions" id="modalActions"></div>
+      </section>
+
+      <section class="card with-sparkles digital-card" aria-labelledby="digital-gift-options-title">
+        <span class="sparkle left-top" aria-hidden="true">✦</span>
+        <span class="sparkle right-top" aria-hidden="true">✦</span>
+        <span class="sparkle left-bottom" aria-hidden="true">✦</span>
+        <span class="sparkle right-bottom" aria-hidden="true">✦</span>
+
+        <div class="section-title-wrap">
+          <h2 class="section-title" id="digital-gift-options-title">Digital Gift Options</h2>
+        </div>
+
+        <p class="section-copy">
+          We’ve included a few options for guests who prefer to send a digital gift.
+        </p>
+
+        <div class="button-stack">
+          <a class="registry-button" href="#" target="_blank" rel="noopener">Venmo</a>
+          <a class="registry-button" href="#" target="_blank" rel="noopener">Zelle</a>
+          <a class="registry-button" href="#" target="_blank" rel="noopener">Apple Pay / Google Pay / Credit Card</a>
+        </div>
+      </section>
+
+      <section class="thanks" aria-label="Thank you">
+        Thank you so much for celebrating with us. We appreciate your love and support.
+      </section>
     </div>
-  </div>
-  <!-- ===== END DIGITAL GIFT MODAL ===== -->
-  <!-- ===== START COPY CONFIRMATION TOAST ===== -->
-  <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
-  <!-- ===== END COPY CONFIRMATION TOAST ===== -->
-  <!-- ===== START PAGE SCRIPT ===== -->
-  <script>
-    (function(){
-      /* ===== START SAFARI / MOBILE CHROME COLOR CONTROL ===== */
-      const DESKTOP_CHROME_COLOR = '#736f6e';
-      const DESKTOP_CHROME_COLOR_NUDGE = '#706c6b';
-      const MOBILE_BREAKPOINT = 640;
-      let lastChromeMode = null;
-      function isMobileViewport(){
-        return window.matchMedia('(max-width: ' + MOBILE_BREAKPOINT + 'px)').matches;
-      }
-      function clearThemeColors(){
-        document
-          .querySelectorAll('meta[name="theme-color"]')
-          .forEach((el) => el.remove());
-      }
-      function applyChromeColorMode(){
-        const mode = isMobileViewport() ? 'mobile' : 'desktop';
-        if (mode === lastChromeMode) return;
-        lastChromeMode = mode;
-        clearThemeColors();
-        if (mode === 'mobile'){
-          return;
-        }
-        const metaLight = document.createElement('meta');
-        metaLight.name = 'theme-color';
-        metaLight.content = DESKTOP_CHROME_COLOR;
-        metaLight.setAttribute('media', '(prefers-color-scheme: light)');
-        document.head.appendChild(metaLight);
-        const metaDark = document.createElement('meta');
-        metaDark.name = 'theme-color';
-        metaDark.content = DESKTOP_CHROME_COLOR;
-        metaDark.setAttribute('media', '(prefers-color-scheme: dark)');
-        document.head.appendChild(metaDark);
-        const meta = document.createElement('meta');
-        meta.name = 'theme-color';
-        meta.content = DESKTOP_CHROME_COLOR;
-        document.head.appendChild(meta);
-        requestAnimationFrame(() => {
-          meta.content = DESKTOP_CHROME_COLOR_NUDGE;
-          requestAnimationFrame(() => {
-            meta.content = DESKTOP_CHROME_COLOR;
-          });
-        });
-      }
-      applyChromeColorMode();
-      window.addEventListener('pageshow', () => {
-        lastChromeMode = null;
-        applyChromeColorMode();
-      });
-      window.addEventListener('resize', applyChromeColorMode);
-      window.addEventListener('orientationchange', () => {
-        lastChromeMode = null;
-        setTimeout(applyChromeColorMode, 80);
-      });
-      document.addEventListener('visibilitychange', () => {
-        if (!document.hidden){
-          lastChromeMode = null;
-          applyChromeColorMode();
-        }
-      });
-      /* ===== END SAFARI / MOBILE CHROME COLOR CONTROL ===== */
-      /* ===== START DIGITAL GIFT VALUES ===== */
-      const VENMO_HANDLE = 'PayToby';
-      const ZELLE_VALUE = '347-636-5211';
-      const VENMO_URL = 'https://venmo.com/' + encodeURIComponent(VENMO_HANDLE);
-      /* ===== END DIGITAL GIFT VALUES ===== */
-      /* ===== START ELEMENT REFERENCES ===== */
-      const venmoBtn = document.getElementById('venmoBtn');
-      const zelleBtn = document.getElementById('zelleBtn');
-      const overlay = document.getElementById('overlay');
-      const modalTitle = document.getElementById('modalTitle');
-      const modalText = document.getElementById('modalText');
-      const modalActions = document.getElementById('modalActions');
-      const closeModalBtn = document.getElementById('closeModalBtn');
-      const toast = document.getElementById('toast');
-      /* ===== END ELEMENT REFERENCES ===== */
-      let toastTimer = null;
-      /* ===== START TOAST MESSAGE FUNCTION ===== */
-      function showToast(msg){
-        toast.textContent = msg;
-        toast.classList.add('show');
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
-      }
-      /* ===== END TOAST MESSAGE FUNCTION ===== */
-      /* ===== START COPY TO CLIPBOARD FUNCTION ===== */
-      async function copyText(value, successMessage){
-        try {
-          await navigator.clipboard.writeText(value);
-          showToast(successMessage);
-          return true;
-        } catch {
-          const ta = document.createElement('textarea');
-          ta.value = value;
-          ta.setAttribute('readonly', '');
-          ta.style.position = 'fixed';
-          ta.style.opacity = '0';
-          document.body.appendChild(ta);
-          ta.select();
-          let ok = false;
-          try {
-            ok = document.execCommand('copy');
-          } catch {}
-          ta.remove();
-          showToast(ok ? successMessage : 'Copy failed. Please try again.');
-          return ok;
-        }
-      }
-      /* ===== END COPY TO CLIPBOARD FUNCTION ===== */
-      /* ===== START MODAL ACTION HELPERS ===== */
-      function clearModalActions(){
-        modalActions.innerHTML = '';
-      }
-      function makeActionButton(opts){
-        const el = opts.href ? document.createElement('a') : document.createElement('button');
-        el.className = 'light-btn' + (opts.primary ? ' primary' : '');
-        if (opts.href){
-          el.href = opts.href;
-          el.target = '_blank';
-          el.rel = 'noopener noreferrer';
-        } else {
-          el.type = 'button';
-          el.addEventListener('click', opts.onClick);
-        }
-        el.textContent = opts.label;
-        return el;
-      }
-      /* ===== END MODAL ACTION HELPERS ===== */
-      /* ===== START OPEN MODAL FUNCTION ===== */
-      function openModal(kind){
-        clearModalActions();
-        if (kind === 'venmo'){
-          modalTitle.textContent = 'Venmo';
-          modalText.textContent = 'Use the buttons below to open Venmo or copy our Venmo handle.';
-          modalActions.appendChild(makeActionButton({
-            label: 'Open Venmo',
-            href: VENMO_URL,
-            primary: true
-          }));
-          modalActions.appendChild(makeActionButton({
-            label: 'Copy Venmo Handle',
-            onClick: () => copyText(VENMO_HANDLE, 'Venmo handle copied')
-          }));
-        }
-        if (kind === 'zelle'){
-          modalTitle.textContent = 'Zelle';
-          modalText.textContent = 'Use the button below to copy our Zelle number, then paste it into your banking app.';
-          modalActions.appendChild(makeActionButton({
-            label: 'Copy Zelle Number',
-            onClick: () => copyText(ZELLE_VALUE, 'Zelle number copied'),
-            primary: true
-          }));
-        }
-        overlay.classList.add('show');
-        overlay.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-      }
-      /* ===== END OPEN MODAL FUNCTION ===== */
-      /* ===== START CLOSE MODAL FUNCTION ===== */
-      function closeModal(){
-        overlay.classList.remove('show');
-        overlay.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-      }
-      /* ===== END CLOSE MODAL FUNCTION ===== */
-      /* ===== START EVENT LISTENERS ===== */
-      venmoBtn.addEventListener('click', () => openModal('venmo'));
-      zelleBtn.addEventListener('click', () => openModal('zelle'));
-      closeModalBtn.addEventListener('click', closeModal);
-      overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) closeModal();
-      });
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeModal();
-      });
-      /* ===== END EVENT LISTENERS ===== */
-    })();
-  </script>
-  <!-- ===== END PAGE SCRIPT ===== -->
+  </main>
 </body>
 </html>
