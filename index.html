@@ -1,5 +1,7 @@
 <!doctype html>
 <html lang="en">
+
+<!-- ===== START HEAD / PAGE METADATA ===== -->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -42,199 +44,465 @@
   <link rel="preload" as="image" href="assets/bg.jpg?v=37" fetchpriority="high">
   <link rel="preload" as="image" href="assets/weddinginvite.png?v=15" fetchpriority="high">
   <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=37">
+  <!-- ===== END HEAD / PAGE METADATA ===== -->
 
+  <!-- ===== START PAGE STYLES ===== -->
   <style>
-    :root { --fallback:#000; --hint-bg: rgba(255,255,255,.74); --hint-fg:#111; }
+    /* ===== START DESIGN VARIABLES ===== */
+    :root{
+      --text:#3c2f2f;
+      --muted:#6f5959;
+      --pink:#d8a6a6;
+      --pink-dark:#c98f8f;
+      --pink-deep:#b97878;
+      --pink-light:#f3dede;
+      --cream:rgba(255,248,244,.78);
+      --cream-strong:rgba(255,248,244,.90);
+      --border:rgba(216,166,166,.48);
+      --shadow:0 20px 48px rgba(80,45,45,.16);
+      --fallback:#000;
+    }
+    /* ===== END DESIGN VARIABLES ===== */
 
+    /* ===== START BASE PAGE RESET ===== */
     html, body{
       height:100%;
       margin:0;
       background:var(--fallback);
       overflow:hidden;
+      color:var(--text);
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
     }
 
-    @keyframes fadeBg { from {opacity:0} to {opacity:1} }
-    @keyframes fadeCard {
-      from {opacity:0; transform:translate(-50%,-48%) scale(.985)}
-      to   {opacity:1; transform:translate(-50%,-50%) scale(1)}
+    *{ box-sizing:border-box; }
+    /* ===== END BASE PAGE RESET ===== */
+
+    /* ===== START ANIMATIONS ===== */
+    @keyframes fadeBg{
+      from{ opacity:0; }
+      to{ opacity:1; }
     }
 
-    .bg { position:fixed; inset:0; opacity:0; animation:fadeBg 900ms ease-out .05s forwards; }
-    .bg img { width:100vw; height:100vh; object-fit:cover; object-position:center; user-select:none; -webkit-user-drag:none; }
+    @keyframes fadeCard{
+      from{
+        opacity:0;
+        transform:translate(-50%,-48%) scale(.985);
+      }
 
+      to{
+        opacity:1;
+        transform:translate(-50%,-50%) scale(1);
+      }
+    }
+    /* ===== END ANIMATIONS ===== */
+
+    /* ===== START BACKGROUND IMAGE ===== */
+    .bg{
+      position:fixed;
+      inset:0;
+      opacity:0;
+      animation:fadeBg 900ms ease-out .05s forwards;
+    }
+
+    .bg img{
+      width:100vw;
+      height:100vh;
+      object-fit:cover;
+      object-position:center;
+      user-select:none;
+      -webkit-user-drag:none;
+      filter:brightness(1.04) saturate(.96);
+    }
+
+    .bg::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255,246,242,.46),
+          rgba(255,246,242,.20) 45%,
+          rgba(255,246,242,.36)
+        );
+      pointer-events:none;
+    }
+    /* ===== END BACKGROUND IMAGE ===== */
+
+    /* ===== START INVITATION IMAGE ===== */
     .invite{
-      position:fixed; left:50%; top:50%;
+      position:fixed;
+      left:50%;
+      top:50%;
       transform:translate(-50%,-50%);
-      max-width:min(92vw,900px); max-height:88vh;
-      width:auto; height:auto; display:block;
-      border-radius:12px; background:#fff;
-      box-shadow:0 20px 48px rgba(0,0,0,.25);
-      opacity:0; animation:fadeCard .75s cubic-bezier(.21,.98,.25,.99) .2s forwards;
-      cursor:zoom-in; user-select:none; -webkit-user-drag:none; z-index:1;
+      max-width:min(92vw,900px);
+      max-height:88vh;
+      width:auto;
+      height:auto;
+      display:block;
+      border-radius:14px;
+      background:#fff;
+      box-shadow:0 20px 48px rgba(80,45,45,.20);
+      opacity:0;
+      animation:fadeCard .75s cubic-bezier(.21,.98,.25,.99) .2s forwards;
+      cursor:zoom-in;
+      user-select:none;
+      -webkit-user-drag:none;
+      z-index:1;
     }
+    /* ===== END INVITATION IMAGE ===== */
 
+    /* ===== START TAP TO ZOOM HINT ===== */
     .hint{
-      position:fixed; left:50%;
+      position:fixed;
+      left:50%;
       bottom:calc(84px + env(safe-area-inset-bottom));
       transform:translateX(-50%);
-      padding:8px 12px; border-radius:999px;
-      background:var(--hint-bg); color:var(--hint-fg); font-size:13px;
-      box-shadow:0 8px 24px rgba(0,0,0,.12);
-      z-index:30; border:0; cursor:pointer;
-      opacity:0; transition: opacity 600ms ease, transform 600ms ease;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.64);
+      background:rgba(216,166,166,.72);
+      color:var(--text);
+      font-size:14px;
+      font-weight:700;
+      line-height:1.15;
+      box-shadow:0 8px 24px rgba(80,45,45,.15);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      z-index:30;
+      cursor:pointer;
+      opacity:0;
+      transition:opacity 600ms ease, transform 600ms ease, background .15s ease, border-color .15s ease;
     }
-    .hint.show{ opacity:1; transform:translate(-50%, -4px); }
-    .hint.hide{ opacity:0; transform:translate(-50%, 4px); }
 
-    .lightbox{
-      position:fixed; inset:0; background:rgba(0,0,0,.6);
-      display:flex; align-items:center; justify-content:center;
-      opacity:0; pointer-events:none; z-index:10;
-      transition:opacity 280ms ease, background-color 180ms ease;
-      -webkit-backdrop-filter: blur(8px) saturate(120%);
-      backdrop-filter: blur(8px) saturate(120%);
+    .hint:hover{
+      background:rgba(216,166,166,.88);
+      border-color:rgba(255,255,255,.76);
     }
-    .lightbox.visible{ opacity:1; pointer-events:auto; }
-    .lightbox.closing{ background:rgba(0,0,0,.95); }
+
+    .hint.show{
+      opacity:1;
+      transform:translate(-50%, -4px);
+    }
+
+    .hint.hide{
+      opacity:0;
+      transform:translate(-50%, 4px);
+    }
+    /* ===== END TAP TO ZOOM HINT ===== */
+
+    /* ===== START LIGHTBOX / ZOOM VIEW ===== */
+    .lightbox{
+      position:fixed;
+      inset:0;
+      background:rgba(60,47,47,.38);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      opacity:0;
+      pointer-events:none;
+      z-index:10;
+      transition:opacity 280ms ease, background-color 180ms ease;
+      -webkit-backdrop-filter:blur(8px) saturate(120%);
+      backdrop-filter:blur(8px) saturate(120%);
+    }
+
+    .lightbox.visible{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .lightbox.closing{
+      background:rgba(60,47,47,.70);
+    }
 
     .lightbox img{
-      max-width:94vw; max-height:92vh; border-radius:14px;
-      box-shadow:0 24px 64px rgba(0,0,0,.6);
+      max-width:94vw;
+      max-height:92vh;
+      border-radius:14px;
+      box-shadow:0 24px 64px rgba(80,45,45,.40);
       transform:scale(.96);
       transition:transform 280ms cubic-bezier(.23,1,.32,1);
       touch-action:pinch-zoom;
       cursor:zoom-out;
     }
-    .lightbox.visible img{ transform:scale(1); }
 
-    .close, .menu-close{
+    .lightbox.visible img{
+      transform:scale(1);
+    }
+    /* ===== END LIGHTBOX / ZOOM VIEW ===== */
+
+    /* ===== START CLOSE BUTTONS ===== */
+    .close,
+    .menu-close{
       position:fixed;
       top:calc(12px + env(safe-area-inset-top));
       right:calc(12px + env(safe-area-inset-right));
-      width:44px; height:44px;
-      border:0; border-radius:999px;
-      background:#fff; color:#000;
-      font-size:22px; line-height:1; cursor:pointer;
-      opacity:0; pointer-events:none; transform:scale(.85);
-      transition:opacity 260ms ease .1s, transform 260ms ease .1s;
+      width:44px;
+      height:44px;
+      border:1px solid rgba(216,166,166,.55);
+      border-radius:999px;
+      background:rgba(255,248,244,.94);
+      color:var(--text);
+      font-size:22px;
+      line-height:1;
+      cursor:pointer;
+      opacity:0;
+      pointer-events:none;
+      transform:scale(.85);
+      box-shadow:0 8px 24px rgba(80,45,45,.18);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      transition:opacity 260ms ease .1s, transform 260ms ease .1s, background .15s ease;
     }
-    .close{ z-index:45; }
-    .menu-close{ z-index:34; background:rgba(255,255,255,.92); }
 
-    .lightbox.visible .close{ opacity:1; pointer-events:auto; transform:scale(1); }
-    body.menu-open .menu-close{ opacity:1; pointer-events:auto; transform:scale(1); }
-    body.zoom-open .menu-close{ opacity:0; pointer-events:none; }
+    .close:hover,
+    .menu-close:hover{
+      background:rgba(255,248,244,1);
+    }
 
+    .close{
+      z-index:45;
+    }
+
+    .menu-close{
+      z-index:34;
+    }
+
+    .lightbox.visible .close{
+      opacity:1;
+      pointer-events:auto;
+      transform:scale(1);
+    }
+
+    body.menu-open .menu-close{
+      opacity:1;
+      pointer-events:auto;
+      transform:scale(1);
+    }
+
+    body.zoom-open .menu-close{
+      opacity:0;
+      pointer-events:none;
+    }
+    /* ===== END CLOSE BUTTONS ===== */
+
+    /* ===== START ACTION MENU ===== */
     .actions{
-      position:fixed; left:50%;
+      position:fixed;
+      left:50%;
       bottom:calc(16px + env(safe-area-inset-bottom));
       transform:translateX(-50%);
       z-index:30;
-      display:flex; gap:8px; flex-wrap:nowrap; overflow-x:auto;
-      -webkit-overflow-scrolling: touch; scrollbar-width:none;
-      max-width:min(92vw,980px); padding:0 8px;
-      opacity:0; pointer-events:none;
+      display:flex;
+      gap:8px;
+      flex-wrap:nowrap;
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+      max-width:min(92vw,980px);
+      padding:0 8px;
+      opacity:0;
+      pointer-events:none;
       transition:opacity .28s ease, transform .28s ease, bottom .28s ease;
     }
-    .actions::-webkit-scrollbar{ display:none; }
+
+    .actions::-webkit-scrollbar{
+      display:none;
+    }
 
     .actions.show{
       bottom:calc(84px + env(safe-area-inset-bottom));
-      opacity:1; pointer-events:auto;
+      opacity:1;
+      pointer-events:auto;
       transform:translateX(-50%) translateY(-4px);
     }
 
     body.zoom-open .actions{
       bottom:calc(16px + env(safe-area-inset-bottom));
-      opacity:1; pointer-events:auto;
+      opacity:1;
+      pointer-events:auto;
       transform:translateX(-50%) translateY(-4px);
+    }
+    /* ===== END ACTION MENU ===== */
+
+    /* ===== START SHARED PINK BUTTON STYLE ===== */
+    .btn,
+    .pill{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.64);
+      color:var(--text);
+      background:rgba(216,166,166,.72);
+      padding:10px 14px;
+      border-radius:999px;
+      font-size:14px;
+      font-weight:700;
+      line-height:1.15;
+      text-decoration:none;
+      cursor:pointer;
+      white-space:nowrap;
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      box-shadow:0 8px 24px rgba(80,45,45,.15);
+      transition:transform .15s ease, background .15s ease, box-shadow .15s ease, border-color .15s ease;
+      text-align:center;
+      user-select:none;
+    }
+
+    .btn:hover,
+    .pill:hover{
+      transform:translateY(-1px);
+      background:rgba(216,166,166,.88);
+      border-color:rgba(255,255,255,.76);
     }
 
     .btn{
-      appearance:none;
-      border:1px solid rgba(255,255,255,.6);
-      color:#fff; background:rgba(0,0,0,.45);
-      padding:10px 14px; border-radius:999px;
-      font-size:14px; line-height:1.15;
-      backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
-      box-shadow:0 8px 24px rgba(0,0,0,.18);
-      cursor:pointer; flex:0 0 auto; white-space:nowrap; text-decoration:none;
+      flex:0 0 auto;
     }
 
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .pill.on{
+      background:rgba(185,120,120,.92);
+      color:#fff;
+      border-color:rgba(255,255,255,.82);
+      box-shadow:
+        0 10px 28px rgba(80,45,45,.22),
+        inset 0 0 0 1px rgba(255,255,255,.20);
+    }
+
+    .pill .dot{
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:rgba(185,120,120,.70);
+      box-shadow:0 0 0 1px rgba(255,255,255,.32);
+    }
+
+    .pill.on .dot{
+      background:#fff;
+      box-shadow:0 0 10px rgba(255,255,255,.72);
+    }
+    /* ===== END SHARED PINK BUTTON STYLE ===== */
+
+    /* ===== START CALENDAR POPUP ===== */
     .calendar-pop{
       position:fixed;
-      left:0; top:0;
+      left:0;
+      top:0;
       transform:translate(-9999px,-9999px);
-      display:flex; flex-direction:column; gap:6px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
       z-index:80;
       opacity:0;
       visibility:hidden;
       pointer-events:none;
-      transition: opacity .16s ease;
+      transition:opacity .16s ease;
     }
+
     .calendar-pop.show{
       opacity:1;
       visibility:visible;
       pointer-events:auto;
     }
+
     .calendar-pop .btn{
-      text-align:center;
-      background:rgba(0,0,0,.78);
-      border-color:rgba(255,255,255,.8);
       min-width:180px;
+      background:rgba(255,248,244,.92);
+      border:1px solid rgba(216,166,166,.55);
+      color:var(--text);
+      box-shadow:0 8px 24px rgba(80,45,45,.16);
     }
 
+    .calendar-pop .btn:hover{
+      background:rgba(255,248,244,1);
+    }
+    /* ===== END CALENDAR POPUP ===== */
+
+    /* ===== START BOTTOM DOCK ===== */
     .dock{
-      position:fixed; left:12px;
+      position:fixed;
+      left:12px;
       bottom:calc(12px + env(safe-area-inset-bottom));
-      display:flex; align-items:center; gap:8px; z-index:20;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      z-index:20;
       transition:opacity .2s ease, transform .2s ease;
     }
 
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:10px 12px; border-radius:999px;
-      border:1px solid rgba(255,255,255,.5);
-      background:rgba(0,0,0,.40); color:#fff; font-size:14px;
-      backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
-      box-shadow:0 8px 24px rgba(0,0,0,.18);
-      cursor:pointer; user-select:none;
-      transition:opacity .25s ease, transform .25s ease, background .25s ease;
-    }
-    .pill .dot{ width:8px; height:8px; border-radius:999px; background:#ff4d4f; }
-    .pill.on .dot{ background:#3bd16f; }
-
     body.zoom-open .dock{
-      opacity:0; pointer-events:none; transform:translateY(8px);
+      opacity:0;
+      pointer-events:none;
+      transform:translateY(8px);
     }
+    /* ===== END BOTTOM DOCK ===== */
 
+    /* ===== START MOBILE STYLES ===== */
     @media (max-width: 430px){
       .actions{
-        overflow-x:visible; flex-wrap:wrap; justify-content:center;
-        row-gap:8px; max-width:92vw; padding:0 12px;
+        overflow-x:visible;
+        flex-wrap:wrap;
+        justify-content:center;
+        row-gap:8px;
+        max-width:92vw;
+        padding:0 12px;
       }
-      .btn{ flex:1 1 calc(50% - 8px); text-align:center; }
-      .calendar-pop .btn{ min-width:160px; }
-    }
-    @media (max-width: 340px){
-      .btn{ flex:1 1 100%; }
-    }
-  </style>
-</head>
-<body>
-  <div class="bg" aria-hidden="true"><img src="assets/bg.jpg?v=37" alt=""></div>
 
+      .btn{
+        flex:1 1 calc(50% - 8px);
+        text-align:center;
+      }
+
+      .calendar-pop .btn{
+        min-width:160px;
+      }
+    }
+
+    @media (max-width: 340px){
+      .btn{
+        flex:1 1 100%;
+      }
+
+      .dock{
+        left:50%;
+        transform:translateX(-50%);
+      }
+    }
+    /* ===== END MOBILE STYLES ===== */
+  </style>
+  <!-- ===== END PAGE STYLES ===== -->
+</head>
+
+<body>
+  <!-- ===== START BACKGROUND IMAGE MARKUP ===== -->
+  <div class="bg" aria-hidden="true">
+    <img src="assets/bg.jpg?v=37" alt="">
+  </div>
+  <!-- ===== END BACKGROUND IMAGE MARKUP ===== -->
+
+  <!-- ===== START INVITATION IMAGE MARKUP ===== -->
   <img id="invite" class="invite" src="assets/weddinginvite.png?v=15" alt="Wedding invitation">
   <button id="hint" class="hint" type="button" aria-label="Tap to zoom">Tap to zoom</button>
+  <!-- ===== END INVITATION IMAGE MARKUP ===== -->
 
+  <!-- ===== START LIGHTBOX MARKUP ===== -->
   <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
-    <img id="lbimg" alt="Wedding invitation (zoomed)">
-    <button class="close" aria-label="Close zoom">×</button>
+    <img id="lbimg" alt="Wedding invitation zoomed">
+    <button class="close" type="button" aria-label="Close zoom">×</button>
   </div>
+  <!-- ===== END LIGHTBOX MARKUP ===== -->
 
-  <button id="menuCloseBtn" class="menu-close" aria-label="Close menu">×</button>
+  <!-- ===== START MENU CLOSE BUTTON ===== -->
+  <button id="menuCloseBtn" class="menu-close" type="button" aria-label="Close menu">×</button>
+  <!-- ===== END MENU CLOSE BUTTON ===== -->
 
+  <!-- ===== START ACTION MENU MARKUP ===== -->
   <div id="actions" class="actions" aria-hidden="true">
     <a id="rsvpBtn" class="btn"
       href="mailto:rsvp@luna.wedding?subject=RSVP%3A%20Luna%20Wedding&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AWe%27re%20delighted%20to%20RSVP%20for%20June%206%2C%202026.%0A%0ANames%3A%20%0ANumber%20of%20Guests%3A%20%0ADietary%20notes%3A%20%0A%0AWith%20love%2C%0A"
@@ -252,23 +520,32 @@
       href="mailto:hello@luna.wedding?subject=Question%20about%20Luna%20Wedding%20%E2%80%94%20June%206%2C%202026&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AMy%20name%3A%0APhone%20(optional)%3A%0A%0AMy%20question%3A%0A%0AThanks!%0A%E2%80%94%20"
       rel="noopener">Contact the Couple</a>
   </div>
+  <!-- ===== END ACTION MENU MARKUP ===== -->
 
+  <!-- ===== START CALENDAR POPUP MARKUP ===== -->
   <div id="calendarPop" class="calendar-pop" aria-hidden="true">
     <button id="appleCalBtn" class="btn" type="button">Apple Calendar</button>
     <button id="googleCalBtn" class="btn" type="button">Google Calendar</button>
   </div>
+  <!-- ===== END CALENDAR POPUP MARKUP ===== -->
 
+  <!-- ===== START BOTTOM DOCK MARKUP ===== -->
   <div class="dock">
-    <button id="music" class="pill" aria-pressed="false" aria-label="Toggle music">
-      <span class="dot" aria-hidden="true"></span><span class="label">Music</span>
+    <button id="music" class="pill" type="button" aria-pressed="false" aria-label="Toggle music">
+      <span class="dot" aria-hidden="true"></span>
+      <span class="label">Music</span>
     </button>
-    <button id="menuBtn" class="pill" aria-pressed="false" aria-label="Toggle menu">
+
+    <button id="menuBtn" class="pill" type="button" aria-pressed="false" aria-label="Toggle menu">
       <span class="label">Menu</span>
     </button>
   </div>
+  <!-- ===== END BOTTOM DOCK MARKUP ===== -->
 
+  <!-- ===== START PAGE SCRIPT ===== -->
   <script>
     (function(){
+      /* ===== START ELEMENT REFERENCES ===== */
       const body = document.body;
       const invite = document.getElementById('invite');
       const hint = document.getElementById('hint');
@@ -285,7 +562,9 @@
       const calendarPop = document.getElementById('calendarPop');
       const appleCalBtn = document.getElementById('appleCalBtn');
       const googleCalBtn = document.getElementById('googleCalBtn');
+      /* ===== END ELEMENT REFERENCES ===== */
 
+      /* ===== START EVENT DETAILS ===== */
       const EVENT = {
         title: "Toby and Michelle's Wedding",
         description: "Toby and Michelle's wedding. Visit https://luna.wedding for more details.",
@@ -295,17 +574,23 @@
         startUTC: '20260606T230000Z',
         endUTC:   '20260607T020000Z'
       };
+      /* ===== END EVENT DETAILS ===== */
 
-      function isAndroid(){ return /Android/i.test(navigator.userAgent); }
+      /* ===== START CALENDAR HELPERS ===== */
+      function isAndroid(){
+        return /Android/i.test(navigator.userAgent);
+      }
 
       function fold(line){
         const CRLF = '\r\n';
         if (line.length <= 74) return line;
+
         let out = '';
         while (line.length > 74){
           out += line.slice(0,74) + CRLF + ' ';
           line = line.slice(74);
         }
+
         return out + line;
       }
 
@@ -329,6 +614,7 @@
 
       function buildICS(){
         const CRLF = '\r\n';
+
         return [
           'BEGIN:VCALENDAR',
           'VERSION:2.0',
@@ -382,6 +668,7 @@
       function toggleCalendarPop(e){
         e.preventDefault();
         e.stopPropagation();
+
         if (calendarPop.classList.contains('show')) hideCalendarPop();
         else showCalendarPop();
       }
@@ -393,6 +680,7 @@
 
         const blob = new Blob([buildICS()], { type: 'text/calendar;charset=utf-8' });
         const url = URL.createObjectURL(blob);
+
         window.location.href = url;
         setTimeout(() => URL.revokeObjectURL(url), 8000);
       }
@@ -412,7 +700,7 @@
           + '&location=' + encodeURIComponent(EVENT.location)
           + '&sf=true&output=xml';
 
-        if (isAndroid()) {
+        if (isAndroid()){
           const intentUrl =
             'intent://calendar.google.com/calendar/render?action=TEMPLATE'
             + '&text=' + encodeURIComponent(EVENT.title)
@@ -423,17 +711,22 @@
             + '#Intent;scheme=https;package=com.google.android.calendar;S.browser_fallback_url='
             + encodeURIComponent(webUrl)
             + ';end';
+
           window.location.href = intentUrl;
           return;
         }
 
         window.location.href = webUrl;
       }
+      /* ===== END CALENDAR HELPERS ===== */
 
+      /* ===== START MENU / ZOOM STATE HELPERS ===== */
       function syncActionsVisibility(){
         const visible = body.classList.contains('menu-open') || body.classList.contains('zoom-open');
+
         actionsWrap.classList.toggle('show', body.classList.contains('menu-open'));
         actionsWrap.setAttribute('aria-hidden', visible ? 'false' : 'true');
+
         if (!visible) hideCalendarPop();
       }
 
@@ -442,30 +735,38 @@
         body.classList.remove('zoom-open');
         lb.classList.remove('visible', 'closing');
         document.body.style.overflow = '';
+
         syncActionsVisibility();
+
         menuBtn.setAttribute('aria-pressed','true');
         menuBtn.classList.add('on');
       }
 
       function closeMenu(){
         body.classList.remove('menu-open');
+
         syncActionsVisibility();
+
         menuBtn.setAttribute('aria-pressed','false');
         menuBtn.classList.remove('on');
       }
 
       function closeZoom(){
-        if (!lb.classList.contains('visible')) {
+        if (!lb.classList.contains('visible')){
           body.classList.remove('zoom-open');
           syncActionsVisibility();
           return;
         }
+
         hideCalendarPop();
         lb.classList.add('closing');
+
         setTimeout(() => {
           lb.classList.remove('visible');
           body.classList.remove('zoom-open');
+
           syncActionsVisibility();
+
           setTimeout(() => {
             lb.classList.remove('closing');
             document.body.style.overflow = '';
@@ -483,21 +784,25 @@
       function openZoom(){
         closeMenu();
         body.classList.add('zoom-open');
+
         syncActionsVisibility();
+
         lbimg.src = invite.currentSrc || invite.src;
         lb.classList.add('visible');
         document.body.style.overflow = 'hidden';
         hint.classList.add('hide');
-        unlockAudio();
       }
 
       function toggleMenu(e){
         e.preventDefault();
         e.stopPropagation();
+
         if (body.classList.contains('menu-open')) closeMenu();
         else openMenu();
       }
+      /* ===== END MENU / ZOOM STATE HELPERS ===== */
 
+      /* ===== START MENU / ZOOM EVENT LISTENERS ===== */
       ['pointerdown', 'click'].forEach(type => {
         actionsWrap.addEventListener(type, (e) => e.stopPropagation());
         calendarPop.addEventListener(type, (e) => e.stopPropagation());
@@ -506,32 +811,40 @@
       invite.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        if (body.classList.contains('menu-open')) {
+
+        if (body.classList.contains('menu-open')){
           closeAll();
           return;
         }
+
         openZoom();
       });
 
       let lastTap = 0;
+
       invite.addEventListener('touchend', (e) => {
         if (body.classList.contains('menu-open')) return;
+
         const now = Date.now();
-        if (now - lastTap < 300) {
+
+        if (now - lastTap < 300){
           e.preventDefault();
           e.stopPropagation();
           openZoom();
         }
+
         lastTap = now;
       }, { passive:false });
 
       hint.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        if (body.classList.contains('menu-open')) {
+
+        if (body.classList.contains('menu-open')){
           closeAll();
           return;
         }
+
         openZoom();
       });
 
@@ -552,6 +865,7 @@
       });
 
       menuBtn.addEventListener('click', toggleMenu);
+
       menuCloseBtn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -563,7 +877,7 @@
       googleCalBtn.addEventListener('click', openGoogleCalendar);
 
       actionsWrap.querySelectorAll('.btn').forEach((btn) => {
-        if (btn !== calendarToggleBtn) {
+        if (btn !== calendarToggleBtn){
           btn.addEventListener('click', () => hideCalendarPop());
         }
       });
@@ -571,6 +885,7 @@
       window.addEventListener('resize', () => {
         if (calendarPop.classList.contains('show')) positionCalendarPop();
       });
+
       window.addEventListener('orientationchange', () => {
         setTimeout(() => {
           if (calendarPop.classList.contains('show')) positionCalendarPop();
@@ -579,20 +894,35 @@
 
       document.addEventListener('pointerdown', (e) => {
         const inside = e.target.closest('#actions, #calendarPop, #menuBtn, #menuCloseBtn, #music, .close, #hint');
+
         if (!inside) closeAll();
       });
 
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeAll();
       });
+      /* ===== END MENU / ZOOM EVENT LISTENERS ===== */
 
+      /* ===== START MUSIC CONTROLS ===== */
       let bgm = null;
-      let fadedIn = false;
+      let fadeFrame = null;
+
       const TARGET_VOL = 0.35;
       const SRC = 'assets/bgm_small.mp3?v=37';
 
+      /*
+        Music behavior update:
+        - No autoplay on first visit.
+        - No global click/touch unlock that starts music unexpectedly.
+        - Button state now starts as OFF unless the visitor previously turned it on.
+        - One click turns music on; the next click turns it off.
+      */
+
+      let pref = localStorage.getItem('music') || 'off';
+
       function createAudio(){
         if (bgm) return bgm;
+
         bgm = new Audio();
         bgm.src = SRC;
         bgm.loop = true;
@@ -600,88 +930,100 @@
         bgm.playsInline = true;
         bgm.volume = 0;
         bgm.load();
+
         return bgm;
       }
 
-      function fadeTo(target = TARGET_VOL, ms = 900){
+      function stopFade(){
+        if (fadeFrame){
+          cancelAnimationFrame(fadeFrame);
+          fadeFrame = null;
+        }
+      }
+
+      function fadeTo(target = TARGET_VOL, ms = 700){
         if (!bgm) return;
+
+        stopFade();
+
         const start = performance.now();
         const v0 = bgm.volume;
+
         function step(t){
           const k = Math.min(1, (t - start) / ms);
           bgm.volume = v0 + (target - v0) * k;
-          if (k < 1) requestAnimationFrame(step);
-          else fadedIn = true;
+
+          if (k < 1){
+            fadeFrame = requestAnimationFrame(step);
+          } else {
+            fadeFrame = null;
+          }
         }
-        requestAnimationFrame(step);
+
+        fadeFrame = requestAnimationFrame(step);
       }
 
-      async function tryAutoPlayNow(){
-        createAudio();
-        try {
-          bgm.muted = false;
-          await bgm.play();
-          if (!fadedIn) fadeTo(TARGET_VOL, 900);
-        } catch { bgm.pause(); }
-      }
-
-      async function unlockAudio(){
-        createAudio();
-        try {
-          bgm.muted = false;
-          if (bgm.paused) await bgm.play();
-          if (!fadedIn) { bgm.volume = 0; fadeTo(TARGET_VOL, 900); }
-        } catch {
-          setTimeout(async () => {
-            try {
-              bgm.muted = false;
-              if (bgm.paused) await bgm.play();
-              if (!fadedIn) { bgm.volume = 0; fadeTo(TARGET_VOL, 900); }
-            } catch {}
-          }, 120);
-        }
-      }
-
-      document.addEventListener('DOMContentLoaded', () => {
-        createAudio();
-        tryAutoPlayNow();
-      });
-
-      ['pointerdown','touchstart','touchend','click','keydown'].forEach((evt) => {
-        window.addEventListener(evt, unlockAudio, { once:true, passive:true });
-      });
-
-      let pref = localStorage.getItem('music') || 'on';
       function setMusicBtn(state){
-        musicBtn.classList.toggle('on', state === 'on');
-        musicBtn.setAttribute('aria-pressed', state === 'on' ? 'true' : 'false');
+        const isOn = state === 'on';
+
+        musicBtn.classList.toggle('on', isOn);
+        musicBtn.setAttribute('aria-pressed', isOn ? 'true' : 'false');
+        musicBtn.querySelector('.label').textContent = isOn ? 'Music On' : 'Music';
       }
+
+      async function turnMusicOn(){
+        createAudio();
+
+        try {
+          bgm.muted = false;
+
+          if (bgm.paused) await bgm.play();
+
+          if (bgm.volume < TARGET_VOL){
+            fadeTo(TARGET_VOL, 700);
+          } else {
+            bgm.volume = TARGET_VOL;
+          }
+        } catch {
+          pref = 'off';
+          localStorage.setItem('music', pref);
+          setMusicBtn(pref);
+        }
+      }
+
+      function turnMusicOff(){
+        if (!bgm) return;
+
+        stopFade();
+        bgm.pause();
+        bgm.muted = true;
+        bgm.volume = 0;
+      }
+
       setMusicBtn(pref);
 
       musicBtn.addEventListener('click', async (e) => {
         e.preventDefault();
         e.stopPropagation();
-        createAudio();
+
         pref = (pref === 'on') ? 'off' : 'on';
         localStorage.setItem('music', pref);
         setMusicBtn(pref);
 
         if (pref === 'on'){
-          try {
-            bgm.muted = false;
-            if (bgm.paused) await bgm.play();
-            if (!fadedIn) { bgm.volume = 0; fadeTo(TARGET_VOL, 900); }
-            else { bgm.volume = TARGET_VOL; }
-          } catch {}
+          await turnMusicOn();
         } else {
-          bgm.muted = true;
-          bgm.pause();
+          turnMusicOff();
         }
       });
+      /* ===== END MUSIC CONTROLS ===== */
 
+      /* ===== START INITIAL HINT TIMING ===== */
       setTimeout(() => hint.classList.add('show'), 150);
       setTimeout(() => hint.classList.add('hide'), 5150);
+      /* ===== END INITIAL HINT TIMING ===== */
     })();
   </script>
+  <!-- ===== END PAGE SCRIPT ===== -->
 </body>
 </html>
