@@ -23,22 +23,20 @@
 
   <style>
     :root {
-      --bg: #b79a9a;
-      --card: rgba(255, 250, 247, 0.84);
-      --ink: #3f3638;
+      --page-bg: #b79a9a;
+      --card-bg: rgba(255, 250, 247, 0.86);
+      --ink: #40373a;
       --muted: #6f6264;
-      --pink: #e8c1c3;
-      --pink-strong: #dfb1b5;
-      --border: rgba(255, 255, 255, 0.66);
-      --soft-border: rgba(130, 83, 88, 0.18);
-      --shadow: rgba(67, 42, 45, 0.16);
+      --pill: #e8c1c3;
+      --pill-dark: #ddb0b4;
+      --border: rgba(255, 255, 255, 0.7);
+      --soft-border: rgba(132, 86, 91, 0.2);
+      --shadow: rgba(60, 38, 42, 0.16);
 
-      --max-width: 880px;
-      --page-pad: 24px;
-
-      --radius-lg: 34px;
-      --radius-md: 24px;
-      --radius-pill: 999px;
+      --page-width: 820px;
+      --page-padding: 24px;
+      --card-radius: 32px;
+      --small-radius: 24px;
     }
 
     * {
@@ -47,7 +45,7 @@
 
     html {
       min-height: 100%;
-      background: var(--bg);
+      background: var(--page-bg);
     }
 
     body {
@@ -56,10 +54,10 @@
       color: var(--ink);
       font-family: Georgia, "Times New Roman", serif;
       background:
-        radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.3), transparent 28%),
-        radial-gradient(circle at 86% 22%, rgba(255, 255, 255, 0.22), transparent 30%),
-        radial-gradient(circle at 48% 88%, rgba(64, 37, 41, 0.24), transparent 40%),
-        linear-gradient(180deg, #bda4a4 0%, #ad9293 50%, #907779 100%);
+        radial-gradient(circle at 18% 12%, rgba(255,255,255,0.28), transparent 28%),
+        radial-gradient(circle at 86% 20%, rgba(255,255,255,0.18), transparent 30%),
+        radial-gradient(circle at 50% 88%, rgba(64,37,41,0.24), transparent 42%),
+        linear-gradient(180deg, #bda4a4 0%, #ad9293 48%, #907779 100%);
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
@@ -70,8 +68,8 @@
       inset: 0;
       pointer-events: none;
       background:
-        linear-gradient(90deg, rgba(255,255,255,0.12), transparent 18%, transparent 82%, rgba(255,255,255,0.1)),
-        radial-gradient(circle at 50% 45%, transparent 0 42%, rgba(61, 37, 41, 0.14) 100%);
+        linear-gradient(90deg, rgba(255,255,255,0.1), transparent 18%, transparent 82%, rgba(255,255,255,0.08)),
+        radial-gradient(circle at 50% 45%, transparent 0 42%, rgba(61,37,41,0.12) 100%);
       mix-blend-mode: soft-light;
     }
 
@@ -81,16 +79,16 @@
 
     .page {
       position: relative;
-      width: min(100%, var(--max-width));
+      width: min(100%, var(--page-width));
       margin: 0 auto;
-      padding: calc(env(safe-area-inset-top, 0px) + 32px) var(--page-pad) calc(env(safe-area-inset-bottom, 0px) + 36px);
+      padding: calc(env(safe-area-inset-top, 0px) + 28px) var(--page-padding) calc(env(safe-area-inset-bottom, 0px) + 34px);
     }
 
     .hero,
     .card,
     .thanks {
+      background: var(--card-bg);
       border: 1px solid var(--border);
-      background: var(--card);
       box-shadow:
         0 18px 45px var(--shadow),
         inset 0 1px 0 rgba(255,255,255,0.58);
@@ -99,8 +97,8 @@
     }
 
     .hero {
-      border-radius: var(--radius-lg);
-      padding: 38px 34px 42px;
+      border-radius: var(--card-radius);
+      padding: 34px 34px 38px;
       margin-bottom: 28px;
       text-align: center;
     }
@@ -110,17 +108,17 @@
       align-items: center;
       justify-content: center;
       min-height: 34px;
-      padding: 8px 28px;
-      margin-bottom: 18px;
-      border-radius: var(--radius-pill);
-      border: 1px solid rgba(142, 88, 94, 0.22);
-      background: rgba(244, 218, 219, 0.58);
+      padding: 7px 28px;
+      margin: 0 auto 18px;
+      border-radius: 999px;
+      border: 1px solid var(--soft-border);
+      background: rgba(244, 218, 219, 0.62);
       color: #927176;
       font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: 0.76rem;
+      font-size: 12px;
       font-weight: 800;
-      letter-spacing: 0.2em;
       line-height: 1;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       white-space: nowrap;
     }
@@ -133,20 +131,21 @@
 
     h1 {
       font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: clamp(3rem, 5.4vw, 4.15rem);
-      line-height: 0.96;
+      font-size: 58px;
+      line-height: 0.98;
       font-weight: 800;
       letter-spacing: 0.005em;
       margin-bottom: 22px;
+      text-align: center;
     }
 
     .hero-copy {
-      max-width: 760px;
+      max-width: 700px;
       margin: 0 auto;
       color: var(--muted);
-      font-size: clamp(1.35rem, 2.25vw, 1.7rem);
-      line-height: 1.52;
-      letter-spacing: 0.065em;
+      font-size: 25px;
+      line-height: 1.5;
+      letter-spacing: 0.055em;
       text-align: center;
     }
 
@@ -158,51 +157,47 @@
     .card {
       position: relative;
       overflow: hidden;
-      border-radius: var(--radius-lg);
+      border-radius: var(--card-radius);
       padding: 36px 34px 38px;
       text-align: center;
     }
 
     .card.with-sparkles {
-      border-color: rgba(255,255,255,0.72);
       outline: 1px solid rgba(142, 88, 94, 0.18);
       outline-offset: -2px;
     }
 
     .section-title-wrap {
+      display: block;
       width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       text-align: center;
     }
 
     .section-title {
       display: block;
       width: 100%;
-      max-width: 100%;
       margin: 0 auto;
       text-align: center;
       font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: clamp(1.75rem, 3vw, 2.2rem);
-      line-height: 1.12;
+      font-size: 32px;
+      line-height: 1.15;
       font-weight: 800;
       letter-spacing: 0.035em;
     }
 
     .section-copy {
-      max-width: 720px;
-      margin: 22px auto 30px;
+      max-width: 680px;
+      margin: 21px auto 29px;
       color: var(--muted);
-      font-size: clamp(1.18rem, 2.05vw, 1.45rem);
-      line-height: 1.55;
-      letter-spacing: 0.095em;
+      font-size: 22px;
+      line-height: 1.5;
+      letter-spacing: 0.085em;
       text-align: center;
     }
 
     .button-stack {
       display: grid;
-      gap: 15px;
+      gap: 14px;
       width: 100%;
       margin: 0 auto;
     }
@@ -211,23 +206,23 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      min-height: 60px;
       width: 100%;
-      min-height: 62px;
-      padding: 0 24px;
-      border-radius: var(--radius-pill);
-      border: 1px solid rgba(255,255,255,0.74);
-      background: linear-gradient(180deg, var(--pink), var(--pink-strong));
+      padding: 0 22px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.75);
+      background: linear-gradient(180deg, var(--pill), var(--pill-dark));
       color: var(--ink);
       text-decoration: none;
       font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: clamp(1.05rem, 1.7vw, 1.28rem);
+      font-size: 20px;
       line-height: 1.18;
       font-weight: 800;
       letter-spacing: 0.055em;
       text-align: center;
       box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.62),
-        0 8px 22px rgba(85, 46, 50, 0.08);
+        0 8px 22px rgba(85,46,50,0.08);
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -238,45 +233,46 @@
     .sparkle {
       position: absolute;
       color: #c49198;
-      font-size: 1.25rem;
+      font-size: 20px;
       line-height: 1;
       pointer-events: none;
       opacity: 0.9;
     }
 
     .sparkle.left-top {
-      top: 31px;
-      left: 31px;
+      top: 30px;
+      left: 30px;
     }
 
     .sparkle.right-top {
-      top: 31px;
-      right: 31px;
+      top: 30px;
+      right: 30px;
     }
 
     .sparkle.left-bottom {
       bottom: 29px;
-      left: 31px;
+      left: 30px;
     }
 
     .sparkle.right-bottom {
       bottom: 29px;
-      right: 31px;
+      right: 30px;
     }
 
     .thanks {
-      border-radius: var(--radius-md);
-      padding: 24px 28px;
+      border-radius: var(--small-radius);
+      padding: 23px 28px;
       text-align: center;
       color: var(--muted);
-      font-size: clamp(1.05rem, 1.7vw, 1.24rem);
+      font-size: 19px;
       line-height: 1.45;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.055em;
     }
 
     @media (max-width: 720px) {
       :root {
-        --page-pad: 24px;
+        --page-width: 100%;
+        --page-padding: 24px;
       }
 
       .page {
@@ -285,13 +281,19 @@
       }
 
       .hero {
-        margin-left: calc(var(--page-pad) * -1);
-        margin-right: calc(var(--page-pad) * -1);
+        margin-left: calc(var(--page-padding) * -1);
+        margin-right: calc(var(--page-padding) * -1);
         border-left: 0;
         border-right: 0;
         border-top: 0;
         border-radius: 0 0 34px 34px;
         padding: 34px 30px 44px;
+      }
+
+      .eyebrow {
+        min-height: 34px;
+        padding-inline: 22px;
+        font-size: 11px;
       }
 
       h1 {
@@ -300,6 +302,7 @@
       }
 
       .hero-copy {
+        max-width: 760px;
         font-size: clamp(1.35rem, 4.6vw, 2.25rem);
         line-height: 1.52;
         letter-spacing: 0.055em;
@@ -331,18 +334,12 @@
 
     @media (max-width: 430px) {
       :root {
-        --page-pad: 12px;
+        --page-padding: 12px;
       }
 
       .hero {
         padding: 32px 22px 40px;
         margin-bottom: 26px;
-      }
-
-      .eyebrow {
-        min-height: 34px;
-        padding-inline: 22px;
-        font-size: 0.72rem;
       }
 
       h1 {
