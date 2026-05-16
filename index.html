@@ -66,10 +66,12 @@
       );
     }
     /* ===== END DESIGN VARIABLES ===== */
+
     /* ===== START BASE PAGE RESET ===== */
     *{
       box-sizing:border-box;
     }
+
     html,
     body{
       height:100%;
@@ -83,11 +85,13 @@
       color-scheme:light only;
     }
     /* ===== END BASE PAGE RESET ===== */
+
     /* ===== START ANIMATIONS ===== */
     @keyframes fadeBg{
       from{ opacity:0; }
       to{ opacity:1; }
     }
+
     @keyframes fadeCard{
       from{
         opacity:0;
@@ -99,6 +103,7 @@
       }
     }
     /* ===== END ANIMATIONS ===== */
+
     /* ===== START BACKGROUND IMAGE ===== */
     .bg{
       position:fixed;
@@ -110,6 +115,7 @@
         var(--bg-overlay),
         url("assets/bg.jpg?v=37") center center / cover no-repeat var(--chrome-gray);
     }
+
     .bg img{
       width:100vw;
       height:100vh;
@@ -120,6 +126,7 @@
       -webkit-user-drag:none;
       filter:brightness(1.04) saturate(.96);
     }
+
     .bg::after{
       content:"";
       position:absolute;
@@ -128,6 +135,7 @@
       pointer-events:none;
     }
     /* ===== END BACKGROUND IMAGE ===== */
+
     /* ===== START INVITATION IMAGE ===== */
     .invite{
       position:fixed;
@@ -150,6 +158,7 @@
       z-index:3;
     }
     /* ===== END INVITATION IMAGE ===== */
+
     /* ===== START TAP TO ZOOM HINT ===== */
     .hint{
       position:fixed;
@@ -172,18 +181,22 @@
       opacity:0;
       transition:opacity 600ms ease, transform 600ms ease, background .15s ease, border-color .15s ease;
     }
+
     .hint:hover{
       background:rgba(216,166,166,.88);
       border-color:rgba(255,255,255,.76);
     }
+
     .hint.show{
       opacity:1;
       transform:translate(-50%, -4px);
     }
+
     .hint.hide{
       opacity:0;
       transform:translate(-50%, 4px);
     }
+
     body.menu-open .hint{
       opacity:0 !important;
       pointer-events:none;
@@ -191,6 +204,7 @@
       transition:none;
     }
     /* ===== END TAP TO ZOOM HINT ===== */
+
     /* ===== START LIGHTBOX / ZOOM VIEW ===== */
     .lightbox{
       position:fixed;
@@ -206,13 +220,16 @@
       -webkit-backdrop-filter:blur(8px) saturate(120%);
       backdrop-filter:blur(8px) saturate(120%);
     }
+
     .lightbox.visible{
       opacity:1;
       pointer-events:auto;
     }
+
     .lightbox.closing{
       background:rgba(60,47,47,.70);
     }
+
     .lightbox img{
       max-width:94vw;
       max-height:92vh;
@@ -223,10 +240,12 @@
       touch-action:pinch-zoom;
       cursor:zoom-out;
     }
+
     .lightbox.visible img{
       transform:scale(1);
     }
     /* ===== END LIGHTBOX / ZOOM VIEW ===== */
+
     /* ===== START CLOSE BUTTONS ===== */
     .close,
     .menu-close{
@@ -250,66 +269,78 @@
       -webkit-backdrop-filter:blur(8px);
       transition:opacity 260ms ease .1s, transform 260ms ease .1s, background .15s ease;
     }
+
     .close:hover,
     .menu-close:hover{
       background:rgba(255,248,244,1);
     }
+
     .close{
       z-index:45;
     }
+
     .menu-close{
       z-index:34;
     }
+
     .lightbox.visible .close{
       opacity:1;
       pointer-events:auto;
       transform:scale(1);
     }
+
     body.menu-open .menu-close{
       opacity:1;
       pointer-events:auto;
       transform:scale(1);
     }
+
     body.zoom-open .menu-close{
       opacity:0;
       pointer-events:none;
     }
     /* ===== END CLOSE BUTTONS ===== */
+
     /* ===== START ACTION MENU ===== */
     .actions{
       position:fixed;
       left:50%;
-      bottom:calc(16px + env(safe-area-inset-bottom));
+      bottom:calc(4px + env(safe-area-inset-bottom));
       transform:translateX(-50%);
       z-index:30;
       display:flex;
       gap:8px;
       flex-wrap:nowrap;
       overflow-x:auto;
+      overflow-y:hidden;
       -webkit-overflow-scrolling:touch;
       scrollbar-width:none;
       max-width:min(92vw,980px);
-      padding:0 8px;
+      padding:12px 8px;
       opacity:0;
       pointer-events:none;
       transition:opacity .28s ease, transform .28s ease, bottom .28s ease;
     }
+
     .actions::-webkit-scrollbar{
       display:none;
     }
+
     .actions.show{
-      bottom:calc(84px + env(safe-area-inset-bottom));
+      bottom:calc(72px + env(safe-area-inset-bottom));
       opacity:1;
       pointer-events:auto;
       transform:translateX(-50%) translateY(-4px);
     }
+
     body.zoom-open .actions{
-      bottom:calc(16px + env(safe-area-inset-bottom));
+      bottom:calc(4px + env(safe-area-inset-bottom));
       opacity:1;
       pointer-events:auto;
       transform:translateX(-50%) translateY(-4px);
     }
     /* ===== END ACTION MENU ===== */
+
     /* ===== START SHARED PINK BUTTON STYLE ===== */
     .btn,
     .pill{
@@ -332,20 +363,24 @@
       text-align:center;
       user-select:none;
     }
+
     .btn:hover,
     .pill:hover{
       transform:translateY(-1px);
       background:rgba(216,166,166,.88);
       border-color:rgba(255,255,255,.76);
     }
+
     .btn{
       flex:0 0 auto;
     }
+
     .pill{
       display:inline-flex;
       align-items:center;
       gap:8px;
     }
+
     .pill.on{
       background:rgba(185,120,120,.92);
       color:#fff;
@@ -354,6 +389,7 @@
         0 10px 28px rgba(80,45,45,.22),
         inset 0 0 0 1px rgba(255,255,255,.20);
     }
+
     .pill .dot{
       width:8px;
       height:8px;
@@ -361,11 +397,13 @@
       background:rgba(185,120,120,.70);
       box-shadow:0 0 0 1px rgba(255,255,255,.32);
     }
+
     .pill.on .dot{
       background:#fff;
       box-shadow:0 0 10px rgba(255,255,255,.72);
     }
     /* ===== END SHARED PINK BUTTON STYLE ===== */
+
     /* ===== START CALENDAR POPUP ===== */
     .calendar-pop{
       position:fixed;
@@ -381,11 +419,13 @@
       pointer-events:none;
       transition:opacity .16s ease;
     }
+
     .calendar-pop.show{
       opacity:1;
       visibility:visible;
       pointer-events:auto;
     }
+
     .calendar-pop .btn{
       min-width:180px;
       background:rgba(255,248,244,.92);
@@ -393,10 +433,12 @@
       color:var(--text);
       box-shadow:0 8px 24px rgba(80,45,45,.16);
     }
+
     .calendar-pop .btn:hover{
       background:rgba(255,248,244,1);
     }
     /* ===== END CALENDAR POPUP ===== */
+
     /* ===== START BOTTOM DOCK ===== */
     .dock{
       position:fixed;
@@ -408,12 +450,14 @@
       z-index:20;
       transition:opacity .2s ease, transform .2s ease;
     }
+
     body.zoom-open .dock{
       opacity:0;
       pointer-events:none;
       transform:translateY(8px);
     }
     /* ===== END BOTTOM DOCK ===== */
+
     /* ===== START MOBILE BACKGROUND EXTENSION ===== */
     @media (max-width: 640px){
       html,
@@ -422,6 +466,7 @@
           var(--bg-overlay),
           url("assets/bg.jpg?v=37") center center / cover no-repeat #000;
       }
+
       .bg{
         background:
           var(--bg-overlay),
@@ -429,28 +474,38 @@
       }
     }
     /* ===== END MOBILE BACKGROUND EXTENSION ===== */
+
     /* ===== START MOBILE STYLES ===== */
     @media (max-width: 430px){
       .actions{
         overflow-x:visible;
+        overflow-y:visible;
         flex-wrap:wrap;
         justify-content:center;
         row-gap:8px;
         max-width:92vw;
-        padding:0 12px;
+        padding:12px 12px;
       }
+
+      .actions.show{
+        bottom:calc(72px + env(safe-area-inset-bottom));
+      }
+
       .btn{
         flex:1 1 calc(50% - 8px);
         text-align:center;
       }
+
       .calendar-pop .btn{
         min-width:160px;
       }
     }
+
     @media (max-width: 340px){
       .btn{
         flex:1 1 100%;
       }
+
       .dock{
         left:50%;
         transform:translateX(-50%);
@@ -527,14 +582,17 @@
       const DESKTOP_CHROME_COLOR_NUDGE = '#706c6b';
       const MOBILE_BREAKPOINT = 640;
       let lastChromeMode = null;
+
       function isMobileViewport(){
         return window.matchMedia('(max-width: ' + MOBILE_BREAKPOINT + 'px)').matches;
       }
+
       function clearThemeColors(){
         document
           .querySelectorAll('meta[name="theme-color"]')
           .forEach((el) => el.remove());
       }
+
       function applyChromeColorMode(){
         const mode = isMobileViewport() ? 'mobile' : 'desktop';
         if (mode === lastChromeMode) return;
@@ -543,20 +601,24 @@
         if (mode === 'mobile'){
           return;
         }
+
         const metaLight = document.createElement('meta');
         metaLight.name = 'theme-color';
         metaLight.content = DESKTOP_CHROME_COLOR;
         metaLight.setAttribute('media', '(prefers-color-scheme: light)');
         document.head.appendChild(metaLight);
+
         const metaDark = document.createElement('meta');
         metaDark.name = 'theme-color';
         metaDark.content = DESKTOP_CHROME_COLOR;
         metaDark.setAttribute('media', '(prefers-color-scheme: dark)');
         document.head.appendChild(metaDark);
+
         const meta = document.createElement('meta');
         meta.name = 'theme-color';
         meta.content = DESKTOP_CHROME_COLOR;
         document.head.appendChild(meta);
+
         requestAnimationFrame(() => {
           meta.content = DESKTOP_CHROME_COLOR_NUDGE;
           requestAnimationFrame(() => {
@@ -564,16 +626,21 @@
           });
         });
       }
+
       applyChromeColorMode();
+
       window.addEventListener('pageshow', () => {
         lastChromeMode = null;
         applyChromeColorMode();
       });
+
       window.addEventListener('resize', applyChromeColorMode);
+
       window.addEventListener('orientationchange', () => {
         lastChromeMode = null;
         setTimeout(applyChromeColorMode, 80);
       });
+
       document.addEventListener('visibilitychange', () => {
         if (!document.hidden){
           lastChromeMode = null;
@@ -615,6 +682,7 @@
       function isAndroid(){
         return /Android/i.test(navigator.userAgent);
       }
+
       function fold(line){
         const CRLF = '\r\n';
         if (line.length <= 74) return line;
@@ -625,6 +693,7 @@
         }
         return out + line;
       }
+
       function buildEventDetailsText(){
         return [
           EVENT.description,
@@ -633,6 +702,7 @@
           `Map (Google): ${EVENT.mapsUrl}`
         ].join('\n');
       }
+
       function buildICSDescription(){
         return [
           EVENT.description,
@@ -641,6 +711,7 @@
           `Map (Google): ${EVENT.mapsUrl}`
         ].join('\\n');
       }
+
       function buildICS(){
         const CRLF = '\r\n';
         return [
@@ -662,6 +733,7 @@
           ''
         ].join(CRLF);
       }
+
       function positionCalendarPop(){
         const r = calendarToggleBtn.getBoundingClientRect();
         const popW = (window.innerWidth <= 430) ? 170 : 190;
@@ -673,6 +745,7 @@
         calendarPop.style.top = top + 'px';
         calendarPop.style.transform = 'translate(0,0)';
       }
+
       function showCalendarPop(){
         positionCalendarPop();
         calendarPop.style.willChange = 'opacity';
@@ -680,18 +753,21 @@
         calendarPop.setAttribute('aria-hidden', 'false');
         calendarToggleBtn.setAttribute('aria-expanded', 'true');
       }
+
       function hideCalendarPop(){
         calendarPop.classList.remove('show');
         calendarPop.setAttribute('aria-hidden', 'true');
         calendarToggleBtn.setAttribute('aria-expanded', 'false');
         calendarPop.style.willChange = '';
       }
+
       function toggleCalendarPop(e){
         e.preventDefault();
         e.stopPropagation();
         if (calendarPop.classList.contains('show')) hideCalendarPop();
         else showCalendarPop();
       }
+
       function openAppleCalendar(e){
         e.preventDefault();
         e.stopPropagation();
@@ -701,6 +777,7 @@
         window.location.href = url;
         setTimeout(() => URL.revokeObjectURL(url), 8000);
       }
+
       function openGoogleCalendar(e){
         e.preventDefault();
         e.stopPropagation();
@@ -713,6 +790,7 @@
           + '&details=' + encodeURIComponent(fullDetails)
           + '&location=' + encodeURIComponent(EVENT.location)
           + '&sf=true&output=xml';
+
         if (isAndroid()){
           const intentUrl =
             'intent://calendar.google.com/calendar/render?action=TEMPLATE'
@@ -727,6 +805,7 @@
           window.location.href = intentUrl;
           return;
         }
+
         window.location.href = webUrl;
       }
       /* ===== END CALENDAR HELPERS ===== */
@@ -736,12 +815,14 @@
         hint.classList.remove('show');
         hint.classList.add('hide');
       }
+
       function syncActionsVisibility(){
         const visible = body.classList.contains('menu-open') || body.classList.contains('zoom-open');
         actionsWrap.classList.toggle('show', body.classList.contains('menu-open'));
         actionsWrap.setAttribute('aria-hidden', visible ? 'false' : 'true');
         if (!visible) hideCalendarPop();
       }
+
       function openMenu(){
         hideHintImmediately();
         body.classList.add('menu-open');
@@ -752,36 +833,43 @@
         menuBtn.setAttribute('aria-pressed','true');
         menuBtn.classList.add('on');
       }
+
       function closeMenu(){
         body.classList.remove('menu-open');
         syncActionsVisibility();
         menuBtn.setAttribute('aria-pressed','false');
         menuBtn.classList.remove('on');
       }
+
       function closeZoom(){
         if (!lb.classList.contains('visible')){
           body.classList.remove('zoom-open');
           syncActionsVisibility();
           return;
         }
+
         hideCalendarPop();
         lb.classList.add('closing');
+
         setTimeout(() => {
           lb.classList.remove('visible');
           body.classList.remove('zoom-open');
           syncActionsVisibility();
+
           setTimeout(() => {
             lb.classList.remove('closing');
             document.body.style.overflow = '';
           }, 220);
         }, 120);
       }
+
       function closeAll(){
         hideCalendarPop();
         closeMenu();
         closeZoom();
         document.body.style.overflow = '';
       }
+
       function openZoom(){
         closeMenu();
         hideHintImmediately();
@@ -791,6 +879,7 @@
         lb.classList.add('visible');
         document.body.style.overflow = 'hidden';
       }
+
       function toggleMenu(e){
         e.preventDefault();
         e.stopPropagation();
@@ -804,6 +893,7 @@
         actionsWrap.addEventListener(type, (e) => e.stopPropagation());
         calendarPop.addEventListener(type, (e) => e.stopPropagation());
       });
+
       invite.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -813,7 +903,9 @@
         }
         openZoom();
       });
+
       let lastTap = 0;
+
       invite.addEventListener('touchend', (e) => {
         if (body.classList.contains('menu-open')) return;
         const now = Date.now();
@@ -824,6 +916,7 @@
         }
         lastTap = now;
       }, { passive:false });
+
       hint.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -833,45 +926,56 @@
         }
         openZoom();
       });
+
       lbimg.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
         closeZoom();
       });
+
       lb.addEventListener('click', (e) => {
         if (e.target === lb) closeZoom();
       });
+
       zoomCloseBtn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
         closeZoom();
       });
+
       menuBtn.addEventListener('click', toggleMenu);
+
       menuCloseBtn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
         closeMenu();
       });
+
       calendarToggleBtn.addEventListener('click', toggleCalendarPop);
       appleCalBtn.addEventListener('click', openAppleCalendar);
       googleCalBtn.addEventListener('click', openGoogleCalendar);
+
       actionsWrap.querySelectorAll('.btn').forEach((btn) => {
         if (btn !== calendarToggleBtn){
           btn.addEventListener('click', () => hideCalendarPop());
         }
       });
+
       window.addEventListener('resize', () => {
         if (calendarPop.classList.contains('show')) positionCalendarPop();
       });
+
       window.addEventListener('orientationchange', () => {
         setTimeout(() => {
           if (calendarPop.classList.contains('show')) positionCalendarPop();
         }, 50);
       });
+
       document.addEventListener('pointerdown', (e) => {
         const inside = e.target.closest('#actions, #calendarPop, #menuBtn, #menuCloseBtn, #music, .close, #hint');
         if (!inside) closeAll();
       });
+
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeAll();
       });
@@ -885,6 +989,7 @@
       const TARGET_VOL = 0.35;
       const SRC = 'assets/bgm_small.mp3?v=37';
       let pref = 'off';
+
       function createAudio(){
         if (bgm) return bgm;
         bgm = new Audio();
@@ -897,17 +1002,20 @@
         bgm.load();
         return bgm;
       }
+
       function stopFade(){
         if (fadeFrame){
           cancelAnimationFrame(fadeFrame);
           fadeFrame = null;
         }
       }
+
       function fadeTo(target = TARGET_VOL, ms = 700){
         if (!bgm) return;
         stopFade();
         const start = performance.now();
         const v0 = bgm.volume;
+
         function step(t){
           const k = Math.min(1, (t - start) / ms);
           bgm.volume = v0 + (target - v0) * k;
@@ -917,8 +1025,10 @@
             fadeFrame = null;
           }
         }
+
         fadeFrame = requestAnimationFrame(step);
       }
+
       function setMusicBtn(state){
         const isOn = state === 'on';
         pref = state;
@@ -926,6 +1036,7 @@
         musicBtn.setAttribute('aria-pressed', isOn ? 'true' : 'false');
         musicBtn.querySelector('.label').textContent = isOn ? 'Music On' : 'Music';
       }
+
       async function turnMusicOn(){
         createAudio();
         try {
@@ -942,6 +1053,7 @@
           setMusicBtn('off');
         }
       }
+
       function turnMusicOff(){
         if (!bgm) return;
         stopFade();
@@ -950,6 +1062,7 @@
         bgm.volume = 0;
         setMusicBtn('off');
       }
+
       async function startMusicFromFirstGesture(e){
         if (musicHasStarted) return;
         if (e && e.target && e.target.closest('#music')){
@@ -957,8 +1070,10 @@
         }
         await turnMusicOn();
       }
+
       setMusicBtn('off');
       createAudio();
+
       ['pointerdown', 'touchstart', 'keydown'].forEach((evt) => {
         window.addEventListener(evt, startMusicFromFirstGesture, {
           once:true,
@@ -966,6 +1081,7 @@
           capture:true
         });
       });
+
       musicBtn.addEventListener('click', async (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -973,6 +1089,7 @@
           suppressNextMusicClick = false;
           return;
         }
+
         if (pref === 'on'){
           turnMusicOff();
         } else {
@@ -987,6 +1104,7 @@
           hint.classList.add('show');
         }
       }, 150);
+
       setTimeout(() => hideHintImmediately(), 5150);
       /* ===== END INITIAL HINT TIMING ===== */
     })();
