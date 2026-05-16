@@ -906,20 +906,23 @@
       /* ===== START MUSIC CONTROLS ===== */
       let bgm = null;
       let fadeFrame = null;
+      let musicHasStarted = false;
+      let suppressNextMusicClick = false;
 
       const TARGET_VOL = 0.35;
       const SRC = 'assets/bgm_small.mp3?v=37';
 
       /*
         Music behavior:
-        - Defaults to OFF for new visitors.
-        - Never starts automatically on page load.
-        - Never starts from a generic page click/tap.
-        - Only starts when the visitor clicks/taps the Music button.
-        - One click turns music on; the next click turns it off.
+        - Defaults visually OFF.
+        - Does not autoplay on page load.
+        - First click/tap/key gesture anywhere starts music.
+        - Once music starts, the button changes to ON.
+        - Music button then works normally: click once to mute, click again to play.
+        - If the first gesture is the Music button itself, it starts music and does not immediately toggle back off.
       */
 
-      let pref = localStorage.getItem('music') || 'off';
+      let pref = 'off';
 
       function createAudio(){
         if (bgm) return bgm;
@@ -968,6 +971,7 @@
       function setMusicBtn(state){
         const isOn = state === 'on';
 
+        pref = state;
         musicBtn.classList.toggle('on', isOn);
         musicBtn.setAttribute('aria-pressed', isOn ? 'true' : 'false');
         musicBtn.querySelector('.label').textContent = isOn ? 'Music On' : 'Music';
@@ -981,15 +985,16 @@
 
           if (bgm.paused) await bgm.play();
 
+          musicHasStarted = true;
+          setMusicBtn('on');
+
           if (bgm.volume < TARGET_VOL){
             fadeTo(TARGET_VOL, 700);
           } else {
             bgm.volume = TARGET_VOL;
           }
         } catch {
-          pref = 'off';
-          localStorage.setItem('music', pref);
-          setMusicBtn(pref);
+          setMusicBtn('off');
         }
       }
 
@@ -1000,27 +1005,43 @@
         bgm.pause();
         bgm.muted = true;
         bgm.volume = 0;
+        setMusicBtn('off');
       }
 
-      setMusicBtn(pref);
+      async function startMusicFromFirstGesture(e){
+        if (musicHasStarted) return;
 
-      /*
-        Preload only. This prepares the audio file but does not play it.
-      */
+        if (e && e.target && e.target.closest('#music')){
+          suppressNextMusicClick = true;
+        }
+
+        await turnMusicOn();
+      }
+
+      setMusicBtn('off');
       createAudio();
+
+      ['pointerdown', 'touchstart', 'keydown'].forEach((evt) => {
+        window.addEventListener(evt, startMusicFromFirstGesture, {
+          once:true,
+          passive:true,
+          capture:true
+        });
+      });
 
       musicBtn.addEventListener('click', async (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        pref = (pref === 'on') ? 'off' : 'on';
-        localStorage.setItem('music', pref);
-        setMusicBtn(pref);
+        if (suppressNextMusicClick){
+          suppressNextMusicClick = false;
+          return;
+        }
 
         if (pref === 'on'){
-          await turnMusicOn();
-        } else {
           turnMusicOff();
+        } else {
+          await turnMusicOn();
         }
       });
       /* ===== END MUSIC CONTROLS ===== */
