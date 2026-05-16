@@ -906,19 +906,21 @@
       /* ===== START MUSIC CONTROLS ===== */
       let bgm = null;
       let fadeFrame = null;
+      let hasTriedGestureStart = false;
 
       const TARGET_VOL = 0.35;
       const SRC = 'assets/bgm_small.mp3?v=37';
 
       /*
-        Music behavior update:
-        - No autoplay on first visit.
-        - No global click/touch unlock that starts music unexpectedly.
-        - Button state now starts as OFF unless the visitor previously turned it on.
-        - One click turns music on; the next click turns it off.
+        Music behavior:
+        - Defaults to ON for new visitors.
+        - Does not autoplay before user interaction.
+        - Starts on the first click/tap/key interaction anywhere on the site.
+        - The music button always reflects the real intended state.
+        - Clicking Music once while it is on will mute/stop it immediately.
       */
 
-      let pref = localStorage.getItem('music') || 'off';
+      let pref = localStorage.getItem('music') || 'on';
 
       function createAudio(){
         if (bgm) return bgm;
@@ -929,6 +931,7 @@
         bgm.preload = 'auto';
         bgm.playsInline = true;
         bgm.volume = 0;
+        bgm.muted = false;
         bgm.load();
 
         return bgm;
@@ -985,9 +988,10 @@
             bgm.volume = TARGET_VOL;
           }
         } catch {
-          pref = 'off';
-          localStorage.setItem('music', pref);
-          setMusicBtn(pref);
+          /*
+            Keep preference as ON if the browser blocks the first attempt.
+            Another user gesture may still allow playback.
+          */
         }
       }
 
@@ -1000,7 +1004,31 @@
         bgm.volume = 0;
       }
 
+      async function startMusicFromFirstGesture(){
+        if (hasTriedGestureStart) return;
+        hasTriedGestureStart = true;
+
+        if (pref === 'on'){
+          await turnMusicOn();
+        }
+      }
+
       setMusicBtn(pref);
+      createAudio();
+
+      /*
+        Capture-phase listeners run before click handlers.
+        If the first click is the Music button, this listener will start music,
+        then the Music button handler below will immediately toggle it off.
+        That makes a single Music-button click correctly mute/stop music.
+      */
+      ['pointerdown', 'touchstart', 'keydown'].forEach((evt) => {
+        window.addEventListener(evt, startMusicFromFirstGesture, {
+          once:true,
+          passive:true,
+          capture:true
+        });
+      });
 
       musicBtn.addEventListener('click', async (e) => {
         e.preventDefault();
