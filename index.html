@@ -12,11 +12,6 @@
   <meta name="title" content="Luna Wedding — June 6, 2026" />
   <meta name="description" content="Luna Wedding — RSVP • June 6, 2026" />
 
-  <meta name="theme-color" content="#f6dede" />
-  <meta name="theme-color" content="#f6dede" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#f6dede" media="(prefers-color-scheme: dark)" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Luna Wedding" />
@@ -69,29 +64,20 @@
     /* ===== END DESIGN VARIABLES ===== */
 
     /* ===== START BASE PAGE RESET ===== */
-    html, body{
-      margin:0;
+    *{
+      box-sizing:border-box;
+    }
+
+    html,
+    body{
       height:100%;
+      margin:0;
       color:var(--text);
-      background:#f6dede;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background:#000;
       overflow:hidden;
-      color-scheme:light only;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
     }
-
-    *{ box-sizing:border-box; }
     /* ===== END BASE PAGE RESET ===== */
-
-    /* ===== START NORMAL DOCUMENT ANCHOR FOR SAFARI TINT ===== */
-    .home-shell{
-      position:relative;
-      z-index:1;
-      min-height:100vh;
-      width:100%;
-      pointer-events:none;
-      background:transparent;
-    }
-    /* ===== END NORMAL DOCUMENT ANCHOR FOR SAFARI TINT ===== */
 
     /* ===== START ANIMATIONS ===== */
     @keyframes fadeBg{
@@ -503,10 +489,6 @@
     <img src="assets/bg.jpg?v=37" alt="">
   </div>
   <!-- ===== END BACKGROUND IMAGE MARKUP ===== -->
-
-  <!-- ===== START NORMAL DOCUMENT ANCHOR FOR SAFARI TINT ===== -->
-  <main class="home-shell" aria-hidden="true"></main>
-  <!-- ===== END NORMAL DOCUMENT ANCHOR FOR SAFARI TINT ===== -->
 
   <!-- ===== START INVITATION IMAGE MARKUP ===== -->
   <img id="invite" class="invite" src="assets/weddinginvite.png?v=15" alt="Wedding invitation">
