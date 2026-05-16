@@ -12,10 +12,10 @@
   <meta name="title" content="Luna Wedding — June 6, 2026" />
   <meta name="description" content="Luna Wedding — RSVP • June 6, 2026" />
 
-  <!-- Match Safari / mobile browser tint to the registry page's gray-taupe chrome -->
-  <meta name="theme-color" content="#8f8986" />
-  <meta name="theme-color" content="#8f8986" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#8f8986" media="(prefers-color-scheme: dark)" />
+  <!-- Match Safari / mobile browser tint to the registry page's gray chrome -->
+  <meta name="theme-color" content="#736f6e" />
+  <meta name="theme-color" content="#736f6e" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#736f6e" media="(prefers-color-scheme: dark)" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
   <meta property="og:locale" content="en_US" />
@@ -66,7 +66,7 @@
       --cream-strong:rgba(255,248,244,.90);
       --border:rgba(216,166,166,.48);
       --shadow:0 20px 48px rgba(80,45,45,.16);
-      --chrome-gray:#8f8986;
+      --chrome-gray:#736f6e;
     }
     /* ===== END DESIGN VARIABLES ===== */
 
@@ -559,7 +559,7 @@
   <script>
     (function(){
       /* ===== START SAFARI / MOBILE CHROME COLOR FORCE ===== */
-      const SITE_CHROME_COLOR = '#8f8986';
+      const SITE_CHROME_COLOR = '#736f6e';
 
       function forceSafariChromeColor(){
         document
@@ -584,7 +584,7 @@
         document.head.appendChild(meta);
 
         requestAnimationFrame(() => {
-          meta.content = '#8a8582';
+          meta.content = '#706c6b';
 
           requestAnimationFrame(() => {
             meta.content = SITE_CHROME_COLOR;
