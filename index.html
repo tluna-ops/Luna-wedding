@@ -11,6 +11,8 @@
 
   <meta name="title" content="Luna Wedding — June 6, 2026" />
   <meta name="description" content="Luna Wedding — RSVP • June 6, 2026" />
+  <meta name="theme-color" content="#f6dede" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
@@ -60,7 +62,7 @@
       --cream-strong:rgba(255,248,244,.90);
       --border:rgba(216,166,166,.48);
       --shadow:0 20px 48px rgba(80,45,45,.16);
-      --fallback:#000;
+      --fallback:#f6dede;
     }
     /* ===== END DESIGN VARIABLES ===== */
 
@@ -68,7 +70,13 @@
     html, body{
       height:100%;
       margin:0;
-      background:var(--fallback);
+      background:
+        linear-gradient(
+          180deg,
+          #f6dede 0%,
+          #fff6f2 45%,
+          #f3dede 100%
+        );
       overflow:hidden;
       color:var(--text);
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
