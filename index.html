@@ -70,13 +70,7 @@
     html, body{
       height:100%;
       margin:0;
-      background:
-        linear-gradient(
-          180deg,
-          #f6dede 0%,
-          #fff6f2 45%,
-          #f3dede 100%
-        );
+      background:#f6dede;
       overflow:hidden;
       color:var(--text);
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
@@ -107,19 +101,37 @@
     /* ===== START BACKGROUND IMAGE ===== */
     .bg{
       position:fixed;
-      inset:0;
+      left:0;
+      right:0;
+      bottom:0;
+      top:calc(72px + env(safe-area-inset-top));
       opacity:0;
       animation:fadeBg 900ms ease-out .05s forwards;
+      background:#f6dede;
+      z-index:0;
     }
 
     .bg img{
       width:100vw;
-      height:100vh;
+      height:100%;
       object-fit:cover;
       object-position:center;
       user-select:none;
       -webkit-user-drag:none;
       filter:brightness(1.04) saturate(.96);
+      display:block;
+    }
+
+    .bg::before{
+      content:"";
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      height:calc(96px + env(safe-area-inset-top));
+      background:#f6dede;
+      pointer-events:none;
+      z-index:0;
     }
 
     .bg::after{
@@ -136,26 +148,6 @@
       pointer-events:none;
     }
     /* ===== END BACKGROUND IMAGE ===== */
-
-    /* ===== START TOP PINK ADDRESS-BAR WASH ===== */
-    .top-wash{
-      position:fixed;
-      top:0;
-      left:0;
-      right:0;
-      height:calc(120px + env(safe-area-inset-top));
-      z-index:2;
-      pointer-events:none;
-      background:
-        linear-gradient(
-          180deg,
-          #f6dede 0%,
-          rgba(246,222,222,.96) 34%,
-          rgba(246,222,222,.58) 70%,
-          rgba(246,222,222,0) 100%
-        );
-    }
-    /* ===== END TOP PINK ADDRESS-BAR WASH ===== */
 
     /* ===== START INVITATION IMAGE ===== */
     .invite{
@@ -513,10 +505,6 @@
     <img src="assets/bg.jpg?v=37" alt="">
   </div>
   <!-- ===== END BACKGROUND IMAGE MARKUP ===== -->
-
-  <!-- ===== START TOP PINK ADDRESS-BAR WASH MARKUP ===== -->
-  <div class="top-wash" aria-hidden="true"></div>
-  <!-- ===== END TOP PINK ADDRESS-BAR WASH MARKUP ===== -->
 
   <!-- ===== START INVITATION IMAGE MARKUP ===== -->
   <img id="invite" class="invite" src="assets/weddinginvite.png?v=15" alt="Wedding invitation">
