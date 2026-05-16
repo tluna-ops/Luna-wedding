@@ -137,6 +137,26 @@
     }
     /* ===== END BACKGROUND IMAGE ===== */
 
+    /* ===== START TOP PINK ADDRESS-BAR WASH ===== */
+    .top-wash{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      height:calc(120px + env(safe-area-inset-top));
+      z-index:2;
+      pointer-events:none;
+      background:
+        linear-gradient(
+          180deg,
+          #f6dede 0%,
+          rgba(246,222,222,.96) 34%,
+          rgba(246,222,222,.58) 70%,
+          rgba(246,222,222,0) 100%
+        );
+    }
+    /* ===== END TOP PINK ADDRESS-BAR WASH ===== */
+
     /* ===== START INVITATION IMAGE ===== */
     .invite{
       position:fixed;
@@ -156,7 +176,7 @@
       cursor:zoom-in;
       user-select:none;
       -webkit-user-drag:none;
-      z-index:1;
+      z-index:3;
     }
     /* ===== END INVITATION IMAGE ===== */
 
@@ -493,6 +513,10 @@
     <img src="assets/bg.jpg?v=37" alt="">
   </div>
   <!-- ===== END BACKGROUND IMAGE MARKUP ===== -->
+
+  <!-- ===== START TOP PINK ADDRESS-BAR WASH MARKUP ===== -->
+  <div class="top-wash" aria-hidden="true"></div>
+  <!-- ===== END TOP PINK ADDRESS-BAR WASH MARKUP ===== -->
 
   <!-- ===== START INVITATION IMAGE MARKUP ===== -->
   <img id="invite" class="invite" src="assets/weddinginvite.png?v=15" alt="Wedding invitation">
