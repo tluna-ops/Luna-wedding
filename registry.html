@@ -581,6 +581,26 @@
         padding-right:30px;
       }
 
+      .gift-title{
+        position:relative;
+        display:block;
+        text-align:center;
+        padding:0 24px;
+      }
+
+      .gift-title-text{
+        display:block;
+        text-align:center;
+      }
+
+      .gift-card .sparkle-mark{
+        position:absolute;
+        left:calc(50% + 118px);
+        top:50%;
+        transform:translateY(-50%);
+        margin-left:0;
+      }
+
       .button-row{
         justify-content:center;
       }
@@ -603,6 +623,12 @@
       }
     }
 
+    @media (max-width: 430px){
+      .gift-card .sparkle-mark{
+        left:calc(50% + 106px);
+      }
+    }
+
     @media (max-width: 380px){
       .wrap{
         width:min(100% - 18px, 940px);
@@ -617,8 +643,12 @@
         padding-right:24px;
       }
 
+      .gift-title{
+        padding:0 20px;
+      }
+
       .gift-card .sparkle-mark{
-        margin-left:6px;
+        left:calc(50% + 96px);
       }
     }
     /* ===== END MOBILE STYLES ===== */
