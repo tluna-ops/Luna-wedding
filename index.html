@@ -1,1074 +1,541 @@
 <!doctype html>
 <html lang="en">
-
-<!-- ===== START HEAD / PAGE METADATA ===== -->
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
   <title>Luna Wedding — June 6, 2026</title>
   <link rel="canonical" href="https://luna.wedding/" />
 
   <meta name="title" content="Luna Wedding — June 6, 2026" />
-  <meta name="description" content="Luna Wedding — RSVP • June 6, 2026" />
-
-  <meta name="theme-color" content="#fff6f2" />
-  <meta name="theme-color" content="#fff6f2" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#fff6f2" media="(prefers-color-scheme: dark)" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="description" content="Tobias and Michelle are getting married on Saturday, June 6, 2026 at Carne Mare in New York City." />
 
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Luna Wedding" />
   <meta property="og:title" content="Luna Wedding — June 6, 2026" />
-  <meta property="og:description" content="Luna Wedding — RSVP • June 6, 2026" />
-  <meta property="og:url" content="https://luna.wedding/" />
+  <meta property="og:description" content="Tobias and Michelle are getting married on Saturday, June 6, 2026." />
   <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=15" />
-  <meta property="og:image:type" content="image/png" />
-  <meta property="og:image:alt" content="Luna Wedding — June 6, 2026" />
+  <meta property="og:url" content="https://luna.wedding/" />
 
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Luna Wedding — June 6, 2026" />
-  <meta name="twitter:description" content="Luna Wedding — RSVP • June 6, 2026" />
-  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=15" />
+  <!-- This matches the Venue / Registry / FAQ mobile browser chrome -->
+  <meta name="theme-color" content="#746e6e" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
-  <link rel="icon" type="image/svg+xml"
-    href='data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-      <rect width="512" height="512" rx="128" fill="%23ffffff"/>
-      <g transform="translate(0,20)">
-        <text x="50%" y="55%" text-anchor="middle"
-          font-family="Georgia, Times New Roman, serif" font-style="italic"
-          font-size="280" fill="%23000000">L</text>
-        <text x="60%" y="72%" text-anchor="middle"
-          font-family="Georgia, Times New Roman, serif" font-style="italic"
-          font-size="220" fill="%23000000">M</text>
-      </g>
-    </svg>' />
+  <link rel="preload" as="image" href="assets/bg.jpg?v=37" />
+  <link rel="preload" as="image" href="assets/weddinginvite.png?v=15" />
 
-  <link rel="preload" as="image" href="assets/bg.jpg?v=37" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/weddinginvite.png?v=15" fetchpriority="high">
-  <link rel="preload" as="audio" href="assets/bgm_small.mp3?v=37">
-  <!-- ===== END HEAD / PAGE METADATA ===== -->
-
-  <!-- ===== START PAGE STYLES ===== -->
   <style>
-    /* ===== START DESIGN VARIABLES ===== */
-    :root{
-      --text:#3c2f2f;
-      --muted:#6f5959;
-      --pink:#d8a6a6;
-      --pink-dark:#c98f8f;
-      --pink-deep:#b97878;
-      --pink-light:#f3dede;
-      --cream:rgba(255,248,244,.78);
-      --cream-strong:rgba(255,248,244,.90);
-      --border:rgba(216,166,166,.48);
-      --shadow:0 20px 48px rgba(80,45,45,.16);
-      --fallback:#fff6f2;
-    }
-    /* ===== END DESIGN VARIABLES ===== */
-
-    /* ===== START BASE PAGE RESET ===== */
-    html{
-      height:100%;
-      margin:0;
-      background:#fff6f2;
-      color-scheme:light only;
+    :root {
+      --chrome: #746e6e;
+      --ink: #3f3437;
+      --muted: #6f6064;
+      --rose: #c58790;
+      --rose-dark: #b6747e;
+      --rose-soft: #e7c0c4;
+      --cream: #fffaf4;
+      --card: rgba(255, 250, 246, 0.88);
+      --line: rgba(136, 91, 99, 0.22);
+      --shadow: 0 18px 60px rgba(42, 31, 33, 0.28);
+      --radius: 34px;
     }
 
-    body{
-      height:100%;
-      margin:0;
-      background:#fff6f2;
-      overflow:hidden;
-      color:var(--text);
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    * {
+      box-sizing: border-box;
     }
 
-    *{ box-sizing:border-box; }
-    /* ===== END BASE PAGE RESET ===== */
-
-    /* ===== START ANIMATIONS ===== */
-    @keyframes fadeBg{
-      from{ opacity:0; }
-      to{ opacity:1; }
+    html {
+      margin: 0;
+      min-height: 100%;
+      background: var(--chrome);
+      overscroll-behavior: none;
     }
 
-    @keyframes fadeCard{
-      from{
-        opacity:0;
-        transform:translate(-50%,-48%) scale(.985);
-      }
-
-      to{
-        opacity:1;
-        transform:translate(-50%,-50%) scale(1);
-      }
-    }
-    /* ===== END ANIMATIONS ===== */
-
-    /* ===== START BACKGROUND IMAGE ===== */
-    .bg{
-      position:fixed;
-      inset:0;
-      opacity:0;
-      animation:fadeBg 900ms ease-out .05s forwards;
-      background:#fff6f2;
-      z-index:0;
+    body {
+      margin: 0;
+      min-height: 100svh;
+      background: var(--chrome);
+      color: var(--ink);
+      font-family: ui-rounded, "SF Pro Rounded", "Avenir Next", Avenir, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0.08em;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
     }
 
-    .bg img{
-      width:100vw;
-      height:100vh;
-      object-fit:cover;
-      object-position:center;
-      user-select:none;
-      -webkit-user-drag:none;
-      filter:brightness(1.04) saturate(.96);
-      display:block;
-    }
-
-    .bg::after{
-      content:"";
-      position:absolute;
-      inset:0;
+    /*
+      IMPORTANT:
+      The background lives directly on body and reaches behind the iOS address/status bar.
+      Do not add a cream/pink fixed overlay at the top.
+    */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      pointer-events: none;
       background:
-        linear-gradient(
-          180deg,
-          rgba(255,246,242,.92) 0%,
-          rgba(255,246,242,.86) 10%,
-          rgba(255,246,242,.66) 28%,
-          rgba(255,246,242,.38) 55%,
-          rgba(255,246,242,.42) 100%
-        );
-      pointer-events:none;
-    }
-    /* ===== END BACKGROUND IMAGE ===== */
-
-    /* ===== START INVITATION IMAGE ===== */
-    .invite{
-      position:fixed;
-      left:50%;
-      top:50%;
-      transform:translate(-50%,-50%);
-      max-width:min(92vw,900px);
-      max-height:88vh;
-      width:auto;
-      height:auto;
-      display:block;
-      border-radius:14px;
-      background:#fff;
-      box-shadow:0 20px 48px rgba(80,45,45,.20);
-      opacity:0;
-      animation:fadeCard .75s cubic-bezier(.21,.98,.25,.99) .2s forwards;
-      cursor:zoom-in;
-      user-select:none;
-      -webkit-user-drag:none;
-      z-index:3;
-    }
-    /* ===== END INVITATION IMAGE ===== */
-
-    /* ===== START TAP TO ZOOM HINT ===== */
-    .hint{
-      position:fixed;
-      left:50%;
-      bottom:calc(84px + env(safe-area-inset-bottom));
-      transform:translateX(-50%);
-      padding:10px 14px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.64);
-      background:rgba(216,166,166,.72);
-      color:var(--text);
-      font-size:14px;
-      font-weight:700;
-      line-height:1.15;
-      box-shadow:0 8px 24px rgba(80,45,45,.15);
-      backdrop-filter:blur(8px);
-      -webkit-backdrop-filter:blur(8px);
-      z-index:30;
-      cursor:pointer;
-      opacity:0;
-      transition:opacity 600ms ease, transform 600ms ease, background .15s ease, border-color .15s ease;
+        linear-gradient(rgba(55, 48, 48, 0.43), rgba(55, 48, 48, 0.43)),
+        url("assets/bg.jpg?v=37") center / cover no-repeat;
+      filter: blur(18px);
+      transform: scale(1.08);
+      transform-origin: center;
     }
 
-    .hint:hover{
-      background:rgba(216,166,166,.88);
-      border-color:rgba(255,255,255,.76);
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(255, 244, 240, 0.28), transparent 34%),
+        rgba(76, 62, 62, 0.13);
     }
 
-    .hint.show{
-      opacity:1;
-      transform:translate(-50%, -4px);
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
-    .hint.hide{
-      opacity:0;
-      transform:translate(-50%, 4px);
-    }
-    /* ===== END TAP TO ZOOM HINT ===== */
-
-    /* ===== START LIGHTBOX / ZOOM VIEW ===== */
-    .lightbox{
-      position:fixed;
-      inset:0;
-      background:rgba(60,47,47,.38);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      opacity:0;
-      pointer-events:none;
-      z-index:10;
-      transition:opacity 280ms ease, background-color 180ms ease;
-      -webkit-backdrop-filter:blur(8px) saturate(120%);
-      backdrop-filter:blur(8px) saturate(120%);
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .lightbox.visible{
-      opacity:1;
-      pointer-events:auto;
+    .page {
+      min-height: 100svh;
+      padding:
+        calc(env(safe-area-inset-top) + 28px)
+        24px
+        calc(env(safe-area-inset-bottom) + 116px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: transparent;
     }
 
-    .lightbox.closing{
-      background:rgba(60,47,47,.70);
+    .invite-card {
+      width: min(92vw, 760px);
+      max-height: calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 190px);
+      border-radius: 22px;
+      overflow: hidden;
+      background: rgba(255, 252, 234, 0.96);
+      box-shadow: var(--shadow);
+      position: relative;
     }
 
-    .lightbox img{
-      max-width:94vw;
-      max-height:92vh;
-      border-radius:14px;
-      box-shadow:0 24px 64px rgba(80,45,45,.40);
-      transform:scale(.96);
-      transition:transform 280ms cubic-bezier(.23,1,.32,1);
-      touch-action:pinch-zoom;
-      cursor:zoom-out;
+    .invite-wrap {
+      position: relative;
+      width: 100%;
     }
 
-    .lightbox.visible img{
-      transform:scale(1);
-    }
-    /* ===== END LIGHTBOX / ZOOM VIEW ===== */
-
-    /* ===== START CLOSE BUTTONS ===== */
-    .close,
-    .menu-close{
-      position:fixed;
-      top:calc(12px + env(safe-area-inset-top));
-      right:calc(12px + env(safe-area-inset-right));
-      width:44px;
-      height:44px;
-      border:1px solid rgba(216,166,166,.55);
-      border-radius:999px;
-      background:rgba(255,248,244,.94);
-      color:var(--text);
-      font-size:22px;
-      line-height:1;
-      cursor:pointer;
-      opacity:0;
-      pointer-events:none;
-      transform:scale(.85);
-      box-shadow:0 8px 24px rgba(80,45,45,.18);
-      backdrop-filter:blur(8px);
-      -webkit-backdrop-filter:blur(8px);
-      transition:opacity 260ms ease .1s, transform 260ms ease .1s, background .15s ease;
+    .invite-img {
+      display: block;
+      width: 100%;
+      height: auto;
+      user-select: none;
+      -webkit-user-drag: none;
     }
 
-    .close:hover,
-    .menu-close:hover{
-      background:rgba(255,248,244,1);
+    .invite-actions {
+      position: absolute;
+      left: 50%;
+      bottom: 2.4%;
+      transform: translateX(-50%);
+      width: min(70%, 430px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 12px;
+      z-index: 2;
     }
 
-    .close{
-      z-index:45;
+    .invite-actions .wide {
+      grid-column: 1 / -1;
     }
 
-    .menu-close{
-      z-index:34;
-    }
-
-    .lightbox.visible .close{
-      opacity:1;
-      pointer-events:auto;
-      transform:scale(1);
-    }
-
-    body.menu-open .menu-close{
-      opacity:1;
-      pointer-events:auto;
-      transform:scale(1);
-    }
-
-    body.zoom-open .menu-close{
-      opacity:0;
-      pointer-events:none;
-    }
-    /* ===== END CLOSE BUTTONS ===== */
-
-    /* ===== START ACTION MENU ===== */
-    .actions{
-      position:fixed;
-      left:50%;
-      bottom:calc(16px + env(safe-area-inset-bottom));
-      transform:translateX(-50%);
-      z-index:30;
-      display:flex;
-      gap:8px;
-      flex-wrap:nowrap;
-      overflow-x:auto;
-      -webkit-overflow-scrolling:touch;
-      scrollbar-width:none;
-      max-width:min(92vw,980px);
-      padding:0 8px;
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .28s ease, transform .28s ease, bottom .28s ease;
-    }
-
-    .actions::-webkit-scrollbar{
-      display:none;
-    }
-
-    .actions.show{
-      bottom:calc(84px + env(safe-area-inset-bottom));
-      opacity:1;
-      pointer-events:auto;
-      transform:translateX(-50%) translateY(-4px);
-    }
-
-    body.zoom-open .actions{
-      bottom:calc(16px + env(safe-area-inset-bottom));
-      opacity:1;
-      pointer-events:auto;
-      transform:translateX(-50%) translateY(-4px);
-    }
-    /* ===== END ACTION MENU ===== */
-
-    /* ===== START SHARED PINK BUTTON STYLE ===== */
-    .btn,
-    .pill{
-      appearance:none;
-      border:1px solid rgba(255,255,255,.64);
-      color:var(--text);
-      background:rgba(216,166,166,.72);
-      padding:10px 14px;
-      border-radius:999px;
-      font-size:14px;
-      font-weight:700;
-      line-height:1.15;
-      text-decoration:none;
-      cursor:pointer;
-      white-space:nowrap;
-      backdrop-filter:blur(8px);
-      -webkit-backdrop-filter:blur(8px);
-      box-shadow:0 8px 24px rgba(80,45,45,.15);
-      transition:transform .15s ease, background .15s ease, box-shadow .15s ease, border-color .15s ease;
-      text-align:center;
-      user-select:none;
-    }
-
-    .btn:hover,
-    .pill:hover{
-      transform:translateY(-1px);
-      background:rgba(216,166,166,.88);
-      border-color:rgba(255,255,255,.76);
-    }
-
-    .btn{
-      flex:0 0 auto;
-    }
-
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    .pill.on{
-      background:rgba(185,120,120,.92);
-      color:#fff;
-      border-color:rgba(255,255,255,.82);
+    .pill {
+      min-height: 54px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.48);
+      background: rgba(221, 178, 181, 0.92);
+      color: #332b2e;
       box-shadow:
-        0 10px 28px rgba(80,45,45,.22),
-        inset 0 0 0 1px rgba(255,255,255,.20);
+        inset 0 1px 0 rgba(255, 255, 255, 0.42),
+        0 10px 28px rgba(68, 45, 50, 0.16);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 22px;
+      font-weight: 800;
+      font-size: clamp(16px, 3vw, 24px);
+      line-height: 1;
+      letter-spacing: 0.08em;
+      text-align: center;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
-    .pill .dot{
-      width:8px;
-      height:8px;
-      border-radius:999px;
-      background:rgba(185,120,120,.70);
-      box-shadow:0 0 0 1px rgba(255,255,255,.32);
+    .pill:hover {
+      background: rgba(211, 161, 166, 0.96);
     }
 
-    .pill.on .dot{
-      background:#fff;
-      box-shadow:0 0 10px rgba(255,255,255,.72);
-    }
-    /* ===== END SHARED PINK BUTTON STYLE ===== */
-
-    /* ===== START CALENDAR POPUP ===== */
-    .calendar-pop{
-      position:fixed;
-      left:0;
-      top:0;
-      transform:translate(-9999px,-9999px);
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      z-index:80;
-      opacity:0;
-      visibility:hidden;
-      pointer-events:none;
-      transition:opacity .16s ease;
+    .floating-controls {
+      position: fixed;
+      left: 24px;
+      right: 24px;
+      bottom: calc(env(safe-area-inset-bottom) + 22px);
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: flex-start;
+      z-index: 30;
+      pointer-events: none;
     }
 
-    .calendar-pop.show{
-      opacity:1;
-      visibility:visible;
-      pointer-events:auto;
+    .control-btn {
+      pointer-events: auto;
+      min-height: 58px;
+      border: 1px solid rgba(255, 255, 255, 0.62);
+      border-radius: 999px;
+      padding: 0 26px;
+      background: rgba(191, 124, 134, 0.88);
+      color: #fff;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        0 12px 30px rgba(39, 28, 31, 0.2);
+      font: inherit;
+      font-weight: 850;
+      font-size: clamp(15px, 3.4vw, 22px);
+      letter-spacing: 0.07em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
-    .calendar-pop .btn{
-      min-width:180px;
-      background:rgba(255,248,244,.92);
-      border:1px solid rgba(216,166,166,.55);
-      color:var(--text);
-      box-shadow:0 8px 24px rgba(80,45,45,.16);
+    .control-btn .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: currentColor;
+      display: inline-block;
+      opacity: 0.9;
     }
 
-    .calendar-pop .btn:hover{
-      background:rgba(255,248,244,1);
-    }
-    /* ===== END CALENDAR POPUP ===== */
-
-    /* ===== START BOTTOM DOCK ===== */
-    .dock{
-      position:fixed;
-      left:12px;
-      bottom:calc(12px + env(safe-area-inset-bottom));
-      display:flex;
-      align-items:center;
-      gap:8px;
-      z-index:20;
-      transition:opacity .2s ease, transform .2s ease;
+    .menu-panel {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      padding:
+        calc(env(safe-area-inset-top) + 26px)
+        24px
+        calc(env(safe-area-inset-bottom) + 32px);
+      display: none;
+      background: transparent;
     }
 
-    body.zoom-open .dock{
-      opacity:0;
-      pointer-events:none;
-      transform:translateY(8px);
+    .menu-panel.is-open {
+      display: block;
     }
-    /* ===== END BOTTOM DOCK ===== */
 
-    /* ===== START MOBILE STYLES ===== */
-    @media (max-width: 430px){
-      .actions{
-        overflow-x:visible;
-        flex-wrap:wrap;
-        justify-content:center;
-        row-gap:8px;
-        max-width:92vw;
-        padding:0 12px;
+    .menu-panel::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(rgba(55, 48, 48, 0.43), rgba(55, 48, 48, 0.43)),
+        url("assets/bg.jpg?v=37") center / cover no-repeat;
+      filter: blur(18px);
+      transform: scale(1.08);
+    }
+
+    .menu-panel::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: rgba(76, 62, 62, 0.13);
+    }
+
+    .close-menu {
+      position: absolute;
+      top: calc(env(safe-area-inset-top) + 28px);
+      right: 24px;
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      border: 1px solid rgba(195, 147, 151, 0.28);
+      background: rgba(255, 250, 246, 0.92);
+      color: var(--ink);
+      font-size: 34px;
+      line-height: 1;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 12px 32px rgba(45, 31, 34, 0.16);
+      cursor: pointer;
+    }
+
+    .menu-links {
+      width: min(92vw, 760px);
+      margin: 128px auto 0;
+      display: grid;
+      gap: 16px;
+    }
+
+    .menu-links a {
+      min-height: 72px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.52);
+      background: rgba(221, 178, 181, 0.92);
+      color: #342c2f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 850;
+      font-size: clamp(18px, 4vw, 28px);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.42),
+        0 12px 30px rgba(68, 45, 50, 0.16);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (min-width: 760px) {
+      .invite-actions {
+        bottom: 2.8%;
+        gap: 14px;
       }
 
-      .btn{
-        flex:1 1 calc(50% - 8px);
-        text-align:center;
+      .pill {
+        min-height: 62px;
       }
 
-      .calendar-pop .btn{
-        min-width:160px;
+      .floating-controls {
+        left: 34px;
+        bottom: calc(env(safe-area-inset-bottom) + 30px);
       }
     }
 
-    @media (max-width: 340px){
-      .btn{
-        flex:1 1 100%;
+    @media (max-width: 520px) {
+      .page {
+        justify-content: flex-start;
+        padding-top: calc(env(safe-area-inset-top) + 30px);
       }
 
-      .dock{
-        left:50%;
-        transform:translateX(-50%);
+      .invite-card {
+        margin-top: 84px;
+        width: calc(100vw - 48px);
+        max-height: calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 230px);
+      }
+
+      .invite-actions {
+        width: 58%;
+        bottom: -1.9%;
+        gap: 10px;
+      }
+
+      .pill {
+        min-height: 48px;
+        padding: 0 14px;
+        font-size: 15px;
+      }
+
+      .invite-actions .wide {
+        grid-column: 1 / -1;
+      }
+
+      .floating-controls {
+        left: 24px;
+        right: 24px;
+        bottom: calc(env(safe-area-inset-bottom) + 24px);
+      }
+
+      .control-btn {
+        min-height: 52px;
+        padding: 0 22px;
       }
     }
-    /* ===== END MOBILE STYLES ===== */
+
+    @media (max-width: 390px) {
+      .invite-actions {
+        width: 62%;
+      }
+
+      .pill {
+        min-height: 44px;
+        font-size: 13px;
+      }
+
+      .control-btn {
+        padding: 0 18px;
+        font-size: 14px;
+      }
+    }
   </style>
-  <!-- ===== END PAGE STYLES ===== -->
 </head>
 
 <body>
-  <!-- ===== START BACKGROUND IMAGE MARKUP ===== -->
-  <div class="bg" aria-hidden="true">
-    <img src="assets/bg.jpg?v=37" alt="">
-  </div>
-  <!-- ===== END BACKGROUND IMAGE MARKUP ===== -->
+  <main class="page">
+    <h1 class="sr-only">Tobias and Michelle’s Wedding</h1>
 
-  <!-- ===== START INVITATION IMAGE MARKUP ===== -->
-  <img id="invite" class="invite" src="assets/weddinginvite.png?v=15" alt="Wedding invitation">
-  <button id="hint" class="hint" type="button" aria-label="Tap to zoom">Tap to zoom</button>
-  <!-- ===== END INVITATION IMAGE MARKUP ===== -->
+    <section class="invite-card" aria-label="Wedding invitation">
+      <div class="invite-wrap">
+        <img
+          class="invite-img"
+          src="assets/weddinginvite.png?v=15"
+          alt="You’re invited to our wedding. Tobias and Michelle. Saturday, June 6, 2026. Carne Mare."
+        />
 
-  <!-- ===== START LIGHTBOX MARKUP ===== -->
-  <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
-    <img id="lbimg" alt="Wedding invitation zoomed">
-    <button class="close" type="button" aria-label="Close zoom">×</button>
-  </div>
-  <!-- ===== END LIGHTBOX MARKUP ===== -->
+        <nav class="invite-actions" aria-label="Wedding links">
+          <a class="pill wide" href="mailto:rsvp@luna.wedding?subject=RSVP%20for%20Toby%20and%20Michelle%E2%80%99s%20Wedding">RSVP</a>
+          <a class="pill wide" href="assets/luna-wedding.ics">Add to Calendar</a>
+          <a class="pill" href="venue.html">Venue</a>
+          <a class="pill" href="registry.html">Registry</a>
+          <a class="pill wide" href="faq.html">FAQ</a>
+          <a class="pill wide" href="mailto:hello@luna.wedding?subject=Question%20about%20the%20wedding">Contact the Couple</a>
+        </nav>
+      </div>
+    </section>
+  </main>
 
-  <!-- ===== START MENU CLOSE BUTTON ===== -->
-  <button id="menuCloseBtn" class="menu-close" type="button" aria-label="Close menu">×</button>
-  <!-- ===== END MENU CLOSE BUTTON ===== -->
-
-  <!-- ===== START ACTION MENU MARKUP ===== -->
-  <div id="actions" class="actions" aria-hidden="true">
-    <a id="rsvpBtn" class="btn"
-      href="mailto:rsvp@luna.wedding?subject=RSVP%3A%20Luna%20Wedding&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AWe%27re%20delighted%20to%20RSVP%20for%20June%206%2C%202026.%0A%0ANames%3A%20%0ANumber%20of%20Guests%3A%20%0ADietary%20notes%3A%20%0A%0AWith%20love%2C%0A"
-      rel="noopener">RSVP</a>
-
-    <button id="calendarToggleBtn" class="btn" type="button" aria-expanded="false" aria-controls="calendarPop">
-      Add to Calendar
-    </button>
-
-    <a id="venueBtn" class="btn" href="venue.html">Venue</a>
-    <a id="registryBtn" class="btn" href="registry.html">Registry</a>
-    <a id="faqBtn" class="btn" href="faq.html">FAQ</a>
-
-    <a id="askBtn" class="btn"
-      href="mailto:hello@luna.wedding?subject=Question%20about%20Luna%20Wedding%20%E2%80%94%20June%206%2C%202026&body=Hello%20Toby%20%26%20Michelle%2C%0A%0AMy%20name%3A%0APhone%20(optional)%3A%0A%0AMy%20question%3A%0A%0AThanks!%0A%E2%80%94%20"
-      rel="noopener">Contact the Couple</a>
-  </div>
-  <!-- ===== END ACTION MENU MARKUP ===== -->
-
-  <!-- ===== START CALENDAR POPUP MARKUP ===== -->
-  <div id="calendarPop" class="calendar-pop" aria-hidden="true">
-    <button id="appleCalBtn" class="btn" type="button">Apple Calendar</button>
-    <button id="googleCalBtn" class="btn" type="button">Google Calendar</button>
-  </div>
-  <!-- ===== END CALENDAR POPUP MARKUP ===== -->
-
-  <!-- ===== START BOTTOM DOCK MARKUP ===== -->
-  <div class="dock">
-    <button id="music" class="pill" type="button" aria-pressed="false" aria-label="Toggle music">
+  <div class="floating-controls" aria-label="Controls">
+    <button class="control-btn" id="musicBtn" type="button" aria-pressed="false">
       <span class="dot" aria-hidden="true"></span>
-      <span class="label">Music</span>
+      <span id="musicLabel">Music Off</span>
     </button>
 
-    <button id="menuBtn" class="pill" type="button" aria-pressed="false" aria-label="Toggle menu">
-      <span class="label">Menu</span>
+    <button class="control-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="menuPanel">
+      Menu
     </button>
   </div>
-  <!-- ===== END BOTTOM DOCK MARKUP ===== -->
 
-  <!-- ===== START PAGE SCRIPT ===== -->
+  <aside class="menu-panel" id="menuPanel" aria-hidden="true">
+    <button class="close-menu" id="closeMenu" type="button" aria-label="Close menu">×</button>
+
+    <nav class="menu-links" aria-label="Main menu">
+      <a href="/">Home</a>
+      <a href="venue.html">Venue</a>
+      <a href="faq.html">FAQ</a>
+      <a href="registry.html">Registry</a>
+      <a href="mailto:rsvp@luna.wedding?subject=RSVP%20for%20Toby%20and%20Michelle%E2%80%99s%20Wedding">RSVP</a>
+      <a href="mailto:hello@luna.wedding?subject=Question%20about%20the%20wedding">Contact the Couple</a>
+    </nav>
+  </aside>
+
+  <audio id="weddingMusic" preload="auto" loop>
+    <source src="assets/music.mp3" type="audio/mpeg" />
+  </audio>
+
   <script>
-    (function(){
-      /* ===== START ELEMENT REFERENCES ===== */
-      const body = document.body;
-      const invite = document.getElementById('invite');
-      const hint = document.getElementById('hint');
-      const lb = document.getElementById('lightbox');
-      const lbimg = document.getElementById('lbimg');
-      const zoomCloseBtn = lb.querySelector('.close');
+    const menuBtn = document.getElementById("menuBtn");
+    const closeMenu = document.getElementById("closeMenu");
+    const menuPanel = document.getElementById("menuPanel");
 
-      const actionsWrap = document.getElementById('actions');
-      const menuBtn = document.getElementById('menuBtn');
-      const menuCloseBtn = document.getElementById('menuCloseBtn');
-      const musicBtn = document.getElementById('music');
+    function openMenu() {
+      menuPanel.classList.add("is-open");
+      menuPanel.setAttribute("aria-hidden", "false");
+      menuBtn.setAttribute("aria-expanded", "true");
+    }
 
-      const calendarToggleBtn = document.getElementById('calendarToggleBtn');
-      const calendarPop = document.getElementById('calendarPop');
-      const appleCalBtn = document.getElementById('appleCalBtn');
-      const googleCalBtn = document.getElementById('googleCalBtn');
-      /* ===== END ELEMENT REFERENCES ===== */
+    function closeMenuPanel() {
+      menuPanel.classList.remove("is-open");
+      menuPanel.setAttribute("aria-hidden", "true");
+      menuBtn.setAttribute("aria-expanded", "false");
+    }
 
-      /* ===== START EVENT DETAILS ===== */
-      const EVENT = {
-        title: "Toby and Michelle's Wedding",
-        description: "Toby and Michelle's wedding. Visit https://luna.wedding for more details.",
-        venueName: "Carne Mare – Seaport",
-        location: "89 South St, New York, NY 10038",
-        mapsUrl: "https://maps.app.goo.gl/vTsV19gqAxjDsSb88?g_st=ic",
-        startUTC: '20260606T230000Z',
-        endUTC:   '20260607T020000Z'
-      };
-      /* ===== END EVENT DETAILS ===== */
+    menuBtn.addEventListener("click", openMenu);
+    closeMenu.addEventListener("click", closeMenuPanel);
 
-      /* ===== START CALENDAR HELPERS ===== */
-      function isAndroid(){
-        return /Android/i.test(navigator.userAgent);
+    menuPanel.addEventListener("click", function (event) {
+      if (event.target === menuPanel) closeMenuPanel();
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") closeMenuPanel();
+    });
+
+    const music = document.getElementById("weddingMusic");
+    const musicBtn = document.getElementById("musicBtn");
+    const musicLabel = document.getElementById("musicLabel");
+
+    let musicWanted = false;
+    let hasTriedGesturePlay = false;
+
+    function setMusicUI(isPlaying) {
+      musicBtn.setAttribute("aria-pressed", String(isPlaying));
+      musicLabel.textContent = isPlaying ? "Music On" : "Music Off";
+    }
+
+    async function playMusic() {
+      try {
+        await music.play();
+        setMusicUI(true);
+      } catch (error) {
+        setMusicUI(false);
       }
+    }
 
-      function fold(line){
-        const CRLF = '\r\n';
-        if (line.length <= 74) return line;
+    function pauseMusic() {
+      music.pause();
+      setMusicUI(false);
+    }
 
-        let out = '';
-        while (line.length > 74){
-          out += line.slice(0,74) + CRLF + ' ';
-          line = line.slice(74);
-        }
+    musicBtn.addEventListener("click", function (event) {
+      event.stopPropagation();
 
-        return out + line;
+      if (music.paused) {
+        musicWanted = true;
+        playMusic();
+      } else {
+        musicWanted = false;
+        pauseMusic();
       }
+    });
 
-      function buildEventDetailsText(){
-        return [
-          EVENT.description,
-          '',
-          `Venue: ${EVENT.venueName}`,
-          `Map (Google): ${EVENT.mapsUrl}`
-        ].join('\n');
+    /*
+      Default is off.
+      First tap/click/gesture anywhere on the page starts music once allowed by Safari.
+    */
+    function handleFirstGesture() {
+      if (hasTriedGesturePlay) return;
+      hasTriedGesturePlay = true;
+      musicWanted = true;
+      playMusic();
+    }
+
+    document.addEventListener("pointerdown", handleFirstGesture, { once: true });
+    document.addEventListener("touchstart", handleFirstGesture, { once: true });
+    document.addEventListener("click", handleFirstGesture, { once: true });
+
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) {
+        music.pause();
+      } else if (musicWanted) {
+        playMusic();
       }
+    });
 
-      function buildICSDescription(){
-        return [
-          EVENT.description,
-          '',
-          `Venue: ${EVENT.venueName}`,
-          `Map (Google): ${EVENT.mapsUrl}`
-        ].join('\\n');
-      }
-
-      function buildICS(){
-        const CRLF = '\r\n';
-
-        return [
-          'BEGIN:VCALENDAR',
-          'VERSION:2.0',
-          'PRODID:-//luna.wedding//Wedding//EN',
-          'CALSCALE:GREGORIAN',
-          'METHOD:PUBLISH',
-          'BEGIN:VEVENT',
-          `UID:${(crypto.randomUUID ? crypto.randomUUID() : ('luna-' + Date.now()))}@luna.wedding`,
-          `DTSTAMP:${new Date().toISOString().replace(/[-:]/g,'').split('.')[0]}Z`,
-          `DTSTART:${EVENT.startUTC}`,
-          `DTEND:${EVENT.endUTC}`,
-          fold(`SUMMARY:${EVENT.title}`),
-          fold(`DESCRIPTION:${buildICSDescription()}`),
-          fold(`LOCATION:${EVENT.location}`),
-          'END:VEVENT',
-          'END:VCALENDAR',
-          ''
-        ].join(CRLF);
-      }
-
-      function positionCalendarPop(){
-        const r = calendarToggleBtn.getBoundingClientRect();
-        const popW = (window.innerWidth <= 430) ? 170 : 190;
-        const gap = 8;
-
-        let left = r.left + (r.width / 2) - (popW / 2);
-        left = Math.max(12, Math.min(left, window.innerWidth - popW - 12));
-
-        const top = Math.max(12, r.top - 92 - gap);
-
-        calendarPop.style.left = left + 'px';
-        calendarPop.style.top = top + 'px';
-        calendarPop.style.transform = 'translate(0,0)';
-      }
-
-      function showCalendarPop(){
-        positionCalendarPop();
-        calendarPop.style.willChange = 'opacity';
-        calendarPop.classList.add('show');
-        calendarPop.setAttribute('aria-hidden', 'false');
-        calendarToggleBtn.setAttribute('aria-expanded', 'true');
-      }
-
-      function hideCalendarPop(){
-        calendarPop.classList.remove('show');
-        calendarPop.setAttribute('aria-hidden', 'true');
-        calendarToggleBtn.setAttribute('aria-expanded', 'false');
-        calendarPop.style.willChange = '';
-      }
-
-      function toggleCalendarPop(e){
-        e.preventDefault();
-        e.stopPropagation();
-
-        if (calendarPop.classList.contains('show')) hideCalendarPop();
-        else showCalendarPop();
-      }
-
-      function openAppleCalendar(e){
-        e.preventDefault();
-        e.stopPropagation();
-        hideCalendarPop();
-
-        const blob = new Blob([buildICS()], { type: 'text/calendar;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-
-        window.location.href = url;
-        setTimeout(() => URL.revokeObjectURL(url), 8000);
-      }
-
-      function openGoogleCalendar(e){
-        e.preventDefault();
-        e.stopPropagation();
-        hideCalendarPop();
-
-        const fullDetails = buildEventDetailsText();
-
-        const webUrl =
-          'https://calendar.google.com/calendar/render?action=TEMPLATE'
-          + '&text=' + encodeURIComponent(EVENT.title)
-          + '&dates=' + encodeURIComponent(EVENT.startUTC + '/' + EVENT.endUTC)
-          + '&details=' + encodeURIComponent(fullDetails)
-          + '&location=' + encodeURIComponent(EVENT.location)
-          + '&sf=true&output=xml';
-
-        if (isAndroid()){
-          const intentUrl =
-            'intent://calendar.google.com/calendar/render?action=TEMPLATE'
-            + '&text=' + encodeURIComponent(EVENT.title)
-            + '&dates=' + encodeURIComponent(EVENT.startUTC + '/' + EVENT.endUTC)
-            + '&details=' + encodeURIComponent(fullDetails)
-            + '&location=' + encodeURIComponent(EVENT.location)
-            + '&sf=true&output=xml'
-            + '#Intent;scheme=https;package=com.google.android.calendar;S.browser_fallback_url='
-            + encodeURIComponent(webUrl)
-            + ';end';
-
-          window.location.href = intentUrl;
-          return;
-        }
-
-        window.location.href = webUrl;
-      }
-      /* ===== END CALENDAR HELPERS ===== */
-
-      /* ===== START MENU / ZOOM STATE HELPERS ===== */
-      function syncActionsVisibility(){
-        const visible = body.classList.contains('menu-open') || body.classList.contains('zoom-open');
-
-        actionsWrap.classList.toggle('show', body.classList.contains('menu-open'));
-        actionsWrap.setAttribute('aria-hidden', visible ? 'false' : 'true');
-
-        if (!visible) hideCalendarPop();
-      }
-
-      function openMenu(){
-        body.classList.add('menu-open');
-        body.classList.remove('zoom-open');
-        lb.classList.remove('visible', 'closing');
-        document.body.style.overflow = '';
-
-        syncActionsVisibility();
-
-        menuBtn.setAttribute('aria-pressed','true');
-        menuBtn.classList.add('on');
-      }
-
-      function closeMenu(){
-        body.classList.remove('menu-open');
-
-        syncActionsVisibility();
-
-        menuBtn.setAttribute('aria-pressed','false');
-        menuBtn.classList.remove('on');
-      }
-
-      function closeZoom(){
-        if (!lb.classList.contains('visible')){
-          body.classList.remove('zoom-open');
-          syncActionsVisibility();
-          return;
-        }
-
-        hideCalendarPop();
-        lb.classList.add('closing');
-
-        setTimeout(() => {
-          lb.classList.remove('visible');
-          body.classList.remove('zoom-open');
-
-          syncActionsVisibility();
-
-          setTimeout(() => {
-            lb.classList.remove('closing');
-            document.body.style.overflow = '';
-          }, 220);
-        }, 120);
-      }
-
-      function closeAll(){
-        hideCalendarPop();
-        closeMenu();
-        closeZoom();
-        document.body.style.overflow = '';
-      }
-
-      function openZoom(){
-        closeMenu();
-        body.classList.add('zoom-open');
-
-        syncActionsVisibility();
-
-        lbimg.src = invite.currentSrc || invite.src;
-        lb.classList.add('visible');
-        document.body.style.overflow = 'hidden';
-        hint.classList.add('hide');
-      }
-
-      function toggleMenu(e){
-        e.preventDefault();
-        e.stopPropagation();
-
-        if (body.classList.contains('menu-open')) closeMenu();
-        else openMenu();
-      }
-      /* ===== END MENU / ZOOM STATE HELPERS ===== */
-
-      /* ===== START MENU / ZOOM EVENT LISTENERS ===== */
-      ['pointerdown', 'click'].forEach(type => {
-        actionsWrap.addEventListener(type, (e) => e.stopPropagation());
-        calendarPop.addEventListener(type, (e) => e.stopPropagation());
-      });
-
-      invite.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        if (body.classList.contains('menu-open')){
-          closeAll();
-          return;
-        }
-
-        openZoom();
-      });
-
-      let lastTap = 0;
-
-      invite.addEventListener('touchend', (e) => {
-        if (body.classList.contains('menu-open')) return;
-
-        const now = Date.now();
-
-        if (now - lastTap < 300){
-          e.preventDefault();
-          e.stopPropagation();
-          openZoom();
-        }
-
-        lastTap = now;
-      }, { passive:false });
-
-      hint.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        if (body.classList.contains('menu-open')){
-          closeAll();
-          return;
-        }
-
-        openZoom();
-      });
-
-      lbimg.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        closeZoom();
-      });
-
-      lb.addEventListener('click', (e) => {
-        if (e.target === lb) closeZoom();
-      });
-
-      zoomCloseBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        closeZoom();
-      });
-
-      menuBtn.addEventListener('click', toggleMenu);
-
-      menuCloseBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        closeMenu();
-      });
-
-      calendarToggleBtn.addEventListener('click', toggleCalendarPop);
-      appleCalBtn.addEventListener('click', openAppleCalendar);
-      googleCalBtn.addEventListener('click', openGoogleCalendar);
-
-      actionsWrap.querySelectorAll('.btn').forEach((btn) => {
-        if (btn !== calendarToggleBtn){
-          btn.addEventListener('click', () => hideCalendarPop());
-        }
-      });
-
-      window.addEventListener('resize', () => {
-        if (calendarPop.classList.contains('show')) positionCalendarPop();
-      });
-
-      window.addEventListener('orientationchange', () => {
-        setTimeout(() => {
-          if (calendarPop.classList.contains('show')) positionCalendarPop();
-        }, 50);
-      });
-
-      document.addEventListener('pointerdown', (e) => {
-        const inside = e.target.closest('#actions, #calendarPop, #menuBtn, #menuCloseBtn, #music, .close, #hint');
-
-        if (!inside) closeAll();
-      });
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeAll();
-      });
-      /* ===== END MENU / ZOOM EVENT LISTENERS ===== */
-
-      /* ===== START MUSIC CONTROLS ===== */
-      let bgm = null;
-      let fadeFrame = null;
-      let musicHasStarted = false;
-      let suppressNextMusicClick = false;
-
-      const TARGET_VOL = 0.35;
-      const SRC = 'assets/bgm_small.mp3?v=37';
-
-      /*
-        Music behavior:
-        - Defaults visually OFF.
-        - Does not autoplay on page load.
-        - First click/tap/key gesture anywhere starts music.
-        - Once music starts, the button changes to ON.
-        - Music button then works normally: click once to mute, click again to play.
-        - If the first gesture is the Music button itself, it starts music and does not immediately toggle back off.
-      */
-
-      let pref = 'off';
-
-      function createAudio(){
-        if (bgm) return bgm;
-
-        bgm = new Audio();
-        bgm.src = SRC;
-        bgm.loop = true;
-        bgm.preload = 'auto';
-        bgm.playsInline = true;
-        bgm.volume = 0;
-        bgm.muted = false;
-        bgm.load();
-
-        return bgm;
-      }
-
-      function stopFade(){
-        if (fadeFrame){
-          cancelAnimationFrame(fadeFrame);
-          fadeFrame = null;
-        }
-      }
-
-      function fadeTo(target = TARGET_VOL, ms = 700){
-        if (!bgm) return;
-
-        stopFade();
-
-        const start = performance.now();
-        const v0 = bgm.volume;
-
-        function step(t){
-          const k = Math.min(1, (t - start) / ms);
-          bgm.volume = v0 + (target - v0) * k;
-
-          if (k < 1){
-            fadeFrame = requestAnimationFrame(step);
-          } else {
-            fadeFrame = null;
-          }
-        }
-
-        fadeFrame = requestAnimationFrame(step);
-      }
-
-      function setMusicBtn(state){
-        const isOn = state === 'on';
-
-        pref = state;
-        musicBtn.classList.toggle('on', isOn);
-        musicBtn.setAttribute('aria-pressed', isOn ? 'true' : 'false');
-        musicBtn.querySelector('.label').textContent = isOn ? 'Music On' : 'Music';
-      }
-
-      async function turnMusicOn(){
-        createAudio();
-
-        try {
-          bgm.muted = false;
-
-          if (bgm.paused) await bgm.play();
-
-          musicHasStarted = true;
-          setMusicBtn('on');
-
-          if (bgm.volume < TARGET_VOL){
-            fadeTo(TARGET_VOL, 700);
-          } else {
-            bgm.volume = TARGET_VOL;
-          }
-        } catch {
-          setMusicBtn('off');
-        }
-      }
-
-      function turnMusicOff(){
-        if (!bgm) return;
-
-        stopFade();
-        bgm.pause();
-        bgm.muted = true;
-        bgm.volume = 0;
-        setMusicBtn('off');
-      }
-
-      async function startMusicFromFirstGesture(e){
-        if (musicHasStarted) return;
-
-        if (e && e.target && e.target.closest('#music')){
-          suppressNextMusicClick = true;
-        }
-
-        await turnMusicOn();
-      }
-
-      setMusicBtn('off');
-      createAudio();
-
-      ['pointerdown', 'touchstart', 'keydown'].forEach((evt) => {
-        window.addEventListener(evt, startMusicFromFirstGesture, {
-          once:true,
-          passive:true,
-          capture:true
-        });
-      });
-
-      musicBtn.addEventListener('click', async (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        if (suppressNextMusicClick){
-          suppressNextMusicClick = false;
-          return;
-        }
-
-        if (pref === 'on'){
-          turnMusicOff();
-        } else {
-          await turnMusicOn();
-        }
-      });
-      /* ===== END MUSIC CONTROLS ===== */
-
-      /* ===== START INITIAL HINT TIMING ===== */
-      setTimeout(() => hint.classList.add('show'), 150);
-      setTimeout(() => hint.classList.add('hide'), 5150);
-      /* ===== END INITIAL HINT TIMING ===== */
-    })();
+    setMusicUI(false);
   </script>
-  <!-- ===== END PAGE SCRIPT ===== -->
 </body>
 </html>
