@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>Luna Receipt Booth</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="topbar" id="secretAdminTap" aria-label="Receipt Booth">
+      <div class="brand">
+        <div class="eyebrow" id="screenEyebrow">Toby & Michelle</div>
+        <h1 id="screenTitle">Receipt Booth</h1>
+      </div>
+    </header>
+
+    <section class="stage" id="cameraStage">
+      <div class="booth-board">
+        <div class="camera-column">
+          <div class="camera-card">
+            <video id="camera" autoplay playsinline muted></video>
+            <div class="countdown" id="countdown" aria-live="polite"></div>
+          </div>
+
+          <button id="takePhotoButton" class="primary-button" type="button">Tap to Take 3 Photos</button>
+        </div>
+
+        <aside class="side-preview" aria-label="Receipt preview">
+          <div class="side-preview-label">Preview Strip</div>
+          <div class="receipt-shell side-receipt-shell">
+            <canvas id="sidePreviewCanvas" class="receipt-preview"></canvas>
+          </div>
+        </aside>
+      </div>
+
+      <p class="hint" id="screenHint">Three poses. Three seconds apart. Your finished receipt strip will be added to the gallery.</p>
+
+      <p class="gallery-directions">
+        <strong id="directionsTitle">Where to see your photos</strong><br>
+        <span id="directionsBody">Scan the QR code printed on your receipt, or visit luna.wedding/receipts after the event.</span>
+      </p>
+    </section>
+
+    <section class="receipt-stage hidden" id="receiptStage">
+      <div class="receipt-shell">
+        <canvas id="receiptPreviewCanvas" class="receipt-preview"></canvas>
+      </div>
+
+      <div class="guest-actions">
+        <button id="printAnotherButton" class="primary-button" type="button">PRINT ANOTHER</button>
+        <button id="takeAnotherButton" class="primary-button quiet-button" type="button">Take Another</button>
+      </div>
+
+      <p class="gallery-directions compact">
+        <strong id="receiptDirectionsTitle">Where to see your photos</strong><br>
+        <span id="receiptDirectionsBody">Scan the QR code on your receipt, or visit luna.wedding/receipts after the event.</span>
+      </p>
+
+      <p id="statusLine" class="status-line" aria-live="polite"></p>
+      <p id="autoResetLine" class="auto-reset-line" aria-live="polite"></p>
+    </section>
+
+    <section id="adminPanel" class="admin-panel hidden" aria-label="Admin settings">
+      <h2>Admin</h2>
+
+      <div class="admin-grid">
+        <label>Gallery page URL<input id="galleryUrlInput" type="url" placeholder="https://luna.wedding/receipts/" /></label>
+        <label>Upload endpoint / Worker URL<input id="uploadEndpointInput" type="url" placeholder="https://luna-receipt-upload.YOURNAME.workers.dev" /></label>
+        <label>Screen eyebrow<input id="screenEyebrowInput" type="text" placeholder="Toby & Michelle" /></label>
+        <label>Screen title<input id="screenTitleInput" type="text" placeholder="Receipt Booth" /></label>
+        <label>Screen hint<input id="screenHintInput" type="text" placeholder="Three poses. Three seconds apart." /></label>
+        <label>Main button text<input id="mainButtonTextInput" type="text" placeholder="Tap to Take 3 Photos" /></label>
+        <label>Print another button text<input id="uploadButtonTextInput" type="text" placeholder="PRINT ANOTHER" /></label>
+        <label>Take another button text<input id="takeAnotherTextInput" type="text" placeholder="Take Another" /></label>
+        <label>Directions title<input id="directionsTitleInput" type="text" placeholder="Where to see your photos" /></label>
+        <label>Directions body<input id="directionsBodyInput" type="text" placeholder="Scan the QR code printed on your receipt..." /></label>
+        <label>Receipt title<input id="receiptTitleInput" type="text" placeholder="TOBY + MICHELLE" /></label>
+        <label>Receipt subtitle/date<input id="receiptDateInput" type="text" placeholder="06.06.26" /></label>
+        <label>Three-word receipt phrase<input id="receiptPhraseInput" type="text" placeholder="SMILE * SNAP * KEEP" /></label>
+        <label>QR text above code<input id="qrHeadingInput" type="text" placeholder="SEE YOUR PHOTOS" /></label>
+        <label>QR caption below code<input id="qrCaptionInput" type="text" placeholder="Scan the code for your receipt strip" /></label>
+        <label>Bottom line 1<input id="bottomLine1Input" type="text" placeholder="Toby & Michelle · June 6, 2026" /></label>
+        <label>Bottom line 2<input id="bottomLine2Input" type="text" placeholder="luna.wedding/receipts" /></label>
+        <label>Dither mode for finished receipt<select id="ditherModeInput"><option value="atkinson">Atkinson / receipt style</option><option value="floyd">Floyd-Steinberg</option><option value="threshold">High contrast threshold</option></select></label>
+        <label>Photo count<select id="photoCountInput"><option value="1">1 photo</option><option value="2">2 photos</option><option value="3">3 photos</option></select></label>
+        <label>Countdown seconds per pose<select id="countdownSecondsInput"><option value="2">2 seconds</option><option value="3">3 seconds</option><option value="4">4 seconds</option><option value="5">5 seconds</option></select></label>
+        <label>Auto-reset after receipt, seconds<select id="autoResetSecondsInput"><option value="0">Off</option><option value="5">5 seconds</option><option value="8">8 seconds</option><option value="10">10 seconds</option><option value="15">15 seconds</option></select></label>
+        <label class="checkbox-row"><input id="autoUploadInput" type="checkbox" /> Auto-upload after capture</label>
+        <label class="checkbox-row"><input id="autoPrintInput" type="checkbox" /> Auto-print after upload</label>
+      </div>
+
+      <div class="admin-actions">
+        <button id="saveSettingsButton" class="primary-button admin-save" type="button">Save Settings</button>
+        <button id="rebuildPreviewButton" class="primary-button quiet-button admin-save" type="button">Rebuild Preview</button>
+      </div>
+
+      <div class="admin-preview-wrap">
+        <h3>Receipt preview</h3>
+        <div class="receipt-shell">
+          <canvas id="adminPreviewCanvas" class="receipt-preview"></canvas>
+        </div>
+      </div>
+
+      <p class="admin-note">Admin mode: add <code>?admin=1</code> to the URL or tap the header 5 times.</p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
