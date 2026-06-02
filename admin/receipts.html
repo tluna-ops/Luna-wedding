@@ -1,1 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#f8f2ea" />
+  <title>Receipt Admin — Luna Wedding</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="stylesheet" href="receipts.css" />
+</head>
 
+<body>
+  <main class="admin-shell">
+    <header class="admin-header">
+      <a href="/receipts/" class="back-link">← Public gallery</a>
+      <p class="eyebrow">Luna Wedding</p>
+      <h1>Receipt Admin</h1>
+      <p class="lede">Hide or restore receipt strips from the public gallery without deleting files.</p>
+    </header>
+
+    <section id="loginPanel" class="panel">
+      <h2>Admin login</h2>
+      <p>Enter the receipt admin password set in Supabase Secrets.</p>
+
+      <form id="loginForm" class="login-form">
+        <label for="passwordInput">Password</label>
+        <input id="passwordInput" name="password" type="password" autocomplete="current-password" required />
+        <button type="submit">Unlock receipts</button>
+      </form>
+
+      <p id="loginError" class="error-text hidden"></p>
+    </section>
+
+    <section id="adminPanel" class="hidden">
+      <div class="toolbar">
+        <div>
+          <h2>Sessions</h2>
+          <p id="summaryText">Loading receipt sessions…</p>
+        </div>
+
+        <div class="toolbar-actions">
+          <button id="refreshButton" type="button">Refresh</button>
+          <button id="lockButton" type="button">Lock</button>
+        </div>
+      </div>
+
+      <label class="search-label" for="searchInput">Search by session ID</label>
+      <input id="searchInput" class="search-input" type="search" placeholder="LUNA-XXXXXXXX" autocomplete="off" />
+
+      <section id="statusBox" class="status-card" aria-live="polite">
+        Loading sessions…
+      </section>
+
+      <section id="sessionList" class="session-list" aria-label="Receipt sessions"></section>
+    </section>
+  </main>
+
+  <script src="receipts.js"></script>
+</body>
+</html>
