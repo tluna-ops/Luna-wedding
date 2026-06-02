@@ -3,7 +3,7 @@
 // Do not place Supabase service-role keys or admin passwords in this file.
 
 window.LUNA_RECEIPTS_CONFIG = {
-  SUPABASE_URL: "https://vlmmfqjrrkdjvwuryixj.supabase.co/rest/v1/",
+  SUPABASE_URL: "https://vlmmfqjrrkdjvwuryixj.supabase.co",
   SUPABASE_ANON_KEY: "sb_publishable_nflibjeMzzKdOJu-5Zn7EA_1FwUbqUE",
 
   TABLE_NAME: "public_receipt_sessions",
