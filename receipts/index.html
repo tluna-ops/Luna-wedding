@@ -2,18 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#f8f2ea" />
+
   <title>Receipt Booth Gallery — Luna Wedding</title>
+  <meta name="description" content="Receipt booth gallery for Toby and Michelle's wedding." />
+
+  <meta property="og:title" content="Receipt Booth Gallery — Luna Wedding" />
+  <meta property="og:description" content="View finished receipt strips from Toby and Michelle's wedding receipt booth." />
+  <meta property="og:type" content="website" />
+
   <link rel="stylesheet" href="styles.css" />
   <script src="config.js"></script>
 </head>
+
 <body>
-  <main>
+  <main class="page-shell">
     <header class="hero">
+      <a class="back-link" href="/" aria-label="Back to Luna Wedding home">← Luna Wedding</a>
+
       <div class="eyebrow">Toby & Michelle</div>
+
       <h1>Receipt Booth Gallery</h1>
-      <p>Finished receipt strips from the wedding booth appear here. The original raw photos are stored privately for us.</p>
+
+      <p>
+        Finished receipt strips from the wedding booth appear here. The original photos are stored privately for us.
+      </p>
 
       <nav class="nav-buttons" aria-label="Wedding site navigation">
         <a href="/">Home</a>
@@ -22,27 +36,56 @@
       </nav>
     </header>
 
+    <section id="statusBox" class="status-card" aria-live="polite">
+      <div class="spinner" aria-hidden="true"></div>
+      <div>
+        <strong>Loading receipt gallery…</strong>
+        <p>Checking for uploaded receipt strips.</p>
+      </div>
+    </section>
+
     <section id="singleSession" class="single-session hidden" aria-label="Selected receipt"></section>
 
-    <section class="section-heading">
+    <section id="galleryHeader" class="section-heading hidden">
       <div>
         <h2>Receipts</h2>
-        <p class="subcopy">Tap any receipt strip to open it larger and download it.</p>
+        <p class="subcopy">Tap any receipt strip to open it larger and save it.</p>
       </div>
+
       <button id="refreshButton" type="button">Refresh</button>
     </section>
 
-    <section id="gallery" class="grid" aria-label="Receipt booth receipts"></section>
+    <section id="gallery" class="grid hidden" aria-label="Receipt booth receipts"></section>
 
-    <section id="empty" class="empty">
+    <section id="empty" class="empty hidden">
       <strong>No receipts yet.</strong>
-      <p>Once the booth uploads photos, the finished receipt strips will appear here.</p>
+      <p>
+        Once the booth uploads photos, the finished receipt strips will appear here.
+      </p>
+      <button id="emptyRefreshButton" type="button">Check again</button>
     </section>
 
-    <section id="errorBox" class="error hidden">
-      <strong>Gallery is not connected yet.</strong>
-      <p>Set the Worker URL in <code>receipts/config.js</code>.</p>
+    <section id="errorBox" class="error hidden" role="alert">
+      <strong>Gallery could not load.</strong>
+      <p id="errorMessage">
+        Please refresh the page. If this keeps happening, the receipt upload may still be processing.
+      </p>
+      <button id="errorRefreshButton" type="button">Try again</button>
     </section>
+
+    <div id="lightbox" class="lightbox hidden" role="dialog" aria-modal="true" aria-label="Receipt preview">
+      <button id="lightboxClose" class="lightbox-close" type="button" aria-label="Close receipt preview">×</button>
+
+      <figure class="lightbox-card">
+        <img id="lightboxImage" src="" alt="Selected receipt strip" />
+        <figcaption id="lightboxCaption"></figcaption>
+
+        <div class="lightbox-actions">
+          <a id="lightboxOpen" href="#" target="_blank" rel="noopener">Open full size</a>
+          <a id="lightboxDownload" href="#" download>Download</a>
+        </div>
+      </figure>
+    </div>
   </main>
 
   <script src="gallery.js"></script>
