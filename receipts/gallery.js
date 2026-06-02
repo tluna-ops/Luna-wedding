@@ -1,7 +1,21 @@
-const config = window.LUNA_RECEIPTS_CONFIG || {};
+const config = window.LUNA_RECEIPTS_CONFIG || {
+  SUPABASE_URL: "https://vlmmfqjrrkdjvwuryixj.supabase.co",
+  SUPABASE_ANON_KEY: "sb_publishable_nflibjeMzzKdOJu-5Zn7EA_1FwUbqUE",
+  TABLE_NAME: "public_receipt_sessions",
+  PAGE_SIZE: 48,
+  SITE_NAME: "Luna Wedding",
+  RECEIPTS_PATH: "/receipts/",
+  FIELDS: {
+    publicSessionId: "public_session_id",
+    createdAt: "created_at",
+    galleryUrl: "gallery_url",
+    receiptPublicUrl: "receipt_public_url",
+    isPublic: "is_public"
+  }
+};
 
-const supabaseUrl = String(config.SUPABASE_URL || "").replace(/\/$/, "");
-const supabaseKey = String(config.SUPABASE_ANON_KEY || "");
+const supabaseUrl = String(config.SUPABASE_URL || "https://vlmmfqjrrkdjvwuryixj.supabase.co").replace(/\/$/, "");
+const supabaseKey = String(config.SUPABASE_ANON_KEY || "sb_publishable_nflibjeMzzKdOJu-5Zn7EA_1FwUbqUE");
 const tableName = String(config.TABLE_NAME || "public_receipt_sessions");
 const pageSize = Number(config.PAGE_SIZE || 48);
 
@@ -79,21 +93,29 @@ function sessionUrl(item) {
 }
 
 function showStatus(title = "Loading receipt gallery…", message = "Checking for uploaded receipt strips.") {
+  if (!statusBox) return;
+
   statusBox.classList.remove("hidden");
-  statusBox.querySelector("strong").textContent = title;
-  statusBox.querySelector("p").textContent = message;
+
+  const titleElement = statusBox.querySelector("strong");
+  const messageElement = statusBox.querySelector("p");
+
+  if (titleElement) titleElement.textContent = title;
+  if (messageElement) messageElement.textContent = message;
 }
 
 function hideStatus() {
+  if (!statusBox) return;
   statusBox.classList.add("hidden");
 }
 
 function showError(message) {
   hideStatus();
-  gallery.classList.add("hidden");
-  galleryHeader.classList.add("hidden");
-  empty.classList.add("hidden");
-  errorBox.classList.remove("hidden");
+
+  if (gallery) gallery.classList.add("hidden");
+  if (galleryHeader) galleryHeader.classList.add("hidden");
+  if (empty) empty.classList.add("hidden");
+  if (errorBox) errorBox.classList.remove("hidden");
 
   if (errorMessage) {
     errorMessage.textContent = message || "Please refresh the page. If this keeps happening, the receipt upload may still be processing.";
@@ -101,7 +123,7 @@ function showError(message) {
 }
 
 function clearError() {
-  errorBox.classList.add("hidden");
+  if (errorBox) errorBox.classList.add("hidden");
 }
 
 function validateConfig() {
@@ -117,14 +139,18 @@ function validateConfig() {
 async function supabaseSelect(queryString) {
   validateConfig();
 
-  const url = `${supabaseUrl}/rest/v1/${encodeURIComponent(tableName)}?${queryString}`;
+  const safeTableName = tableName.replace(/[^a-zA-Z0-9_]/g, "");
+  const url = `${supabaseUrl}/rest/v1/${safeTableName}?${queryString}`;
+
+  console.log("Luna receipt Supabase URL:", url);
 
   const response = await fetch(url, {
     method: "GET",
     headers: {
       apikey: supabaseKey,
       Authorization: `Bearer ${supabaseKey}`,
-      Accept: "application/json"
+      Accept: "application/json",
+      Prefer: "return=representation"
     },
     cache: "no-store"
   });
@@ -194,6 +220,8 @@ async function fetchSessionById(publicSessionId) {
 }
 
 function renderSingleSession(item, requestedSessionId) {
+  if (!singleSession) return;
+
   if (!requestedSessionId) {
     singleSession.classList.add("hidden");
     singleSession.innerHTML = "";
@@ -246,17 +274,19 @@ function renderSingleSession(item, requestedSessionId) {
 }
 
 function renderGallery(items) {
+  if (!gallery) return;
+
   gallery.innerHTML = "";
 
   if (!items.length) {
     gallery.classList.add("hidden");
-    galleryHeader.classList.add("hidden");
-    empty.classList.remove("hidden");
+    if (galleryHeader) galleryHeader.classList.add("hidden");
+    if (empty) empty.classList.remove("hidden");
     return;
   }
 
-  empty.classList.add("hidden");
-  galleryHeader.classList.remove("hidden");
+  if (empty) empty.classList.add("hidden");
+  if (galleryHeader) galleryHeader.classList.remove("hidden");
   gallery.classList.remove("hidden");
 
   gallery.innerHTML = items.map(item => {
@@ -293,6 +323,11 @@ function renderGallery(items) {
 }
 
 function openLightbox(item) {
+  if (!lightbox || !lightboxImage || !lightboxCaption || !lightboxOpen || !lightboxDownload) {
+    window.open(item.receiptPublicUrl, "_blank", "noopener");
+    return;
+  }
+
   const dateLabel = formatDate(item.createdAt);
   const imageUrl = item.receiptPublicUrl;
   const filename = receiptFilename(item);
@@ -309,6 +344,8 @@ function openLightbox(item) {
 }
 
 function closeLightbox() {
+  if (!lightbox || !lightboxImage) return;
+
   lightbox.classList.add("hidden");
   document.body.classList.remove("lightbox-open");
   lightboxImage.src = "";
@@ -318,10 +355,13 @@ async function loadGallery() {
   clearError();
   showStatus();
 
-  gallery.innerHTML = "";
-  gallery.classList.add("hidden");
-  galleryHeader.classList.add("hidden");
-  empty.classList.add("hidden");
+  if (gallery) {
+    gallery.innerHTML = "";
+    gallery.classList.add("hidden");
+  }
+
+  if (galleryHeader) galleryHeader.classList.add("hidden");
+  if (empty) empty.classList.add("hidden");
 
   const items = await fetchGalleryItems();
 
@@ -397,7 +437,7 @@ if (lightbox) {
 }
 
 document.addEventListener("keydown", event => {
-  if (event.key === "Escape" && !lightbox.classList.contains("hidden")) {
+  if (event.key === "Escape" && lightbox && !lightbox.classList.contains("hidden")) {
     closeLightbox();
   }
 });
