@@ -1,4 +1,5 @@
 const ADMIN_ENDPOINT = "https://vlmmfqjrrkdjvwuryixj.supabase.co/functions/v1/admin-receipts";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_nflibjeMzzKdOJu-5Zn7EA_1FwUbqUE";
 const PASSWORD_STORAGE_KEY = "lunaReceiptAdminPassword";
 
 const loginPanel = document.getElementById("loginPanel");
@@ -45,11 +46,15 @@ function formatDate(value) {
 }
 
 function setStatus(message) {
-  statusBox.textContent = message;
+  if (!statusBox) return;
+
+  statusBox.textContent = message || "";
   statusBox.classList.toggle("hidden", !message);
 }
 
 function setLoginError(message) {
+  if (!loginError) return;
+
   loginError.textContent = message || "";
   loginError.classList.toggle("hidden", !message);
 }
@@ -58,7 +63,9 @@ async function callAdmin(action, extra = {}) {
   const response = await fetch(ADMIN_ENDPOINT, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "apikey": SUPABASE_PUBLISHABLE_KEY,
+      "Authorization": `Bearer ${SUPABASE_PUBLISHABLE_KEY}`
     },
     cache: "no-store",
     body: JSON.stringify({
@@ -68,35 +75,48 @@ async function callAdmin(action, extra = {}) {
     })
   });
 
-  const body = await response.json().catch(() => ({}));
+  const rawText = await response.text();
+  let body = {};
+
+  try {
+    body = rawText ? JSON.parse(rawText) : {};
+  } catch {
+    body = { error: rawText };
+  }
 
   if (!response.ok || body.ok === false) {
-    throw new Error(body.error || `Request failed with ${response.status}`);
+    const message = body.error || body.message || rawText || `Request failed with ${response.status}`;
+    throw new Error(message);
   }
 
   return body;
 }
 
 function showAdmin() {
-  loginPanel.classList.add("hidden");
-  adminPanel.classList.remove("hidden");
+  if (loginPanel) loginPanel.classList.add("hidden");
+  if (adminPanel) adminPanel.classList.remove("hidden");
 }
 
 function showLogin() {
-  adminPanel.classList.add("hidden");
-  loginPanel.classList.remove("hidden");
-  passwordInput.focus();
+  if (adminPanel) adminPanel.classList.add("hidden");
+  if (loginPanel) loginPanel.classList.remove("hidden");
+
+  if (passwordInput) {
+    passwordInput.focus();
+  }
 }
 
 function updateSummary(sessions) {
   const publicCount = sessions.filter(item => item.is_public).length;
   const hiddenCount = sessions.length - publicCount;
 
-  summaryText.textContent = `${sessions.length} sessions · ${publicCount} public · ${hiddenCount} hidden`;
+  if (summaryText) {
+    summaryText.textContent = `${sessions.length} sessions · ${publicCount} public · ${hiddenCount} hidden`;
+  }
 }
 
 function filteredSessions() {
-  const query = String(searchInput.value || "").trim().toUpperCase();
+  const query = String(searchInput ? searchInput.value : "").trim().toUpperCase();
 
   if (!query) {
     return allSessions;
@@ -108,6 +128,8 @@ function filteredSessions() {
 }
 
 function renderSessions() {
+  if (!sessionList) return;
+
   const sessions = filteredSessions();
   updateSummary(allSessions);
 
@@ -198,7 +220,12 @@ async function toggleSession(action, sessionId) {
 }
 
 async function login(password) {
-  adminPassword = password;
+  adminPassword = String(password || "").trim();
+
+  if (!adminPassword) {
+    throw new Error("Enter the admin password.");
+  }
+
   await callAdmin("login");
 
   sessionStorage.setItem(PASSWORD_STORAGE_KEY, adminPassword);
@@ -206,38 +233,50 @@ async function login(password) {
   await loadSessions();
 }
 
-loginForm.addEventListener("submit", async event => {
-  event.preventDefault();
-  setLoginError("");
+if (loginForm) {
+  loginForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    setLoginError("");
 
-  const password = passwordInput.value;
+    const password = passwordInput ? passwordInput.value : "";
 
-  try {
-    await login(password);
-  } catch (error) {
+    try {
+      await login(password);
+    } catch (error) {
+      sessionStorage.removeItem(PASSWORD_STORAGE_KEY);
+      adminPassword = "";
+      setLoginError(error.message || "Login failed.");
+    }
+  });
+}
+
+if (refreshButton) {
+  refreshButton.addEventListener("click", async () => {
+    try {
+      await loadSessions();
+    } catch (error) {
+      setStatus(error.message || "Could not refresh sessions.");
+    }
+  });
+}
+
+if (lockButton) {
+  lockButton.addEventListener("click", () => {
     sessionStorage.removeItem(PASSWORD_STORAGE_KEY);
     adminPassword = "";
-    setLoginError(error.message || "Login failed.");
-  }
-});
+    allSessions = [];
 
-refreshButton.addEventListener("click", async () => {
-  try {
-    await loadSessions();
-  } catch (error) {
-    setStatus(error.message || "Could not refresh sessions.");
-  }
-});
+    if (passwordInput) {
+      passwordInput.value = "";
+    }
 
-lockButton.addEventListener("click", () => {
-  sessionStorage.removeItem(PASSWORD_STORAGE_KEY);
-  adminPassword = "";
-  allSessions = [];
-  passwordInput.value = "";
-  showLogin();
-});
+    showLogin();
+  });
+}
 
-searchInput.addEventListener("input", renderSessions);
+if (searchInput) {
+  searchInput.addEventListener("input", renderSessions);
+}
 
 if (adminPassword) {
   login(adminPassword).catch(() => {
