@@ -1,33 +1,50 @@
-const ADMIN_ENDPOINT = "https://vlmmfqjrrkdjvwuryixj.supabase.co/functions/v1/admin-receipts";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_nflibjeMzzKdOJu-5Zn7EA_1FwUbqUE";
-const PASSWORD_STORAGE_KEY = "lunaReceiptAdminPassword";
+const config = window.LUNA_RECEIPTS_CONFIG || {
+  SUPABASE_URL: "https://vlmmfqjrrkdjvwuryixj.supabase.co",
+  SUPABASE_ANON_KEY: "sb_publishable_nflibjeMzzKdOJu-5Zn7EA_1FwUbqUE",
+  TABLE_NAME: "public_receipt_sessions",
+  PAGE_SIZE: 48,
+  SITE_NAME: "Luna Wedding",
+  RECEIPTS_PATH: "/receipts/",
+  FIELDS: {
+    publicSessionId: "public_session_id",
+    createdAt: "created_at",
+    galleryUrl: "gallery_url",
+    receiptPublicUrl: "receipt_public_url",
+    isPublic: "is_public"
+  }
+};
 
-const loginPanel = document.getElementById("loginPanel");
-const adminPanel = document.getElementById("adminPanel");
-const loginForm = document.getElementById("loginForm");
-const passwordInput = document.getElementById("passwordInput");
-const loginError = document.getElementById("loginError");
+const supabaseUrl = String(config.SUPABASE_URL || "https://vlmmfqjrrkdjvwuryixj.supabase.co").replace(/\/$/, "");
+const supabaseKey = String(config.SUPABASE_ANON_KEY || "sb_publishable_nflibjeMzzKdOJu-5Zn7EA_1FwUbqUE");
+const tableName = String(config.TABLE_NAME || "public_receipt_sessions");
+const pageSize = Number(config.PAGE_SIZE || 48);
+
+const fields = config.FIELDS || {
+  publicSessionId: "public_session_id",
+  createdAt: "created_at",
+  galleryUrl: "gallery_url",
+  receiptPublicUrl: "receipt_public_url",
+  isPublic: "is_public"
+};
+
+const gallery = document.getElementById("gallery");
+const galleryHeader = document.getElementById("galleryHeader");
+const empty = document.getElementById("empty");
+const errorBox = document.getElementById("errorBox");
+const errorMessage = document.getElementById("errorMessage");
+const singleSession = document.getElementById("singleSession");
+const statusBox = document.getElementById("statusBox");
 
 const refreshButton = document.getElementById("refreshButton");
-const lockButton = document.getElementById("lockButton");
-const searchInput = document.getElementById("searchInput");
-const statusBox = document.getElementById("statusBox");
-const sessionList = document.getElementById("sessionList");
-const summaryText = document.getElementById("summaryText");
+const emptyRefreshButton = document.getElementById("emptyRefreshButton");
+const errorRefreshButton = document.getElementById("errorRefreshButton");
 
-let adminPassword = sessionStorage.getItem(PASSWORD_STORAGE_KEY) || "";
-let allSessions = [];
-let busySessionId = "";
-
-function escapeHtml(value) {
-  return String(value || "").replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
-  }[char]));
-}
+const lightbox = document.getElementById("lightbox");
+const lightboxImage = document.getElementById("lightboxImage");
+const lightboxCaption = document.getElementById("lightboxCaption");
+const lightboxOpen = document.getElementById("lightboxOpen");
+const lightboxDownload = document.getElementById("lightboxDownload");
+const lightboxClose = document.getElementById("lightboxClose");
 
 function formatDate(value) {
   if (!value) return "";
@@ -45,244 +62,382 @@ function formatDate(value) {
   }
 }
 
-function setStatus(message) {
+function escapeHtml(value) {
+  return String(value || "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  }[char]));
+}
+
+function normalizeItem(row) {
+  return {
+    publicSessionId: row[fields.publicSessionId],
+    createdAt: row[fields.createdAt],
+    galleryUrl: row[fields.galleryUrl],
+    receiptPublicUrl: row[fields.receiptPublicUrl],
+    isPublic: row[fields.isPublic]
+  };
+}
+
+function receiptFilename(item) {
+  const sessionId = item.publicSessionId || "receipt";
+  return `luna-wedding-receipt-${sessionId}.png`;
+}
+
+function sessionUrl(item) {
+  const id = encodeURIComponent(item.publicSessionId || "");
+  return `${config.RECEIPTS_PATH || "/receipts/"}?session=${id}`;
+}
+
+function showStatus(title = "Loading receipt gallery…", message = "Checking for uploaded receipt strips.") {
   if (!statusBox) return;
 
-  statusBox.textContent = message || "";
-  statusBox.classList.toggle("hidden", !message);
+  statusBox.classList.remove("hidden");
+
+  const titleElement = statusBox.querySelector("strong");
+  const messageElement = statusBox.querySelector("p");
+
+  if (titleElement) titleElement.textContent = title;
+  if (messageElement) messageElement.textContent = message;
 }
 
-function setLoginError(message) {
-  if (!loginError) return;
-
-  loginError.textContent = message || "";
-  loginError.classList.toggle("hidden", !message);
+function hideStatus() {
+  if (!statusBox) return;
+  statusBox.classList.add("hidden");
 }
 
-async function callAdmin(action, extra = {}) {
-  const response = await fetch(ADMIN_ENDPOINT, {
-    method: "POST",
+function showError(message) {
+  hideStatus();
+
+  if (gallery) gallery.classList.add("hidden");
+  if (galleryHeader) galleryHeader.classList.add("hidden");
+  if (empty) empty.classList.add("hidden");
+  if (errorBox) errorBox.classList.remove("hidden");
+
+  if (errorMessage) {
+    errorMessage.textContent = message || "Please refresh the page. If this keeps happening, the receipt upload may still be processing.";
+  }
+}
+
+function clearError() {
+  if (errorBox) errorBox.classList.add("hidden");
+}
+
+function validateConfig() {
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error("Supabase is not configured yet. Check receipts/config.js for SUPABASE_URL and SUPABASE_ANON_KEY.");
+  }
+
+  if (!tableName) {
+    throw new Error("Supabase table/view name is missing. Check receipts/config.js.");
+  }
+}
+
+async function supabaseSelect(queryString) {
+  validateConfig();
+
+  const safeTableName = tableName.replace(/[^a-zA-Z0-9_]/g, "");
+  const url = `${supabaseUrl}/rest/v1/${safeTableName}?${queryString}`;
+
+  const response = await fetch(url, {
+    method: "GET",
     headers: {
-      "Content-Type": "application/json",
-      "apikey": SUPABASE_PUBLISHABLE_KEY
+      apikey: supabaseKey,
+      Authorization: `Bearer ${supabaseKey}`,
+      Accept: "application/json",
+      Prefer: "return=representation"
     },
-    cache: "no-store",
-    body: JSON.stringify({
-      action,
-      password: adminPassword,
-      ...extra
-    })
+    cache: "no-store"
   });
 
-  const rawText = await response.text();
-  let body = {};
+  if (!response.ok) {
+    let details = "";
 
-  try {
-    body = rawText ? JSON.parse(rawText) : {};
-  } catch {
-    body = { error: rawText };
+    try {
+      const body = await response.json();
+      details = body.message || body.error || JSON.stringify(body);
+    } catch {
+      details = await response.text();
+    }
+
+    throw new Error(`Supabase request failed (${response.status}): ${details}`);
   }
 
-  if (!response.ok || body.ok === false) {
-    const message = body.error || body.message || rawText || `Request failed with ${response.status}`;
-    throw new Error(message);
+  return response.json();
+}
+
+async function fetchGalleryItems() {
+  const selectFields = [
+    fields.publicSessionId,
+    fields.createdAt,
+    fields.galleryUrl,
+    fields.receiptPublicUrl,
+    fields.isPublic
+  ].join(",");
+
+  const query = new URLSearchParams({
+    select: selectFields,
+    order: `${fields.createdAt}.desc`,
+    limit: String(pageSize)
+  });
+
+  const rows = await supabaseSelect(query.toString());
+
+  return Array.isArray(rows)
+    ? rows.map(normalizeItem).filter(item => item.publicSessionId && item.receiptPublicUrl)
+    : [];
+}
+
+async function fetchSessionById(publicSessionId) {
+  const selectFields = [
+    fields.publicSessionId,
+    fields.createdAt,
+    fields.galleryUrl,
+    fields.receiptPublicUrl,
+    fields.isPublic
+  ].join(",");
+
+  const query = new URLSearchParams({
+    select: selectFields,
+    limit: "1"
+  });
+
+  query.set(fields.publicSessionId, `eq.${publicSessionId}`);
+
+  const rows = await supabaseSelect(query.toString());
+
+  if (!Array.isArray(rows) || rows.length === 0) {
+    return null;
   }
 
-  return body;
+  const item = normalizeItem(rows[0]);
+  return item.publicSessionId && item.receiptPublicUrl ? item : null;
 }
 
-function showAdmin() {
-  if (loginPanel) loginPanel.classList.add("hidden");
-  if (adminPanel) adminPanel.classList.remove("hidden");
-}
+function renderSingleSession(item, requestedSessionId) {
+  if (!singleSession) return;
 
-function showLogin() {
-  if (adminPanel) adminPanel.classList.add("hidden");
-  if (loginPanel) loginPanel.classList.remove("hidden");
-
-  if (passwordInput) {
-    passwordInput.focus();
-  }
-}
-
-function updateSummary(sessions) {
-  const publicCount = sessions.filter(item => item.is_public).length;
-  const hiddenCount = sessions.length - publicCount;
-
-  if (summaryText) {
-    summaryText.textContent = `${sessions.length} sessions · ${publicCount} public · ${hiddenCount} hidden`;
-  }
-}
-
-function filteredSessions() {
-  const query = String(searchInput ? searchInput.value : "").trim().toUpperCase();
-
-  if (!query) {
-    return allSessions;
-  }
-
-  return allSessions.filter(session =>
-    String(session.public_session_id || "").toUpperCase().includes(query)
-  );
-}
-
-function renderSessions() {
-  if (!sessionList) return;
-
-  const sessions = filteredSessions();
-  updateSummary(allSessions);
-
-  if (!sessions.length) {
-    sessionList.innerHTML = "";
-    setStatus("No matching receipt sessions.");
+  if (!requestedSessionId) {
+    singleSession.classList.add("hidden");
+    singleSession.innerHTML = "";
     return;
   }
 
-  setStatus("");
+  if (!item) {
+    singleSession.classList.remove("hidden");
+    singleSession.innerHTML = `
+      <h2>Receipt not available yet</h2>
+      <p>
+        This receipt may still be uploading or may no longer be public. Please refresh in a moment, or visit the full gallery after the event.
+      </p>
+      <div class="single-session-actions">
+        <button type="button" id="singleRefreshButton">Check again</button>
+        <a href="/receipts/">View gallery</a>
+      </div>
+    `;
 
-  sessionList.innerHTML = sessions.map(session => {
-    const id = session.public_session_id || "";
-    const isPublic = Boolean(session.is_public);
-    const dateLabel = formatDate(session.created_at);
-    const imageUrl = session.receipt_public_url || "";
-    const publicUrl = `/receipts/?session=${encodeURIComponent(id)}`;
-    const isBusy = busySessionId === id;
+    const singleRefreshButton = document.getElementById("singleRefreshButton");
+    if (singleRefreshButton) {
+      singleRefreshButton.addEventListener("click", init);
+    }
+
+    return;
+  }
+
+  const dateLabel = formatDate(item.createdAt);
+  const imageUrl = item.receiptPublicUrl;
+  const filename = receiptFilename(item);
+
+  singleSession.classList.remove("hidden");
+  singleSession.innerHTML = `
+    <h2>Your receipt</h2>
+    ${dateLabel ? `<p>${escapeHtml(dateLabel)}</p>` : ""}
+    <button class="receipt-image-button" type="button" data-image="${escapeHtml(imageUrl)}">
+      <img src="${escapeHtml(imageUrl)}" alt="Wedding receipt strip">
+    </button>
+    <div class="single-session-actions">
+      <a href="${escapeHtml(imageUrl)}" target="_blank" rel="noopener">Open full size</a>
+      <a href="${escapeHtml(imageUrl)}" download="${escapeHtml(filename)}">Download</a>
+      <a href="/receipts/">View all receipts</a>
+    </div>
+  `;
+
+  const imageButton = singleSession.querySelector(".receipt-image-button");
+  if (imageButton) {
+    imageButton.addEventListener("click", () => openLightbox(item));
+  }
+}
+
+function renderGallery(items) {
+  if (!gallery) return;
+
+  gallery.innerHTML = "";
+
+  if (!items.length) {
+    gallery.classList.add("hidden");
+    if (galleryHeader) galleryHeader.classList.add("hidden");
+    if (empty) empty.classList.remove("hidden");
+    return;
+  }
+
+  if (empty) empty.classList.add("hidden");
+  if (galleryHeader) galleryHeader.classList.remove("hidden");
+  gallery.classList.remove("hidden");
+
+  gallery.innerHTML = items.map((item, index) => {
+    const dateLabel = formatDate(item.createdAt);
+    const href = sessionUrl(item);
+    const receiptNumber = index + 1;
 
     return `
-      <article class="session-card">
-        <img class="session-thumb" src="${escapeHtml(imageUrl)}" alt="Receipt ${escapeHtml(id)}" loading="lazy">
-
-        <div class="session-info">
-          <div class="session-title-row">
-            <h3 class="session-id">${escapeHtml(id)}</h3>
-            <span class="badge ${isPublic ? "public" : "hidden-badge"}">
-              ${isPublic ? "Public" : "Hidden"}
-            </span>
-          </div>
-
-          <p class="session-date">${escapeHtml(dateLabel)}</p>
-
-          <div class="session-actions">
-            <a class="session-link" href="${escapeHtml(publicUrl)}" target="_blank" rel="noopener">Open</a>
-            <a class="session-link" href="${escapeHtml(imageUrl)}" target="_blank" rel="noopener">Image</a>
-
-            ${
-              isPublic
-                ? `<button class="danger" type="button" data-action="hide" data-id="${escapeHtml(id)}" ${isBusy ? "disabled" : ""}>Hide</button>`
-                : `<button class="success" type="button" data-action="show" data-id="${escapeHtml(id)}" ${isBusy ? "disabled" : ""}>Restore</button>`
-            }
-          </div>
+      <article class="card" data-session="${escapeHtml(item.publicSessionId)}">
+        <a href="${escapeHtml(href)}" aria-label="Open wedding receipt ${receiptNumber}">
+          <img src="${escapeHtml(item.receiptPublicUrl)}" alt="Wedding receipt strip ${receiptNumber}" loading="lazy">
+        </a>
+        <button class="card-preview-button" type="button" aria-label="Preview wedding receipt ${receiptNumber}">
+          Quick view
+        </button>
+        <div class="card-meta">
+          ${dateLabel ? escapeHtml(dateLabel) : "Wedding receipt"}
         </div>
       </article>
     `;
   }).join("");
 
-  sessionList.querySelectorAll("button[data-action]").forEach(button => {
-    button.addEventListener("click", async event => {
-      const action = event.currentTarget.dataset.action;
-      const sessionId = event.currentTarget.dataset.id;
+  gallery.querySelectorAll(".card-preview-button").forEach(button => {
+    button.addEventListener("click", event => {
+      const card = event.currentTarget.closest(".card");
+      const sessionId = card ? card.dataset.session : "";
+      const item = items.find(candidate => candidate.publicSessionId === sessionId);
 
-      if (!action || !sessionId) return;
-
-      const label = action === "hide" ? "hide" : "restore";
-      const confirmed = window.confirm(`Are you sure you want to ${label} ${sessionId}?`);
-
-      if (!confirmed) return;
-
-      await toggleSession(action, sessionId);
+      if (item) {
+        openLightbox(item);
+      }
     });
   });
 }
 
-async function loadSessions() {
-  setStatus("Loading sessions…");
+function openLightbox(item) {
+  if (!lightbox || !lightboxImage || !lightboxCaption || !lightboxOpen || !lightboxDownload) {
+    window.open(item.receiptPublicUrl, "_blank", "noopener");
+    return;
+  }
 
-  const result = await callAdmin("list");
-  allSessions = Array.isArray(result.sessions) ? result.sessions : [];
-  renderSessions();
+  const dateLabel = formatDate(item.createdAt);
+  const imageUrl = item.receiptPublicUrl;
+  const filename = receiptFilename(item);
+
+  lightboxImage.src = imageUrl;
+  lightboxImage.alt = "Wedding receipt strip";
+  lightboxCaption.textContent = dateLabel || "Wedding receipt";
+  lightboxOpen.href = imageUrl;
+  lightboxDownload.href = imageUrl;
+  lightboxDownload.setAttribute("download", filename);
+
+  lightbox.classList.remove("hidden");
+  document.body.classList.add("lightbox-open");
 }
 
-async function toggleSession(action, sessionId) {
+function closeLightbox() {
+  if (!lightbox || !lightboxImage) return;
+
+  lightbox.classList.add("hidden");
+  document.body.classList.remove("lightbox-open");
+  lightboxImage.src = "";
+}
+
+async function loadGallery() {
+  clearError();
+  showStatus();
+
+  if (gallery) {
+    gallery.innerHTML = "";
+    gallery.classList.add("hidden");
+  }
+
+  if (galleryHeader) galleryHeader.classList.add("hidden");
+  if (empty) empty.classList.add("hidden");
+
+  const items = await fetchGalleryItems();
+
+  hideStatus();
+  renderGallery(items);
+
+  return items;
+}
+
+async function loadSingleSessionFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+
+  const requestedSessionId =
+    params.get("session") ||
+    params.get("id") ||
+    "";
+
+  if (!requestedSessionId) {
+    renderSingleSession(null, "");
+    return null;
+  }
+
+  showStatus("Loading your receipt…", "Checking for the receipt linked from your QR code.");
+
+  const item = await fetchSessionById(requestedSessionId.trim());
+
+  hideStatus();
+  renderSingleSession(item, requestedSessionId.trim());
+
+  return item;
+}
+
+async function init() {
   try {
-    busySessionId = sessionId;
-    renderSessions();
-    setStatus(`${action === "hide" ? "Hiding" : "Restoring"} ${sessionId}…`);
+    clearError();
 
-    await callAdmin(action, { sessionId });
-    await loadSessions();
-  } catch (error) {
-    alert(error.message || "Could not update session.");
-  } finally {
-    busySessionId = "";
-    renderSessions();
-  }
-}
+    const params = new URLSearchParams(window.location.search);
+    const hasRequestedSession = params.has("session") || params.has("id");
 
-async function login(password) {
-  adminPassword = String(password || "").trim();
-
-  if (!adminPassword) {
-    throw new Error("Enter the admin password.");
-  }
-
-  await callAdmin("login");
-
-  sessionStorage.setItem(PASSWORD_STORAGE_KEY, adminPassword);
-  showAdmin();
-  await loadSessions();
-}
-
-if (loginForm) {
-  loginForm.addEventListener("submit", async event => {
-    event.preventDefault();
-    setLoginError("");
-
-    const password = passwordInput ? passwordInput.value : "";
-
-    try {
-      await login(password);
-    } catch (error) {
-      sessionStorage.removeItem(PASSWORD_STORAGE_KEY);
-      adminPassword = "";
-      setLoginError(error.message || "Login failed.");
+    if (hasRequestedSession) {
+      await loadSingleSessionFromUrl();
     }
-  });
+
+    await loadGallery();
+  } catch (error) {
+    console.error(error);
+    showError(error.message || "The receipt gallery could not load.");
+  }
 }
 
 if (refreshButton) {
-  refreshButton.addEventListener("click", async () => {
-    try {
-      await loadSessions();
-    } catch (error) {
-      setStatus(error.message || "Could not refresh sessions.");
+  refreshButton.addEventListener("click", loadGallery);
+}
+
+if (emptyRefreshButton) {
+  emptyRefreshButton.addEventListener("click", loadGallery);
+}
+
+if (errorRefreshButton) {
+  errorRefreshButton.addEventListener("click", init);
+}
+
+if (lightboxClose) {
+  lightboxClose.addEventListener("click", closeLightbox);
+}
+
+if (lightbox) {
+  lightbox.addEventListener("click", event => {
+    if (event.target === lightbox) {
+      closeLightbox();
     }
   });
 }
 
-if (lockButton) {
-  lockButton.addEventListener("click", () => {
-    sessionStorage.removeItem(PASSWORD_STORAGE_KEY);
-    adminPassword = "";
-    allSessions = [];
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && lightbox && !lightbox.classList.contains("hidden")) {
+    closeLightbox();
+  }
+});
 
-    if (passwordInput) {
-      passwordInput.value = "";
-    }
-
-    showLogin();
-  });
-}
-
-if (searchInput) {
-  searchInput.addEventListener("input", renderSessions);
-}
-
-if (adminPassword) {
-  login(adminPassword).catch(() => {
-    sessionStorage.removeItem(PASSWORD_STORAGE_KEY);
-    adminPassword = "";
-    showLogin();
-  });
-} else {
-  showLogin();
-}
+init();
