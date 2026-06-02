@@ -83,8 +83,12 @@ function normalizeItem(row) {
 }
 
 function receiptFilename(item) {
-  const sessionId = item.publicSessionId || "receipt";
-  return `luna-wedding-${sessionId}.png`;
+  const date = item.createdAt ? new Date(item.createdAt) : new Date();
+  const stamp = isNaN(date.getTime())
+    ? "receipt"
+    : date.toISOString().slice(0, 19).replace(/[:T]/g, "-");
+
+  return `luna-wedding-receipt-${stamp}.png`;
 }
 
 function sessionUrl(item) {
@@ -142,15 +146,12 @@ async function supabaseSelect(queryString) {
   const safeTableName = tableName.replace(/[^a-zA-Z0-9_]/g, "");
   const url = `${supabaseUrl}/rest/v1/${safeTableName}?${queryString}`;
 
-  console.log("Luna receipt Supabase URL:", url);
-
   const response = await fetch(url, {
     method: "GET",
     headers: {
-      apikey: supabaseKey,
-      Authorization: `Bearer ${supabaseKey}`,
-      Accept: "application/json",
-      Prefer: "return=representation"
+      "apikey": supabaseKey,
+      "Accept": "application/json",
+      "Prefer": "return=representation"
     },
     cache: "no-store"
   });
@@ -233,7 +234,7 @@ function renderSingleSession(item, requestedSessionId) {
     singleSession.innerHTML = `
       <h2>Receipt not available yet</h2>
       <p>
-        This receipt may still be uploading. Please refresh in a moment, or visit the full gallery after the event.
+        This receipt may still be uploading or may no longer be public. Please refresh in a moment, or visit the full gallery after the event.
       </p>
       <div class="single-session-actions">
         <button type="button" id="singleRefreshButton">Check again</button>
@@ -256,9 +257,9 @@ function renderSingleSession(item, requestedSessionId) {
   singleSession.classList.remove("hidden");
   singleSession.innerHTML = `
     <h2>Your receipt</h2>
-    <p>${escapeHtml(item.publicSessionId)}${dateLabel ? ` · ${escapeHtml(dateLabel)}` : ""}</p>
-    <button class="receipt-image-button" type="button" data-image="${escapeHtml(imageUrl)}" data-session="${escapeHtml(item.publicSessionId)}" data-date="${escapeHtml(dateLabel)}">
-      <img src="${escapeHtml(imageUrl)}" alt="Receipt strip for ${escapeHtml(item.publicSessionId)}">
+    ${dateLabel ? `<p>${escapeHtml(dateLabel)}</p>` : ""}
+    <button class="receipt-image-button" type="button">
+      <img src="${escapeHtml(imageUrl)}" alt="Wedding receipt strip">
     </button>
     <div class="single-session-actions">
       <a href="${escapeHtml(imageUrl)}" target="_blank" rel="noopener">Open full size</a>
@@ -289,21 +290,21 @@ function renderGallery(items) {
   if (galleryHeader) galleryHeader.classList.remove("hidden");
   gallery.classList.remove("hidden");
 
-  gallery.innerHTML = items.map(item => {
+  gallery.innerHTML = items.map((item, index) => {
     const dateLabel = formatDate(item.createdAt);
     const href = sessionUrl(item);
+    const receiptNumber = index + 1;
 
     return `
       <article class="card" data-session="${escapeHtml(item.publicSessionId)}">
-        <a href="${escapeHtml(href)}" aria-label="Open receipt ${escapeHtml(item.publicSessionId)}">
-          <img src="${escapeHtml(item.receiptPublicUrl)}" alt="Receipt strip ${escapeHtml(item.publicSessionId)}" loading="lazy">
+        <a href="${escapeHtml(href)}" aria-label="Open wedding receipt ${receiptNumber}">
+          <img src="${escapeHtml(item.receiptPublicUrl)}" alt="Wedding receipt strip ${receiptNumber}" loading="lazy">
         </a>
-        <button class="card-preview-button" type="button" aria-label="Preview receipt ${escapeHtml(item.publicSessionId)}">
+        <button class="card-preview-button" type="button" aria-label="Preview wedding receipt ${receiptNumber}">
           Quick view
         </button>
         <div class="card-meta">
-          <strong>${escapeHtml(item.publicSessionId)}</strong>
-          ${escapeHtml(dateLabel)}
+          ${dateLabel ? escapeHtml(dateLabel) : "Wedding receipt"}
         </div>
       </article>
     `;
@@ -333,8 +334,8 @@ function openLightbox(item) {
   const filename = receiptFilename(item);
 
   lightboxImage.src = imageUrl;
-  lightboxImage.alt = `Receipt strip for ${item.publicSessionId}`;
-  lightboxCaption.textContent = `${item.publicSessionId}${dateLabel ? ` · ${dateLabel}` : ""}`;
+  lightboxImage.alt = "Wedding receipt strip";
+  lightboxCaption.textContent = dateLabel || "Wedding receipt";
   lightboxOpen.href = imageUrl;
   lightboxDownload.href = imageUrl;
   lightboxDownload.setAttribute("download", filename);
