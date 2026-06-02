@@ -6,7 +6,14 @@
   <meta name="theme-color" content="#f8f2ea" />
   <title>Receipt Admin — Luna Wedding</title>
   <meta name="robots" content="noindex,nofollow" />
-  <link rel="stylesheet" href="receipts.css" />
+
+  <link rel="stylesheet" href="/admin/receipts.css?v=3" />
+
+  <style>
+    .hidden {
+      display: none !important;
+    }
+  </style>
 </head>
 
 <body>
@@ -22,9 +29,9 @@
       <h2>Admin login</h2>
       <p>Enter the receipt admin password set in Supabase Secrets.</p>
 
-      <form id="loginForm" class="login-form">
+      <form id="loginForm" class="login-form" method="post" action="javascript:void(0)" autocomplete="off">
         <label for="passwordInput">Password</label>
-        <input id="passwordInput" name="password" type="password" autocomplete="current-password" required />
+        <input id="passwordInput" type="password" autocomplete="current-password" required />
         <button type="submit">Unlock receipts</button>
       </form>
 
@@ -47,14 +54,12 @@
       <label class="search-label" for="searchInput">Search by session ID</label>
       <input id="searchInput" class="search-input" type="search" placeholder="LUNA-XXXXXXXX" autocomplete="off" />
 
-      <section id="statusBox" class="status-card" aria-live="polite">
-        Loading sessions…
-      </section>
+      <section id="statusBox" class="status-card hidden" aria-live="polite"></section>
 
       <section id="sessionList" class="session-list" aria-label="Receipt sessions"></section>
     </section>
   </main>
 
-  <script src="receipts.js"></script>
+  <script src="/admin/receipts.js?v=3"></script>
 </body>
 </html>
