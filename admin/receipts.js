@@ -48,21 +48,18 @@ function formatDate(value) {
 
 function setStatus(message) {
   if (!statusBox) return;
-
   statusBox.textContent = message || "";
   statusBox.classList.toggle("hidden", !message);
 }
 
 function setLoginError(message) {
   if (!loginError) return;
-
   loginError.textContent = message || "";
   loginError.classList.toggle("hidden", !message);
 }
 
 function setUnlocking(isUnlocking) {
   if (!unlockButton) return;
-
   unlockButton.disabled = isUnlocking;
   unlockButton.textContent = isUnlocking ? "Unlocking…" : "Unlock receipts";
 }
@@ -107,10 +104,7 @@ function showAdmin() {
 function showLogin() {
   if (adminPanel) adminPanel.classList.add("hidden");
   if (loginPanel) loginPanel.classList.remove("hidden");
-
-  if (passwordInput) {
-    passwordInput.focus();
-  }
+  if (passwordInput) passwordInput.focus();
 }
 
 function updateSummary(sessions) {
@@ -125,9 +119,7 @@ function updateSummary(sessions) {
 function filteredSessions() {
   const query = String(searchInput ? searchInput.value : "").trim().toUpperCase();
 
-  if (!query) {
-    return allSessions;
-  }
+  if (!query) return allSessions;
 
   return allSessions.filter(session =>
     String(session.public_session_id || "").toUpperCase().includes(query)
