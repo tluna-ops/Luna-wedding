@@ -232,9 +232,9 @@ function renderSingleSession(item, requestedSessionId) {
   if (!item) {
     singleSession.classList.remove("hidden");
     singleSession.innerHTML = `
-      <h2>Receipt not available yet</h2>
+      <h2>This receipt isn’t available right now</h2>
       <p>
-        This receipt may still be uploading or may no longer be public. Please refresh in a moment, or visit the full gallery after the event.
+        It may still be uploading. Please check again in a moment, or visit the full gallery.
       </p>
       <div class="single-session-actions">
         <button type="button" id="singleRefreshButton">Check again</button>
