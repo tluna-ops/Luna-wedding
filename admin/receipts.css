@@ -11,17 +11,18 @@
   --danger: #a11d1d;
   --success: #176b3a;
   --radius-lg: 28px;
+  --radius-md: 20px;
   --radius-pill: 999px;
 }
 
 html {
-  background: var(--paper);
   min-height: 100%;
+  background: var(--paper);
 }
 
 body {
-  margin: 0;
   min-height: 100%;
+  margin: 0;
   background:
     radial-gradient(circle at top left, rgba(255, 255, 255, 0.92), rgba(248, 242, 234, 0.7) 34%, rgba(248, 242, 234, 1) 72%),
     var(--paper);
