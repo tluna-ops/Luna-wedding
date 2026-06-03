@@ -3,24 +3,28 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Opening Gachapon Prize Guide — Luna Wedding</title>
+  <title>Opening Prize Guide — Luna Wedding</title>
 
-  <link rel="canonical" href="https://luna.wedding/q/gachapon/" />
+  <link rel="canonical" href="https://luna.wedding/qr/1/" />
   <meta name="robots" content="noindex, follow" />
+  <meta name="theme-color" content="#736f6e" />
 
   <script>
     /*
-      EDIT THIS URL ANYTIME.
-      The printed QR should always point to:
-      https://luna.wedding/q/gachapon/
+      PRINTED QR SLOT:
+      https://luna.wedding/qr/1/
 
-      Change only DESTINATION_URL if you ever need to redirect guests somewhere else.
+      Edit only DESTINATION_URL if this QR should send guests somewhere else later.
+      Do not change the printed QR URL after printing.
     */
     const DESTINATION_URL = "https://luna.wedding/gachapon/";
 
     window.addEventListener("DOMContentLoaded", () => {
-      const link = document.getElementById("manual-link");
-      if (link) link.href = DESTINATION_URL;
+      const manualLink = document.getElementById("manual-link");
+
+      if (manualLink) {
+        manualLink.href = DESTINATION_URL;
+      }
 
       setTimeout(() => {
         window.location.href = DESTINATION_URL;
