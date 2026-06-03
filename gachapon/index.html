@@ -1,304 +1,399 @@
 <!doctype html>
 <html lang="en">
+
+<!-- ===== START HEAD / PAGE METADATA ===== -->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>Gachapon Prize Guide — Luna Wedding</title>
-
   <link rel="canonical" href="https://luna.wedding/gachapon/" />
-  <meta name="title" content="Gachapon Prize Guide — Luna Wedding" />
-  <meta name="description" content="Prize info for Tobias and Michelle’s wedding gachapon machine." />
 
-  <meta property="og:title" content="Gachapon Prize Guide — Luna Wedding" />
-  <meta property="og:description" content="Prize info for Tobias and Michelle’s wedding gachapon machine." />
+  <meta name="title" content="Gachapon Prize Guide — Luna Wedding" />
+  <meta name="description" content="Prize info for Toby and Michelle’s wedding gachapon machine." />
+
+  <!-- ===== START DESKTOP BROWSER CHROME / SAFARI TINT ===== -->
+  <meta name="theme-color" content="#736f6e" media="(min-width: 641px)" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <!-- ===== END DESKTOP BROWSER CHROME / SAFARI TINT ===== -->
+
+  <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Luna Wedding" />
+  <meta property="og:title" content="Gachapon Prize Guide — Luna Wedding" />
+  <meta property="og:description" content="Prize info for Toby and Michelle’s wedding gachapon machine." />
   <meta property="og:url" content="https://luna.wedding/gachapon/" />
   <meta property="og:image" content="https://luna.wedding/assets/weddinginvite.png?v=15" />
 
-  <meta name="theme-color" content="#736f6e" media="(min-width: 641px)" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Gachapon Prize Guide — Luna Wedding" />
+  <meta name="twitter:description" content="Prize info for Toby and Michelle’s wedding gachapon machine." />
+  <meta name="twitter:image" content="https://luna.wedding/assets/weddinginvite.png?v=15" />
 
+  <!-- ===== START PAGE STYLES ===== -->
   <style>
-    :root {
-      --ink: #2f2925;
-      --muted: rgba(47, 41, 37, 0.72);
-      --soft: rgba(255, 248, 240, 0.72);
-      --soft-strong: rgba(255, 248, 240, 0.88);
-      --line: rgba(47, 41, 37, 0.18);
-      --button: rgba(255, 248, 240, 0.72);
-      --button-hover: rgba(255, 248, 240, 0.96);
-      --shadow: 0 18px 44px rgba(47, 41, 37, 0.18);
-      --radius: 24px;
+    /* ===== START DESIGN VARIABLES FROM VENUE PAGE ===== */
+    :root{
+      --text:#3c2f2f;
+      --muted:#6f5959;
+      --pink:#d8a6a6;
+      --pink-dark:#c98f8f;
+      --pink-deep:#b97878;
+      --pink-light:#f3dede;
+      --cream:rgba(255,248,244,.78);
+      --cream-strong:rgba(255,248,244,.90);
+      --border:rgba(216,166,166,.48);
+      --shadow:0 20px 48px rgba(80,45,45,.16);
+      --chrome-gray:#736f6e;
+      --bg-overlay:linear-gradient(
+        180deg,
+        rgba(255,246,242,.46),
+        rgba(255,246,242,.20) 45%,
+        rgba(255,246,242,.36)
+      );
+    }
+    /* ===== END DESIGN VARIABLES FROM VENUE PAGE ===== */
+
+    *{
+      box-sizing:border-box;
     }
 
-    * {
-      box-sizing: border-box;
+    html,
+    body{
+      margin:0;
+      min-height:100%;
+      color:var(--text);
+      background:var(--chrome-gray);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      overflow-x:hidden;
+      color-scheme:light only;
     }
 
-    html {
-      min-height: 100%;
-      background: #f1e6da;
+    /* ===== START BACKGROUND IMAGE FROM VENUE PAGE ===== */
+    .bg{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      background:var(--chrome-gray);
     }
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Georgia, "Times New Roman", serif;
-      color: var(--ink);
-      background:
-        linear-gradient(
-          rgba(245, 232, 219, 0.42),
-          rgba(245, 232, 219, 0.64)
-        ),
-        url("../assets/weddinginvite.png?v=15") center center / cover no-repeat fixed;
+    .bg img{
+      width:100vw;
+      height:100vh;
+      object-fit:cover;
+      object-position:center;
+      display:block;
+      filter:brightness(1.04) saturate(.96);
     }
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(circle at top center, rgba(255, 255, 255, 0.42), transparent 38%),
-        linear-gradient(to bottom, rgba(241, 230, 218, 0.2), rgba(241, 230, 218, 0.58));
-      z-index: 0;
+    .bg::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:var(--bg-overlay);
+      pointer-events:none;
+    }
+    /* ===== END BACKGROUND IMAGE FROM VENUE PAGE ===== */
+
+    /* ===== START EXISTING GACHAPON LAYOUT ===== */
+    .page{
+      position:relative;
+      z-index:1;
+      width:min(920px, calc(100% - 32px));
+      margin:0 auto;
+      padding:18px 0 calc(36px + env(safe-area-inset-bottom));
     }
 
-    .page {
-      position: relative;
-      z-index: 1;
-      width: min(920px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: 26px 0 46px;
+    .nav{
+      display:flex;
+      justify-content:flex-end;
+      gap:8px;
+      flex-wrap:wrap;
+      margin:0 0 12px;
+      width:100%;
     }
 
-    .nav {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin: 0 auto 24px;
-    }
-
-    .nav a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 42px;
-      padding: 10px 18px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: var(--button);
-      color: var(--ink);
-      text-decoration: none;
-      font-size: 14px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      box-shadow: 0 8px 24px rgba(47, 41, 37, 0.1);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
+    .nav a{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.64);
+      color:var(--text);
+      background:rgba(216,166,166,.72);
+      padding:10px 14px;
+      border-radius:999px;
+      font-size:14px;
+      font-weight:700;
+      line-height:1.15;
+      text-decoration:none;
+      cursor:pointer;
+      white-space:nowrap;
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      box-shadow:0 8px 24px rgba(80,45,45,.15);
+      transition:transform .15s ease, background .15s ease, box-shadow .15s ease, border-color .15s ease;
+      text-align:center;
     }
 
     .nav a:hover,
-    .nav a:focus {
-      background: var(--button-hover);
-      transform: translateY(-1px);
-      box-shadow: 0 10px 28px rgba(47, 41, 37, 0.15);
+    .nav a:focus{
+      transform:translateY(-1px);
+      background:rgba(216,166,166,.88);
+      border-color:rgba(255,255,255,.76);
     }
 
-    .card {
-      background: var(--soft);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      overflow: hidden;
+    .nav a.active{
+      background:rgba(185,120,120,.92);
+      color:#fff;
+      border-color:rgba(255,255,255,.82);
+      box-shadow:
+        0 10px 28px rgba(80,45,45,.22),
+        inset 0 0 0 1px rgba(255,255,255,.20);
     }
 
-    .hero {
-      padding: 40px 26px 28px;
-      text-align: center;
-      border-bottom: 1px solid var(--line);
-      background: rgba(255, 248, 240, 0.26);
+    .card{
+      background:var(--cream);
+      border:1px solid var(--border);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      overflow:hidden;
     }
 
-    .eyebrow {
-      margin: 0 0 12px;
-      font-size: 13px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
+    .hero{
+      padding:24px;
+      text-align:center;
+      border-bottom:1px solid var(--border);
+      background:var(--cream-strong);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
     }
 
-    h1 {
-      margin: 0;
-      font-size: clamp(38px, 8vw, 74px);
-      line-height: 0.95;
-      font-weight: 400;
-      letter-spacing: -0.045em;
+    .eyebrow{
+      display:inline-block;
+      margin:0 0 8px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(216,166,166,.28);
+      border:1px solid rgba(216,166,166,.42);
+      color:var(--pink-deep);
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.12em;
+      text-transform:uppercase;
     }
 
-    .subtitle {
-      max-width: 640px;
-      margin: 18px auto 0;
-      font-size: clamp(17px, 3.8vw, 22px);
-      line-height: 1.45;
-      color: var(--muted);
+    h1{
+      margin:0 0 8px;
+      font-size:clamp(30px, 5vw, 46px);
+      line-height:1.04;
+      letter-spacing:.2px;
+      color:var(--text);
     }
 
-    .content {
-      padding: 26px;
+    .subtitle{
+      margin:0 auto;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.6;
+      max-width:720px;
     }
 
-    .section {
-      padding: 22px 0;
-      border-bottom: 1px solid var(--line);
+    .content{
+      padding:18px;
     }
 
-    .section:first-child {
-      padding-top: 0;
+    .section{
+      padding:22px 0;
+      border-bottom:1px solid var(--border);
     }
 
-    .section:last-child {
-      border-bottom: 0;
-      padding-bottom: 0;
+    .section:first-child{
+      padding-top:0;
     }
 
-    h2 {
-      margin: 0 0 12px;
-      font-size: clamp(25px, 5vw, 39px);
-      line-height: 1.05;
-      font-weight: 400;
-      letter-spacing: -0.035em;
+    .section:last-child{
+      border-bottom:0;
+      padding-bottom:0;
     }
 
-    p {
-      margin: 0;
-      font-size: 17px;
-      line-height: 1.55;
+    h2{
+      margin:0 0 8px;
+      font-size:20px;
+      line-height:1.15;
+      color:var(--text);
     }
 
-    .muted {
-      color: var(--muted);
+    p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.6;
     }
 
-    .prize-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 18px;
+    .muted{
+      color:var(--muted);
     }
 
-    .prize {
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      background: rgba(255, 248, 240, 0.52);
-      box-shadow: 0 10px 26px rgba(47, 41, 37, 0.08);
+    .prize-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:14px;
+      margin-top:18px;
     }
 
-    .tag {
-      display: inline-flex;
-      margin-bottom: 11px;
-      padding: 6px 10px;
-      border: 1px solid rgba(47, 41, 37, 0.16);
-      border-radius: 999px;
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      background: rgba(255, 248, 240, 0.5);
+    .prize{
+      padding:18px;
+      border:1px solid rgba(216,166,166,.36);
+      border-radius:18px;
+      background:rgba(255,255,255,.48);
     }
 
-    .prize h3 {
-      margin: 0 0 8px;
-      font-size: 22px;
-      line-height: 1.1;
-      font-weight: 400;
-      letter-spacing: -0.025em;
+    .tag{
+      display:inline-flex;
+      margin-bottom:10px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(216,166,166,.28);
+      border:1px solid rgba(216,166,166,.42);
+      color:var(--pink-deep);
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.12em;
+      text-transform:uppercase;
     }
 
-    .prize p {
-      font-size: 15.5px;
-      color: var(--muted);
+    .prize h3{
+      margin:0 0 8px;
+      color:var(--text);
+      font-size:22px;
+      line-height:1.1;
     }
 
-    .note {
-      margin-top: 18px;
-      padding: 16px 18px;
-      border: 1px dashed rgba(47, 41, 37, 0.3);
-      border-radius: 18px;
-      background: rgba(255, 248, 240, 0.48);
-      font-size: 15.5px;
-      color: var(--muted);
+    .prize p{
+      font-size:14px;
+      line-height:1.55;
+      color:var(--muted);
     }
 
-    .footer {
-      text-align: center;
-      margin-top: 22px;
-      color: rgba(47, 41, 37, 0.7);
-      font-size: 14px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      text-shadow: 0 1px 18px rgba(255, 248, 240, 0.9);
+    .note{
+      margin-top:18px;
+      padding:12px;
+      border-radius:16px;
+      background:rgba(243,222,222,.58);
+      border:1px solid rgba(216,166,166,.44);
+      color:var(--text);
+      font-size:14px;
+      line-height:1.55;
     }
 
-    @media (max-width: 640px) {
-      body {
-        background-attachment: scroll;
+    .footer{
+      margin:14px auto 0;
+      text-align:center;
+      color:rgba(60,47,47,.78);
+      font-size:12px;
+      line-height:1.45;
+      background:rgba(255,248,244,.68);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:11px 14px;
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      max-width:720px;
+    }
+    /* ===== END EXISTING GACHAPON LAYOUT ===== */
+
+    /* ===== START MOBILE BACKGROUND EXTENSION FROM VENUE PAGE ===== */
+    @media (max-width: 640px){
+      html,
+      body{
+        background:
+          var(--bg-overlay),
+          url("../assets/bg.jpg?v=37") center center / cover no-repeat #000;
       }
 
-      .page {
-        width: min(100% - 22px, 920px);
-        padding-top: 18px;
-        padding-bottom: 32px;
-      }
-
-      .nav {
-        gap: 8px;
-        margin-bottom: 18px;
-      }
-
-      .nav a {
-        min-height: 38px;
-        padding: 9px 14px;
-        font-size: 12px;
-        letter-spacing: 0.07em;
-      }
-
-      .hero {
-        padding: 32px 20px 24px;
-      }
-
-      .content {
-        padding: 20px;
-      }
-
-      .prize-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .section {
-        padding: 20px 0;
+      .bg{
+        background:
+          var(--bg-overlay),
+          url("../assets/bg.jpg?v=37") center center / cover no-repeat #000;
       }
     }
+    /* ===== END MOBILE BACKGROUND EXTENSION FROM VENUE PAGE ===== */
+
+    /* ===== START MOBILE STYLES ===== */
+    @media (max-width: 640px){
+      .page{
+        width:min(100% - 24px, 920px);
+        padding-top:14px;
+      }
+
+      .nav{
+        justify-content:center;
+      }
+
+      .nav a{
+        flex:1 1 calc(50% - 8px);
+        min-width:0;
+      }
+
+      .hero{
+        padding:20px 16px;
+        border-radius:0;
+      }
+
+      .card{
+        border-radius:20px;
+      }
+
+      .content{
+        padding:16px;
+      }
+
+      .section{
+        padding:21px 0;
+        text-align:center;
+      }
+
+      .prize-grid{
+        grid-template-columns:1fr;
+      }
+
+      .prize{
+        text-align:center;
+      }
+    }
+
+    @media (max-width: 380px){
+      .page{
+        width:min(100% - 18px, 920px);
+      }
+
+      .nav a{
+        flex:1 1 100%;
+      }
+    }
+    /* ===== END MOBILE STYLES ===== */
   </style>
+  <!-- ===== END PAGE STYLES ===== -->
 </head>
 
 <body>
+  <!-- ===== START BACKGROUND IMAGE MARKUP ===== -->
+  <div class="bg" aria-hidden="true">
+    <img src="../assets/bg.jpg?v=37" alt="">
+  </div>
+  <!-- ===== END BACKGROUND IMAGE MARKUP ===== -->
+
   <main class="page">
     <nav class="nav" aria-label="Wedding website navigation">
-      <a href="/">Home</a>
-      <a href="/venue/">Venue</a>
-      <a href="/registry/">Registry</a>
-      <a href="/receipts/">Gallery</a>
+      <a href="../index.html">Home</a>
+      <a href="../venue.html">Venue</a>
+      <a href="../faq.html">FAQ</a>
+      <a href="../registry.html">Registry</a>
     </nav>
 
     <section class="card">
       <header class="hero">
-        <p class="eyebrow">Tobias + Michelle</p>
+        <p class="eyebrow">Toby &amp; Michelle</p>
         <h1>Gachapon Prize Guide</h1>
         <p class="subtitle">
           Thanks for playing our wedding gachapon. Here’s what you might find inside your capsule.
@@ -363,8 +458,89 @@
     </section>
 
     <footer class="footer">
-      Luna Wedding · June 6, 2026
+      Toby &amp; Michelle · June 6, 2026 · New York City
     </footer>
   </main>
+
+  <!-- ===== START PAGE SCRIPT ===== -->
+  <script>
+    (function(){
+      const DESKTOP_CHROME_COLOR = '#736f6e';
+      const DESKTOP_CHROME_COLOR_NUDGE = '#706c6b';
+      const MOBILE_BREAKPOINT = 640;
+
+      let lastChromeMode = null;
+
+      function isMobileViewport(){
+        return window.matchMedia('(max-width: ' + MOBILE_BREAKPOINT + 'px)').matches;
+      }
+
+      function clearThemeColors(){
+        document
+          .querySelectorAll('meta[name="theme-color"]')
+          .forEach((el) => el.remove());
+      }
+
+      function applyChromeColorMode(){
+        const mode = isMobileViewport() ? 'mobile' : 'desktop';
+
+        if (mode === lastChromeMode) return;
+        lastChromeMode = mode;
+
+        clearThemeColors();
+
+        if (mode === 'mobile'){
+          return;
+        }
+
+        const metaLight = document.createElement('meta');
+        metaLight.name = 'theme-color';
+        metaLight.content = DESKTOP_CHROME_COLOR;
+        metaLight.setAttribute('media', '(prefers-color-scheme: light)');
+        document.head.appendChild(metaLight);
+
+        const metaDark = document.createElement('meta');
+        metaDark.name = 'theme-color';
+        metaDark.content = DESKTOP_CHROME_COLOR;
+        metaDark.setAttribute('media', '(prefers-color-scheme: dark)');
+        document.head.appendChild(metaDark);
+
+        const meta = document.createElement('meta');
+        meta.name = 'theme-color';
+        meta.content = DESKTOP_CHROME_COLOR;
+        document.head.appendChild(meta);
+
+        requestAnimationFrame(() => {
+          meta.content = DESKTOP_CHROME_COLOR_NUDGE;
+
+          requestAnimationFrame(() => {
+            meta.content = DESKTOP_CHROME_COLOR;
+          });
+        });
+      }
+
+      applyChromeColorMode();
+
+      window.addEventListener('pageshow', () => {
+        lastChromeMode = null;
+        applyChromeColorMode();
+      });
+
+      window.addEventListener('resize', applyChromeColorMode);
+
+      window.addEventListener('orientationchange', () => {
+        lastChromeMode = null;
+        setTimeout(applyChromeColorMode, 80);
+      });
+
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden){
+          lastChromeMode = null;
+          applyChromeColorMode();
+        }
+      });
+    })();
+  </script>
+  <!-- ===== END PAGE SCRIPT ===== -->
 </body>
 </html>
