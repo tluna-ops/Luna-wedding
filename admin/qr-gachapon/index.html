@@ -53,14 +53,20 @@
       z-index: 0;
     }
 
-    .page {
-      position: relative;
-      z-index: 1;
-      width: min(920px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: 28px 0 48px;
+    .hidden {
+      display: none !important;
     }
 
+    .lock {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+    }
+
+    .lock-card,
     .card {
       background: var(--paper-soft);
       border: 1px solid var(--line);
@@ -69,6 +75,55 @@
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       overflow: hidden;
+    }
+
+    .lock-card {
+      width: min(460px, 100%);
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: min(920px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 48px;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 0 auto 28px;
+    }
+
+    .nav a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 10px 18px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--button);
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 8px 24px rgba(61, 53, 48, 0.08);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
+    }
+
+    .nav a:hover,
+    .nav a:focus {
+      background: var(--button-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 28px rgba(61, 53, 48, 0.13);
     }
 
     .hero {
@@ -135,6 +190,7 @@
 
     .field {
       margin-top: 16px;
+      text-align: left;
     }
 
     label {
@@ -199,7 +255,13 @@
       box-shadow: 0 10px 28px rgba(61, 53, 48, 0.13);
     }
 
-    .danger-button {
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .danger {
       color: var(--danger);
     }
 
@@ -233,18 +295,27 @@
       image-rendering: pixelated;
     }
 
-    .print-note {
+    .status,
+    .login-error {
       margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(255, 250, 244, 0.44);
       font-size: 14px;
       color: var(--muted);
     }
 
     .status {
-      margin-top: 14px;
-      padding: 12px 14px;
       border: 1px dashed rgba(61, 53, 48, 0.26);
-      border-radius: 16px;
-      background: rgba(255, 250, 244, 0.44);
+    }
+
+    .login-error {
+      border: 1px dashed rgba(143, 61, 52, 0.35);
+      color: var(--danger);
+    }
+
+    .print-note {
+      margin-top: 14px;
       font-size: 14px;
       color: var(--muted);
     }
@@ -258,46 +329,6 @@
       text-transform: uppercase;
     }
 
-    #admin-lock {
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 22px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .lock-card {
-      width: min(460px, 100%);
-      padding: 32px 24px;
-      text-align: center;
-      background: var(--paper-soft);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-
-    .lock-card h1 {
-      font-size: clamp(34px, 8vw, 56px);
-    }
-
-    .lock-card .field {
-      text-align: left;
-    }
-
-    .error {
-      margin-top: 14px;
-      color: var(--danger);
-      font-size: 14px;
-      display: none;
-    }
-
-    #admin-tool {
-      display: none;
-    }
-
     @media (max-width: 760px) {
       body {
         background-attachment: scroll;
@@ -307,6 +338,18 @@
         width: min(100% - 22px, 920px);
         padding-top: 18px;
         padding-bottom: 32px;
+      }
+
+      .nav {
+        gap: 8px;
+        margin-bottom: 18px;
+      }
+
+      .nav a {
+        min-height: 38px;
+        padding: 9px 14px;
+        font-size: 12px;
+        letter-spacing: 0.07em;
       }
 
       .hero {
@@ -325,32 +368,37 @@
 </head>
 
 <body>
-  <section id="admin-lock" aria-label="Admin login">
+  <section id="loginPanel" class="lock">
     <div class="lock-card">
       <p class="eyebrow">Luna Wedding Admin</p>
-      <h1>Admin Access</h1>
+      <h1>QR Admin</h1>
       <p class="subtitle">
-        Enter the admin password to open the QR generator.
+        Enter the same admin password used for the receipt gallery.
       </p>
 
-      <form id="login-form">
+      <form id="loginForm">
         <div class="field">
-          <label for="admin-password">Password</label>
-          <input id="admin-password" type="password" autocomplete="current-password" />
+          <label for="passwordInput">Password</label>
+          <input id="passwordInput" type="password" autocomplete="current-password" />
         </div>
 
         <div class="button-row" style="justify-content: center;">
-          <button type="submit">Unlock</button>
+          <button id="unlockButton" type="submit">Unlock QR Tool</button>
         </div>
 
-        <p id="login-error" class="error">
-          Incorrect password.
-        </p>
+        <div id="loginError" class="login-error hidden"></div>
       </form>
     </div>
   </section>
 
-  <main id="admin-tool" class="page">
+  <main id="adminPanel" class="page hidden">
+    <nav class="nav" aria-label="Admin navigation">
+      <a href="/admin/">Admin Home</a>
+      <a href="/receipts/">Gallery</a>
+      <a href="/gachapon/">Prize Page</a>
+      <a href="/q/gachapon/">QR Link</a>
+    </nav>
+
     <section class="card">
       <header class="hero">
         <p class="eyebrow">Luna Wedding Admin Tool</p>
@@ -365,32 +413,32 @@
           <section class="panel">
             <h2>QR details</h2>
             <p>
-              This QR should point to the permanent redirect page, not directly to the prize guide. That keeps the printed code safe if the destination changes later.
+              This QR points to the permanent redirect page, not directly to the prize guide. That keeps the printed code safe if the final destination changes later.
             </p>
 
             <div class="field">
-              <label for="qr-url">Encoded QR URL</label>
-              <input id="qr-url" value="https://luna.wedding/q/gachapon/" />
+              <label for="qrUrlInput">Encoded QR URL</label>
+              <input id="qrUrlInput" value="https://luna.wedding/q/gachapon/" />
             </div>
 
             <div class="field">
-              <label for="destination-url">Current intended destination</label>
-              <input id="destination-url" value="https://luna.wedding/gachapon/" readonly />
+              <label for="destinationUrlInput">Current intended destination</label>
+              <input id="destinationUrlInput" value="https://luna.wedding/gachapon/" readonly />
             </div>
 
             <div class="button-row">
-              <button type="button" id="generate">Regenerate QR</button>
-              <button type="button" id="download-png">Download PNG</button>
-              <button type="button" id="download-svg">Download SVG</button>
+              <button type="button" id="generateButton">Regenerate QR</button>
+              <button type="button" id="downloadPngButton">Download PNG</button>
+              <button type="button" id="downloadSvgButton">Download SVG</button>
             </div>
 
             <div class="button-row">
               <a class="button" href="https://luna.wedding/q/gachapon/" target="_blank" rel="noopener">Open QR Link</a>
               <a class="button" href="https://luna.wedding/gachapon/" target="_blank" rel="noopener">Open Prize Page</a>
-              <button type="button" id="logout" class="danger-button">Lock Tool</button>
+              <button type="button" id="lockButton" class="danger">Lock Tool</button>
             </div>
 
-            <div id="status" class="status">
+            <div id="statusBox" class="status">
               QR ready for https://luna.wedding/q/gachapon/
             </div>
           </section>
@@ -401,7 +449,7 @@
               <div id="qr" aria-label="Generated QR code"></div>
             </div>
             <p class="print-note">
-              For print, use the SVG when possible. Keep the white quiet zone intact and test at actual size before final printing.
+              For print, download the SVG when possible. Keep the white quiet zone intact and test at actual size before final printing.
             </p>
           </section>
         </div>
@@ -416,26 +464,26 @@
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 
   <script>
-    /*
-      Match this to the same password you use for the admin gallery.
-      This is client-side gating for a static site, not true server-side security.
-    */
-    const ADMIN_PASSWORD = "CHANGE-THIS-TO-YOUR-GALLERY-ADMIN-PASSWORD";
-    const ADMIN_SESSION_KEY = "lunaWeddingAdminUnlocked";
+    const ADMIN_ENDPOINT = "https://vlmmfqjrrkdjvwuryixj.supabase.co/functions/v1/admin-receipts";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_nflibjeMzzKdOJu-5Zn7EA_1FwUbqUE";
+    const PASSWORD_STORAGE_KEY = "lunaReceiptAdminPassword";
 
-    const adminLock = document.getElementById("admin-lock");
-    const adminTool = document.getElementById("admin-tool");
-    const loginForm = document.getElementById("login-form");
-    const passwordInput = document.getElementById("admin-password");
-    const loginError = document.getElementById("login-error");
-    const logoutBtn = document.getElementById("logout");
+    const loginPanel = document.getElementById("loginPanel");
+    const adminPanel = document.getElementById("adminPanel");
+    const loginForm = document.getElementById("loginForm");
+    const passwordInput = document.getElementById("passwordInput");
+    const loginError = document.getElementById("loginError");
+    const unlockButton = document.getElementById("unlockButton");
+    const lockButton = document.getElementById("lockButton");
 
+    const qrUrlInput = document.getElementById("qrUrlInput");
+    const statusBox = document.getElementById("statusBox");
     const qrContainer = document.getElementById("qr");
-    const qrUrlInput = document.getElementById("qr-url");
-    const statusEl = document.getElementById("status");
-    const generateBtn = document.getElementById("generate");
-    const downloadPngBtn = document.getElementById("download-png");
-    const downloadSvgBtn = document.getElementById("download-svg");
+    const generateButton = document.getElementById("generateButton");
+    const downloadPngButton = document.getElementById("downloadPngButton");
+    const downloadSvgButton = document.getElementById("downloadSvgButton");
+
+    let adminPassword = sessionStorage.getItem(PASSWORD_STORAGE_KEY) || "";
 
     const QR_OPTIONS = {
       errorCorrectionLevel: "H",
@@ -447,45 +495,84 @@
       }
     };
 
-    function isUnlocked() {
-      return sessionStorage.getItem(ADMIN_SESSION_KEY) === "true";
+    function setStatus(message) {
+      if (!statusBox) return;
+      statusBox.textContent = message || "";
+      statusBox.classList.toggle("hidden", !message);
     }
 
-    function unlockTool() {
-      sessionStorage.setItem(ADMIN_SESSION_KEY, "true");
-      adminLock.style.display = "none";
-      adminTool.style.display = "block";
+    function setLoginError(message) {
+      if (!loginError) return;
+      loginError.textContent = message || "";
+      loginError.classList.toggle("hidden", !message);
+    }
+
+    function setUnlocking(isUnlocking) {
+      if (!unlockButton) return;
+      unlockButton.disabled = isUnlocking;
+      unlockButton.textContent = isUnlocking ? "Unlocking…" : "Unlock QR Tool";
+    }
+
+    async function callAdmin(action, extra = {}) {
+      const response = await fetch(ADMIN_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_PUBLISHABLE_KEY
+        },
+        cache: "no-store",
+        body: JSON.stringify({
+          action,
+          password: adminPassword,
+          ...extra
+        })
+      });
+
+      const rawText = await response.text();
+      let body = {};
+
+      try {
+        body = rawText ? JSON.parse(rawText) : {};
+      } catch {
+        body = { error: rawText };
+      }
+
+      if (!response.ok || body.ok === false) {
+        const message = body.error || body.message || rawText || `Request failed with ${response.status}`;
+        throw new Error(message);
+      }
+
+      return body;
+    }
+
+    function showAdmin() {
+      if (loginPanel) loginPanel.classList.add("hidden");
+      if (adminPanel) adminPanel.classList.remove("hidden");
       generateQr();
     }
 
-    function lockTool() {
-      sessionStorage.removeItem(ADMIN_SESSION_KEY);
-      adminTool.style.display = "none";
-      adminLock.style.display = "grid";
-      passwordInput.value = "";
-      passwordInput.focus();
+    function showLogin() {
+      if (adminPanel) adminPanel.classList.add("hidden");
+      if (loginPanel) loginPanel.classList.remove("hidden");
+      if (passwordInput) passwordInput.focus();
     }
 
-    loginForm.addEventListener("submit", (event) => {
-      event.preventDefault();
+    async function login(password) {
+      adminPassword = String(password || "").trim();
 
-      if (passwordInput.value === ADMIN_PASSWORD) {
-        loginError.style.display = "none";
-        unlockTool();
-      } else {
-        loginError.style.display = "block";
-        passwordInput.select();
+      if (!adminPassword) {
+        throw new Error("Enter the admin password.");
       }
-    });
 
-    logoutBtn.addEventListener("click", lockTool);
+      setUnlocking(true);
+      await callAdmin("login");
+
+      sessionStorage.setItem(PASSWORD_STORAGE_KEY, adminPassword);
+      showAdmin();
+    }
 
     function getQrUrl() {
-      return qrUrlInput.value.trim();
-    }
-
-    function setStatus(message) {
-      statusEl.textContent = message;
+      return String(qrUrlInput ? qrUrlInput.value : "").trim();
     }
 
     function generateQr() {
@@ -565,15 +652,64 @@
       });
     }
 
-    generateBtn.addEventListener("click", generateQr);
-    downloadPngBtn.addEventListener("click", downloadPng);
-    downloadSvgBtn.addEventListener("click", downloadSvg);
-    qrUrlInput.addEventListener("change", generateQr);
+    if (loginForm) {
+      loginForm.addEventListener("submit", async event => {
+        event.preventDefault();
+        setLoginError("");
 
-    if (isUnlocked()) {
-      unlockTool();
+        const password = passwordInput ? passwordInput.value : "";
+
+        try {
+          await login(password);
+        } catch (error) {
+          sessionStorage.removeItem(PASSWORD_STORAGE_KEY);
+          adminPassword = "";
+          setLoginError(error.message || "Login failed.");
+        } finally {
+          setUnlocking(false);
+        }
+      });
+    }
+
+    if (lockButton) {
+      lockButton.addEventListener("click", () => {
+        sessionStorage.removeItem(PASSWORD_STORAGE_KEY);
+        adminPassword = "";
+
+        if (passwordInput) {
+          passwordInput.value = "";
+        }
+
+        showLogin();
+      });
+    }
+
+    if (generateButton) {
+      generateButton.addEventListener("click", generateQr);
+    }
+
+    if (downloadPngButton) {
+      downloadPngButton.addEventListener("click", downloadPng);
+    }
+
+    if (downloadSvgButton) {
+      downloadSvgButton.addEventListener("click", downloadSvg);
+    }
+
+    if (qrUrlInput) {
+      qrUrlInput.addEventListener("change", generateQr);
+      qrUrlInput.addEventListener("input", generateQr);
+    }
+
+    if (adminPassword) {
+      login(adminPassword).catch(() => {
+        sessionStorage.removeItem(PASSWORD_STORAGE_KEY);
+        adminPassword = "";
+        setUnlocking(false);
+        showLogin();
+      });
     } else {
-      lockTool();
+      showLogin();
     }
   </script>
 </body>
