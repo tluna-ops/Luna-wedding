@@ -396,7 +396,7 @@
       <a href="/admin/">Admin Home</a>
       <a href="/receipts/">Gallery</a>
       <a href="/gachapon/">Prize Page</a>
-      <a href="/q/gachapon/">QR Link</a>
+      <a href="/qr/1/">QR Link</a>
     </nav>
 
     <section class="card">
@@ -413,12 +413,12 @@
           <section class="panel">
             <h2>QR details</h2>
             <p>
-              This QR points to the permanent redirect page, not directly to the prize guide. That keeps the printed code safe if the final destination changes later.
+              This QR points to the permanent redirect slot, not directly to the prize guide. That keeps the printed code safe if the final destination changes later.
             </p>
 
             <div class="field">
               <label for="qrUrlInput">Encoded QR URL</label>
-              <input id="qrUrlInput" value="https://luna.wedding/q/gachapon/" />
+              <input id="qrUrlInput" value="https://luna.wedding/qr/1/" />
             </div>
 
             <div class="field">
@@ -433,13 +433,13 @@
             </div>
 
             <div class="button-row">
-              <a class="button" href="https://luna.wedding/q/gachapon/" target="_blank" rel="noopener">Open QR Link</a>
+              <a class="button" href="https://luna.wedding/qr/1/" target="_blank" rel="noopener">Open QR Link</a>
               <a class="button" href="https://luna.wedding/gachapon/" target="_blank" rel="noopener">Open Prize Page</a>
               <button type="button" id="lockButton" class="danger">Lock Tool</button>
             </div>
 
             <div id="statusBox" class="status">
-              QR ready for https://luna.wedding/q/gachapon/
+              QR ready for https://luna.wedding/qr/1/
             </div>
           </section>
 
@@ -623,7 +623,7 @@
             return;
           }
 
-          downloadBlob(blob, "luna-wedding-gachapon-qr.png");
+          downloadBlob(blob, "luna-wedding-qr-1.png");
           setStatus("PNG downloaded.");
         }, "image/png");
       });
@@ -647,7 +647,7 @@
         }
 
         const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
-        downloadBlob(blob, "luna-wedding-gachapon-qr.svg");
+        downloadBlob(blob, "luna-wedding-qr-1.svg");
         setStatus("SVG downloaded.");
       });
     }
