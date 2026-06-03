@@ -289,7 +289,8 @@
     }
 
     #qr canvas,
-    #qr img {
+    #qr img,
+    #qr svg {
       width: 100% !important;
       height: 100% !important;
       image-rendering: pixelated;
@@ -461,7 +462,7 @@
     </footer>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script src="/assets/vendor/qrcode.min.js"></script>
 
   <script>
     const ADMIN_ENDPOINT = "https://vlmmfqjrrkdjvwuryixj.supabase.co/functions/v1/admin-receipts";
@@ -484,16 +485,11 @@
     const downloadSvgButton = document.getElementById("downloadSvgButton");
 
     let adminPassword = sessionStorage.getItem(PASSWORD_STORAGE_KEY) || "";
+    let qrInstance = null;
 
-    const QR_OPTIONS = {
-      errorCorrectionLevel: "H",
-      margin: 4,
-      scale: 10,
-      color: {
-        dark: "#000000",
-        light: "#ffffff"
-      }
-    };
+    const QR_PREVIEW_SIZE = 900;
+    const QR_DOWNLOAD_SIZE = 1200;
+    const QR_QUIET_ZONE_MODULES = 4;
 
     function setStatus(message) {
       if (!statusBox) return;
@@ -575,6 +571,45 @@
       return String(qrUrlInput ? qrUrlInput.value : "").trim();
     }
 
+    function ensureQrLibrary() {
+      if (!window.QRCode) {
+        setStatus("QR library did not load. Confirm /assets/vendor/qrcode.min.js exists.");
+        return false;
+      }
+
+      return true;
+    }
+
+    function createQrObject(url, element, size) {
+      element.innerHTML = "";
+
+      return new QRCode(element, {
+        text: url,
+        width: size,
+        height: size,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    }
+
+    function getQrModel(url) {
+      if (!ensureQrLibrary()) return null;
+
+      const temp = document.createElement("div");
+      temp.style.position = "fixed";
+      temp.style.left = "-9999px";
+      temp.style.top = "-9999px";
+      document.body.appendChild(temp);
+
+      const instance = createQrObject(url, temp, QR_PREVIEW_SIZE);
+      const model = instance && instance._oQRCode ? instance._oQRCode : null;
+
+      temp.remove();
+
+      return model;
+    }
+
     function generateQr() {
       const url = getQrUrl();
 
@@ -583,18 +618,10 @@
         return;
       }
 
-      qrContainer.innerHTML = "";
+      if (!ensureQrLibrary()) return;
 
-      QRCode.toCanvas(url, QR_OPTIONS, (error, canvas) => {
-        if (error) {
-          setStatus("QR generation failed. Check the URL and try again.");
-          return;
-        }
-
-        canvas.setAttribute("aria-label", `QR code for ${url}`);
-        qrContainer.appendChild(canvas);
-        setStatus(`QR ready for ${url}`);
-      });
+      qrInstance = createQrObject(url, qrContainer, QR_PREVIEW_SIZE);
+      setStatus(`QR ready for ${url}`);
     }
 
     function downloadBlob(blob, filename) {
@@ -608,48 +635,106 @@
       URL.revokeObjectURL(objectUrl);
     }
 
+    function buildQrSvg(url) {
+      const model = getQrModel(url);
+
+      if (!model) {
+        throw new Error("Could not create QR model.");
+      }
+
+      const moduleCount = model.getModuleCount();
+      const totalModules = moduleCount + QR_QUIET_ZONE_MODULES * 2;
+
+      let rects = "";
+
+      for (let row = 0; row < moduleCount; row++) {
+        for (let col = 0; col < moduleCount; col++) {
+          if (model.isDark(row, col)) {
+            rects += `<rect x="${col + QR_QUIET_ZONE_MODULES}" y="${row + QR_QUIET_ZONE_MODULES}" width="1" height="1"/>`;
+          }
+        }
+      }
+
+      return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${totalModules} ${totalModules}" width="${QR_DOWNLOAD_SIZE}" height="${QR_DOWNLOAD_SIZE}" shape-rendering="crispEdges">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <g fill="#000000">
+    ${rects}
+  </g>
+</svg>`;
+    }
+
     function downloadPng() {
       const url = getQrUrl();
 
-      QRCode.toCanvas(url, QR_OPTIONS, (error, canvas) => {
-        if (error) {
-          setStatus("PNG download failed. Check the URL and try again.");
+      if (!url) {
+        setStatus("Enter a URL before downloading the QR.");
+        return;
+      }
+
+      const model = getQrModel(url);
+
+      if (!model) {
+        setStatus("PNG download failed.");
+        return;
+      }
+
+      const moduleCount = model.getModuleCount();
+      const totalModules = moduleCount + QR_QUIET_ZONE_MODULES * 2;
+      const moduleSize = Math.floor(QR_DOWNLOAD_SIZE / totalModules);
+      const canvasSize = moduleSize * totalModules;
+
+      const canvas = document.createElement("canvas");
+      canvas.width = canvasSize;
+      canvas.height = canvasSize;
+
+      const context = canvas.getContext("2d");
+      context.fillStyle = "#ffffff";
+      context.fillRect(0, 0, canvasSize, canvasSize);
+
+      context.fillStyle = "#000000";
+
+      for (let row = 0; row < moduleCount; row++) {
+        for (let col = 0; col < moduleCount; col++) {
+          if (model.isDark(row, col)) {
+            context.fillRect(
+              (col + QR_QUIET_ZONE_MODULES) * moduleSize,
+              (row + QR_QUIET_ZONE_MODULES) * moduleSize,
+              moduleSize,
+              moduleSize
+            );
+          }
+        }
+      }
+
+      canvas.toBlob((blob) => {
+        if (!blob) {
+          setStatus("PNG download failed.");
           return;
         }
 
-        canvas.toBlob((blob) => {
-          if (!blob) {
-            setStatus("PNG download failed.");
-            return;
-          }
-
-          downloadBlob(blob, "luna-wedding-qr-1.png");
-          setStatus("PNG downloaded.");
-        }, "image/png");
-      });
+        downloadBlob(blob, "luna-wedding-qr-1.png");
+        setStatus("PNG downloaded.");
+      }, "image/png");
     }
 
     function downloadSvg() {
       const url = getQrUrl();
 
-      QRCode.toString(url, {
-        type: "svg",
-        errorCorrectionLevel: "H",
-        margin: 4,
-        color: {
-          dark: "#000000",
-          light: "#ffffff"
-        }
-      }, (error, svg) => {
-        if (error) {
-          setStatus("SVG download failed. Check the URL and try again.");
-          return;
-        }
+      if (!url) {
+        setStatus("Enter a URL before downloading the QR.");
+        return;
+      }
 
-        const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
+      try {
+        const svgText = buildQrSvg(url);
+        const blob = new Blob([svgText], { type: "image/svg+xml;charset=utf-8" });
+
         downloadBlob(blob, "luna-wedding-qr-1.svg");
         setStatus("SVG downloaded.");
-      });
+      } catch {
+        setStatus("SVG download failed.");
+      }
     }
 
     if (loginForm) {
@@ -699,6 +784,10 @@
     if (qrUrlInput) {
       qrUrlInput.addEventListener("change", generateQr);
       qrUrlInput.addEventListener("input", generateQr);
+    }
+
+    if (!window.QRCode) {
+      setStatus("QR library did not load. Confirm /assets/vendor/qrcode.min.js exists.");
     }
 
     if (adminPassword) {
