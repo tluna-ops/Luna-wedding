@@ -1,4 +1,4 @@
-const config = window.LUNA_RECEIPTS_CONFIG || {
+\const config = window.LUNA_RECEIPTS_CONFIG || {
   SUPABASE_URL: "https://vlmmfqjrrkdjvwuryixj.supabase.co",
   SUPABASE_ANON_KEY: "sb_publishable_nflibjeMzzKdOJu-5Zn7EA_1FwUbqUE",
   TABLE_NAME: "public_receipt_sessions",
@@ -150,6 +150,7 @@ async function supabaseSelect(queryString) {
     method: "GET",
     headers: {
       "apikey": supabaseKey,
+      "Authorization": `Bearer ${supabaseKey}`,
       "Accept": "application/json",
       "Prefer": "return=representation"
     },
@@ -187,6 +188,8 @@ async function fetchGalleryItems() {
     limit: String(pageSize)
   });
 
+  query.set(fields.isPublic, "eq.true");
+
   const rows = await supabaseSelect(query.toString());
 
   return Array.isArray(rows)
@@ -209,6 +212,7 @@ async function fetchSessionById(publicSessionId) {
   });
 
   query.set(fields.publicSessionId, `eq.${publicSessionId}`);
+  query.set(fields.isPublic, "eq.true");
 
   const rows = await supabaseSelect(query.toString());
 
