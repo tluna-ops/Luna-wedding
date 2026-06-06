@@ -236,6 +236,22 @@
       color:var(--muted);
     }
 
+    .gacha-image-wrap{
+      padding:22px 0;
+      border-bottom:1px solid var(--border);
+      text-align:center;
+    }
+
+    .gacha-prizes-image{
+      display:block;
+      width:min(100%, 720px);
+      height:auto;
+      margin:0 auto;
+      border-radius:18px;
+      box-shadow:0 18px 42px rgba(80,45,45,.18);
+      background:rgba(255,255,255,.42);
+    }
+
     .prize-grid{
       display:grid;
       grid-template-columns:repeat(2, minmax(0, 1fr));
@@ -350,7 +366,8 @@
         padding:16px;
       }
 
-      .section{
+      .section,
+      .gacha-image-wrap{
         padding:21px 0;
         text-align:center;
       }
@@ -410,6 +427,14 @@
           </p>
         </section>
 
+        <section class="gacha-image-wrap" aria-label="Gachapon prize preview">
+          <img
+            class="gacha-prizes-image"
+            src="/assets/gacha-prizes.png"
+            alt="Gachapon prize preview"
+          >
+        </section>
+
         <section class="section">
           <h2>Prize info</h2>
 
@@ -435,13 +460,13 @@
             <article class="prize">
               <span class="tag">Lego Heart Keychain</span>
               <h3>Prize 3</h3>
-              <p>To show our love of legos, this favor is a pair of interlocking keychains that make a heart Share one half with someone, or keep it for yourself!</p>
+              <p>To show our love of legos, this favor is a pair of interlocking keychains that make a heart. Share one half with someone, or keep it for yourself!</p>
             </article>
 
             <article class="prize">
-              <span class="tag">Sicker Bundle</span>
-              <h3></h3>
-              <p>A collection of stickers depicting of wedding day with our beloved cats, Pig and Moo! We had a lot of fun drawing these designs and making the stickers ourselves!.</p>
+              <span class="tag">Sticker Bundle</span>
+              <h3>Prize 4</h3>
+              <p>A collection of stickers depicting our wedding day with our beloved cats, Pig and Moo! We had a lot of fun drawing these designs and making the stickers ourselves!</p>
             </article>
 
             <article class="prize">
@@ -450,7 +475,6 @@
               <p>You found a rare one! Show your luck off to everyone!</p>
             </article>
           </div>
-
         </section>
 
         <section class="section">
